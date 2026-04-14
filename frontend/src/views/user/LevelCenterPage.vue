@@ -203,29 +203,69 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .level-center-page {
-  padding: 20px;
+  padding: $spacing-lg;
   max-width: 900px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
   
   .page-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: $spacing-md;
     
     h2 {
       font-size: 28px;
-      color: #333;
+      color: $text-primary;
       margin-bottom: 8px;
+      position: relative;
+      display: inline-block;
+      padding: 0 20px;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, $primary-color);
+      }
+
+      &::before {
+        left: -30px;
+        background: linear-gradient(90deg, transparent, $primary-color);
+      }
+
+      &::after {
+        right: -30px;
+        background: linear-gradient(270deg, transparent, $primary-color);
+      }
     }
     
     p {
-      color: #999;
+      color: $text-muted;
       font-size: 14px;
     }
   }
   
   .my-level-card {
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-xl;
+    box-shadow: $shadow-glow, $shadow-md;
+    transition: transform $transition-normal, box-shadow $transition-normal;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba($primary-color, 0.25), $shadow-lg;
+    }
     
     .my-level-content {
       display: flex;
@@ -240,6 +280,7 @@ onMounted(() => {
         
         .level-icon {
           font-size: 64px;
+          filter: drop-shadow(0 0 12px rgba($primary-color, 0.4));
         }
         
         .level-info {
@@ -248,15 +289,17 @@ onMounted(() => {
           .level-name {
             font-size: 32px;
             font-weight: 700;
-            background: linear-gradient(135deg, #409eff, #66b1ff);
+            background: linear-gradient(135deg, $primary-light, #a78bfa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 16px rgba($primary-color, 0.35));
             margin-bottom: 4px;
           }
           
           .level-number {
             font-size: 16px;
-            color: #999;
+            color: $text-muted;
           }
         }
       }
@@ -273,27 +316,35 @@ onMounted(() => {
         gap: 8px;
         
         .label {
-          color: #999;
+          color: $text-muted;
           font-size: 14px;
         }
         
         .value {
           font-size: 20px;
           font-weight: 600;
-          color: #f56c6c;
+          color: $danger-color;
+          text-shadow: 0 0 8px rgba($danger-color, 0.3);
         }
       }
     }
   }
   
   .privileges-card {
-    margin-bottom: 20px;
+    margin-bottom: 0;
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-xl;
+    box-shadow: $shadow-md;
     
     .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-weight: 600;
+      color: $text-primary;
     }
     
     .privileges-list {
@@ -306,21 +357,31 @@ onMounted(() => {
         align-items: center;
         gap: 12px;
         padding: 16px;
-        background: #f5f7fa;
-        border-radius: 8px;
+        background: rgba($bg-hover, 0.5);
+        backdrop-filter: blur(8px);
+        border-radius: $border-radius;
         border-left: 4px solid transparent;
+        border: 1px solid rgba(148, 163, 184, 0.06);
+        border-left: 4px solid transparent;
+        transition: all $transition-normal;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba($primary-color, 0.1);
+        }
         
         &.active {
-          border-left-color: #67c23a;
-          background: linear-gradient(135deg, rgba(103, 194, 58, 0.05), rgba(144, 238, 144, 0.08));
+          border-left-color: $success-color;
+          background: linear-gradient(135deg, rgba($success-color, 0.06), rgba($success-color, 0.02));
           
           .privilege-badge {
-            background: #67c23a;
+            background: linear-gradient(135deg, $success-color, #16a34a);
             color: white;
             padding: 2px 8px;
             border-radius: 10px;
             font-size: 11px;
             font-weight: 600;
+            box-shadow: 0 2px 8px rgba($success-color, 0.3);
           }
         }
         
@@ -334,20 +395,23 @@ onMounted(() => {
           .privilege-name {
             font-size: 14px;
             font-weight: 600;
-            color: #333;
+            color: $text-primary;
             margin-bottom: 4px;
           }
           
           .privilege-value {
             font-size: 18px;
             font-weight: 700;
-            color: #409eff;
+            background: linear-gradient(135deg, $primary-light, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 4px;
           }
           
           .privilege-desc {
             font-size: 12px;
-            color: #999;
+            color: $text-muted;
           }
         }
       }
@@ -355,11 +419,19 @@ onMounted(() => {
   }
   
   .all-levels-card {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-xl;
+    box-shadow: $shadow-md;
+
     .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-weight: 600;
+      color: $text-primary;
     }
     
     .levels-list {
@@ -368,15 +440,21 @@ onMounted(() => {
         align-items: center;
         gap: 16px;
         padding: 16px;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+        border-radius: $border-radius;
+        transition: background $transition-fast;
         
         &:last-child {
           border-bottom: none;
         }
+
+        &:hover {
+          background: rgba($primary-color, 0.03);
+        }
         
         &.current {
-          background: linear-gradient(135deg, rgba(64, 158, 255, 0.1), rgba(102, 177, 255, 0.1));
-          border-radius: 8px;
+          background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($primary-light, 0.05));
+          border: 1px solid rgba($primary-color, 0.15);
         }
         
         &.unlocked:not(.current) {
@@ -385,6 +463,7 @@ onMounted(() => {
         
         .level-icon {
           font-size: 36px;
+          filter: drop-shadow(0 0 6px rgba($primary-color, 0.2));
         }
         
         .level-main {
@@ -399,27 +478,27 @@ onMounted(() => {
             .level-name {
               font-size: 16px;
               font-weight: 600;
-              color: #333;
+              color: $text-primary;
             }
             
             .level-number {
               font-size: 12px;
-              color: #999;
+              color: $text-muted;
             }
           }
           
           .level-requirement {
             font-size: 12px;
-            color: #999;
+            color: $text-muted;
             margin-bottom: 8px;
             
             .exp-gap {
-              color: #f56c6c;
+              color: $danger-color;
               margin-left: 8px;
             }
             
             .exp-reached {
-              color: #67c23a;
+              color: $success-color;
               margin-left: 8px;
               font-weight: 600;
             }
@@ -433,14 +512,16 @@ onMounted(() => {
             .privilege-tag {
               font-size: 11px;
               padding: 2px 8px;
-              background: #f0f0f0;
+              background: rgba($bg-hover, 0.6);
               border-radius: 10px;
-              color: #666;
+              color: $text-secondary;
+              border: 1px solid rgba(148, 163, 184, 0.06);
               
               &.highlight {
-                background: linear-gradient(135deg, #fff7e6, #ffe7ba);
-                color: #e6a23c;
+                background: linear-gradient(135deg, rgba($warning-color, 0.15), rgba($warning-color, 0.05));
+                color: $warning-color;
                 font-weight: 600;
+                border-color: rgba($warning-color, 0.15);
               }
             }
           }
@@ -450,8 +531,16 @@ onMounted(() => {
   }
   
   .tips-card {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-xl;
+    box-shadow: $shadow-md;
+
     .card-header {
       font-weight: 600;
+      color: $text-primary;
     }
     
     .tips-content {
@@ -459,7 +548,7 @@ onMounted(() => {
         display: flex;
         gap: 16px;
         padding: 12px 0;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.06);
         
         &:last-child {
           border-bottom: none;
@@ -469,7 +558,7 @@ onMounted(() => {
           width: 28px;
           height: 28px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #409eff, #66b1ff);
+          background: linear-gradient(135deg, $primary-color, $primary-dark);
           color: white;
           display: flex;
           align-items: center;
@@ -477,22 +566,32 @@ onMounted(() => {
           font-weight: 700;
           font-size: 14px;
           flex-shrink: 0;
+          box-shadow: 0 2px 8px rgba($primary-color, 0.35);
         }
         
         .tip-text {
           strong {
             display: block;
-            color: #333;
+            color: $text-primary;
             margin-bottom: 4px;
           }
           
           p {
             font-size: 13px;
-            color: #999;
+            color: $text-muted;
             margin: 0;
           }
         }
       }
+    }
+  }
+}
+
+// 响应式
+@media (max-width: 768px) {
+  .level-center-page {
+    .privileges-card .privileges-list {
+      grid-template-columns: 1fr;
     }
   }
 }

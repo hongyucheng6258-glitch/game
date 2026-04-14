@@ -368,10 +368,38 @@ onMounted(() => {
   font-size: 24px;
   font-weight: 700;
   color: $text-primary;
+  position: relative;
+  padding-left: 16px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, $primary-light, $primary-dark);
+    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+  }
 }
 
 // 余额卡片
 .balance-card {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-glow, $shadow-md;
+  transition: transform $transition-normal, box-shadow $transition-normal;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba($primary-color, 0.25), $shadow-lg;
+  }
+
   :deep(.el-card__body) {
     padding: $spacing-xl;
   }
@@ -392,17 +420,50 @@ onMounted(() => {
 .balance-label {
   color: $text-secondary;
   font-size: 14px;
+  letter-spacing: 0.5px;
 }
 
 .balance-amount {
   font-size: 36px;
   font-weight: 700;
-  color: $primary-light;
+  background: linear-gradient(135deg, $primary-light, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 12px rgba($primary-color, 0.3));
 }
 
 .balance-actions {
   display: flex;
   gap: $spacing-sm;
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $primary-dark);
+    border: none;
+    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: linear-gradient(135deg, $primary-light, $primary-color);
+      box-shadow: 0 6px 20px rgba($primary-color, 0.45);
+      transform: translateY(-1px);
+    }
+  }
+
+  :deep(.el-button--default) {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    color: $text-primary;
+    transition: all $transition-normal;
+
+    &:hover {
+      background: $bg-hover;
+      border-color: rgba($primary-color, 0.3);
+      color: $primary-light;
+      transform: translateY(-1px);
+    }
+  }
 }
 
 // 充值金额选择
@@ -415,23 +476,44 @@ onMounted(() => {
 .amount-option {
   padding: $spacing-md;
   text-align: center;
-  border: 1px solid $border-color;
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
-  transition: all 0.2s;
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  transition: all $transition-normal;
 
-  &:hover,
+  &:hover {
+    border-color: rgba($primary-color, 0.3);
+    color: $primary-light;
+    background: rgba($primary-color, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.15);
+  }
+
   &.active {
     border-color: $primary-color;
     color: $primary-light;
-    background: rgba($primary-color, 0.1);
+    background: rgba($primary-color, 0.12);
+    box-shadow: 0 0 16px rgba($primary-color, 0.2), inset 0 0 12px rgba($primary-color, 0.05);
   }
 }
 
 // 交易记录
+.records-section {
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-xl;
+    box-shadow: $shadow-md;
+  }
+}
+
 .card-header-title {
   font-size: 16px;
   font-weight: 600;
@@ -452,8 +534,14 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $spacing-md 0;
-  border-bottom: 1px solid $border-color;
+  padding: $spacing-md $spacing-sm;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: rgba($primary-color, 0.04);
+  }
 
   &:last-child {
     border-bottom: none;
@@ -483,16 +571,20 @@ onMounted(() => {
 
   &.income {
     color: $success-color;
+    text-shadow: 0 0 8px rgba($success-color, 0.3);
   }
 
   &.expense {
     color: $danger-color;
+    text-shadow: 0 0 8px rgba($danger-color, 0.3);
   }
 }
 
 // 手续费预览
 .fee-preview {
-  background: rgba($primary-color, 0.08);
+  background: rgba($primary-color, 0.06);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
   padding: $spacing-md;
   margin-bottom: $spacing-md;
@@ -506,7 +598,7 @@ onMounted(() => {
   font-size: 14px;
 
   &.total {
-    border-top: 1px dashed $border-color;
+    border-top: 1px dashed rgba(148, 163, 184, 0.12);
     margin-top: $spacing-xs;
     padding-top: $spacing-sm;
     font-weight: 600;
@@ -528,6 +620,7 @@ onMounted(() => {
   &.actual-amount {
     color: $success-color;
     font-size: 16px;
+    text-shadow: 0 0 8px rgba($success-color, 0.25);
   }
 
   &.discount {

@@ -35,3 +35,13 @@ function handleSearch() {
   emit('search', keyword.value)
 }
 </script>
+
+<style scoped lang="scss">
+.search-bar {
+  :deep(.el-input__wrapper) {
+    border-radius: 24px;
+    padding: 4px 16px;
+    transition: all 0.3s ease;
+  }
+}
+</style>

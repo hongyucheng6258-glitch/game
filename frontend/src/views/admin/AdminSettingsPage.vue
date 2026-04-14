@@ -203,10 +203,14 @@ onMounted(() => fetchSettings())
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
 .settings-grid {
@@ -219,6 +223,45 @@ onMounted(() => fetchSettings())
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
+  position: relative;
+  padding-left: 12px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 16px;
+    background: linear-gradient(180deg, $primary-color, $primary-dark);
+    border-radius: 2px;
+  }
+}
+
+// 卡片毛玻璃效果
+:deep(.el-card) {
+  background: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-lg !important;
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.2) !important;
+    box-shadow: $shadow-glow;
+    transform: translateY(-2px);
+  }
+
+  .el-card__header {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.06) !important;
+    padding: $spacing-md $spacing-lg;
+  }
+
+  .el-card__body {
+    padding: $spacing-lg;
+  }
 }
 
 :deep(.el-form-item__label) {
@@ -228,14 +271,57 @@ onMounted(() => fetchSettings())
 
 :deep(.el-input__wrapper),
 :deep(.el-textarea__inner) {
-  background: $bg-input;
-  border-color: $border-color;
+  background: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(148, 163, 184, 0.06) !important;
   color: $text-primary;
-  box-shadow: none;
+  box-shadow: none !important;
+  border-radius: $border-radius;
+  transition: all $transition-fast;
 
   &:focus,
   &:focus-within {
-    border-color: $primary-color;
+    border-color: rgba($primary-color, 0.4) !important;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.1) !important;
+  }
+}
+
+:deep(.el-input-number) {
+  .el-input__wrapper {
+    background: rgba(15, 23, 42, 0.6) !important;
+  }
+}
+
+// 按钮渐变效果
+:deep(.el-button--primary) {
+  background: linear-gradient(135deg, $primary-color, $primary-dark) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+  transition: all $transition-normal;
+
+  &:hover {
+    background: linear-gradient(135deg, $primary-light, $primary-color) !important;
+    box-shadow: 0 4px 16px rgba($primary-color, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+// Switch 美化
+:deep(.el-switch) {
+  &.is-checked .el-switch__core {
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
+  }
+}
+
+// Radio 美化
+:deep(.el-radio) {
+  .el-radio__input.is-checked .el-radio__inner {
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
+  }
+
+  .el-radio__input.is-checked + .el-radio__label {
+    color: $primary-light !important;
   }
 }
 

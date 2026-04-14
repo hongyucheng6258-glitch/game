@@ -2,7 +2,9 @@
   <div class="admin-layout">
     <div class="admin-header">
       <div class="admin-logo">
-        <el-icon :size="24"><Setting /></el-icon>
+        <div class="admin-logo-icon">
+          <el-icon :size="18"><Setting /></el-icon>
+        </div>
         <span>管理后台</span>
       </div>
       <div class="admin-user">
@@ -60,44 +62,72 @@ function handleLogout() {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/admin-table.scss';
+@use '@/assets/styles/admin-table.scss';
 
 .admin-layout {
   min-height: 100vh;
   background: #0f172a;
 }
+
 .admin-header {
   height: 60px;
-  background: #1e293b;
-  border-bottom: 1px solid #334155;
+  background: rgba(30, 41, 59, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
 }
+
 .admin-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 18px;
   font-weight: 600;
   color: #f1f5f9;
 }
+
+.admin-logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(99, 102, 241, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #818cf8;
+}
+
 .admin-username {
   color: #94a3b8;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
+  transition: color 0.2s;
+  &:hover {
+    color: #f1f5f9;
+  }
 }
+
 .admin-body {
   display: flex;
   height: calc(100vh - 60px);
+  padding: 16px;
+  gap: 16px;
 }
+
 .admin-main {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  background: rgba(30, 41, 59, 0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.06);
+
   .el-table {
     --el-table-bg-color: #0f172a;
     --el-table-header-bg-color: #1e293b;

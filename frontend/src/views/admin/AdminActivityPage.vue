@@ -436,10 +436,14 @@ onMounted(() => fetchActivities())
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
 .header-actions {
@@ -451,6 +455,7 @@ onMounted(() => fetchActivities())
   display: flex;
   justify-content: center;
   margin-top: $spacing-md;
+  padding-bottom: $spacing-sm;
 }
 
 .form-tip {
@@ -474,9 +479,16 @@ onMounted(() => fetchActivities())
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
-  background: $bg-hover;
+  padding: $spacing-md;
+  background: rgba($bg-hover, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.2);
+    background: rgba($bg-hover, 0.8);
+  }
 
   .service-name {
     font-weight: 500;
@@ -498,20 +510,24 @@ onMounted(() => fetchActivities())
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
-  border: 1px solid $border-color;
+  padding: $spacing-md;
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
   margin-bottom: 8px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all $transition-fast;
+  background: rgba(30, 41, 59, 0.3);
 
   &:hover {
-    border-color: $primary-color;
+    border-color: rgba($primary-color, 0.3);
+    background: rgba($primary-color, 0.04);
+    transform: translateX(4px);
   }
 
   &.selected {
-    border-color: $primary-color;
-    background: rgba($primary-color, 0.1);
+    border-color: rgba($primary-color, 0.4);
+    background: rgba($primary-color, 0.08);
+    box-shadow: inset 0 0 0 1px rgba($primary-color, 0.15);
   }
 }
 
@@ -536,13 +552,165 @@ onMounted(() => fetchActivities())
   font-size: 18px;
 }
 
+// 卡片毛玻璃效果
+:deep(.el-card) {
+  background: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-lg !important;
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.2) !important;
+    box-shadow: $shadow-glow;
+  }
+}
+
+// 表格暗色电竞风格
 :deep(.el-table) {
   --el-table-bg-color: transparent;
   --el-table-tr-bg-color: transparent;
   --el-table-header-bg-color: #1e293b;
-  --el-table-row-hover-bg-color: #334155;
-  --el-table-border-color: #334155;
+  --el-table-row-hover-bg-color: rgba($primary-color, 0.08);
+  --el-table-border-color: rgba(148, 163, 184, 0.06);
   --el-table-text-color: #f1f5f9;
   --el-table-header-text-color: #94a3b8;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+
+  .el-table__row--striped {
+    background-color: rgba(30, 41, 59, 0.4) !important;
+  }
+}
+
+:deep(.el-table__row) {
+  transition: all $transition-fast;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.08) !important;
+  }
+}
+
+:deep(.el-table__header-wrapper) {
+  th {
+    background-color: #1e293b !important;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// 对话框美化
+:deep(.el-dialog) {
+  --el-dialog-bg-color: #0f172a !important;
+  --el-dialog-border-color: rgba(148, 163, 184, 0.06) !important;
+  --el-dialog-title-color: #f1f5f9 !important;
+  background-color: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-xl !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), $shadow-glow;
+}
+
+:deep(.el-dialog__header) {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06) !important;
+  background-color: transparent !important;
+  padding: $spacing-lg $spacing-xl;
+  margin-right: 0;
+}
+
+:deep(.el-dialog__body) {
+  background-color: transparent !important;
+  color: $text-primary !important;
+  padding: $spacing-lg $spacing-xl;
+}
+
+:deep(.el-dialog__footer) {
+  border-top: 1px solid rgba(148, 163, 184, 0.06) !important;
+  background-color: transparent !important;
+  padding: $spacing-md $spacing-xl;
+}
+
+// 按钮渐变效果
+:deep(.el-button--primary) {
+  background: linear-gradient(135deg, $primary-color, $primary-dark) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, $primary-light, $primary-color) !important;
+    box-shadow: 0 4px 16px rgba($primary-color, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+:deep(.el-button--success) {
+  background: linear-gradient(135deg, #22c55e, #16a34a) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #4ade80, #22c55e) !important;
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+:deep(.el-button--warning) {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+:deep(.el-button--danger) {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #f87171, #ef4444) !important;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+// 分页器美化
+:deep(.el-pagination) {
+  .el-pager li {
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid rgba(148, 163, 184, 0.06) !important;
+    color: $text-secondary !important;
+    border-radius: $border-radius;
+    transition: all $transition-fast;
+
+    &:hover {
+      color: $primary-light !important;
+      border-color: rgba($primary-color, 0.3) !important;
+    }
+
+    &.is-active {
+      background: linear-gradient(135deg, $primary-color, $primary-dark) !important;
+      border-color: transparent !important;
+      color: #fff !important;
+      box-shadow: 0 2px 8px rgba($primary-color, 0.4);
+    }
+  }
+
+  .btn-prev,
+  .btn-next {
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid rgba(148, 163, 184, 0.06) !important;
+    color: $text-secondary !important;
+    border-radius: $border-radius;
+  }
 }
 </style>

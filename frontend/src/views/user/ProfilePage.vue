@@ -748,6 +748,10 @@ onMounted(() => {
   font-weight: 700;
   color: $text-primary;
   margin-bottom: $spacing-lg;
+  background: linear-gradient(135deg, $text-primary, $primary-light);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .profile-container {
@@ -779,17 +783,37 @@ onMounted(() => {
   }
 }
 
+// 侧边栏卡片毛玻璃
+.user-info-card,
+.stats-card {
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-glow;
+    transition: box-shadow $transition-normal;
+
+    &:hover {
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+    }
+  }
+}
+
 .user-avatar-section {
   display: flex;
   align-items: center;
   gap: $spacing-md;
   padding-bottom: $spacing-lg;
   margin-bottom: $spacing-lg;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
 }
 
 .user-avatar {
   background: linear-gradient(135deg, $primary-color, $primary-dark);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  border: 3px solid rgba(148, 163, 184, 0.1);
 }
 
 .user-basic-info {
@@ -813,6 +837,7 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 4px 0;
 }
 
 .status-label {
@@ -841,8 +866,16 @@ onMounted(() => {
 .stat-item {
   text-align: center;
   padding: $spacing-md;
-  background: $bg-dark;
+  background: rgba(15, 23, 42, 0.6);
   border-radius: $border-radius;
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: rgba(99, 102, 241, 0.15);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.1);
+    transform: translateY(-2px);
+  }
 }
 
 .stat-value {
@@ -850,6 +883,7 @@ onMounted(() => {
   font-weight: 700;
   color: $primary-light;
   margin-bottom: $spacing-xs;
+  text-shadow: 0 0 12px rgba(129, 140, 248, 0.3);
 }
 
 .stat-label {
@@ -861,6 +895,15 @@ onMounted(() => {
   :deep(.el-tabs__header) {
     margin: 0;
   }
+
+  :deep(.el-tabs__content) {
+    background: $glass-bg;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid $glass-border;
+    border-top: none;
+    border-radius: 0 0 $border-radius-lg $border-radius-lg;
+  }
 }
 
 .avatar-section {
@@ -869,7 +912,12 @@ onMounted(() => {
   gap: $spacing-lg;
   margin-bottom: $spacing-xl;
   padding-bottom: $spacing-xl;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+
+  :deep(.el-avatar) {
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.2);
+    border: 2px solid rgba(148, 163, 184, 0.1);
+  }
 }
 
 .security-item {
@@ -877,7 +925,13 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: $spacing-lg 0;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  transition: background $transition-fast;
+  border-radius: $border-radius;
+
+  &:hover {
+    background: rgba(148, 163, 184, 0.03);
+  }
 
   &:last-child {
     border-bottom: none;
@@ -893,6 +947,7 @@ onMounted(() => {
 .security-icon {
   font-size: 32px;
   color: $primary-color;
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));
 }
 
 .security-text {
@@ -918,6 +973,7 @@ onMounted(() => {
 .verify-icon {
   font-size: 64px;
   margin-bottom: $spacing-lg;
+  filter: drop-shadow(0 0 16px rgba(99, 102, 241, 0.2));
 }
 
 .verify-success,
@@ -942,6 +998,11 @@ onMounted(() => {
   li {
     margin-bottom: $spacing-sm;
     color: $text-primary;
+    padding-left: $spacing-xs;
+
+    &::marker {
+      color: $primary-light;
+    }
   }
 }
 

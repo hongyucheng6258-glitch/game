@@ -340,6 +340,20 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
+
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-glow;
+    transition: transform $transition-normal, box-shadow $transition-normal;
+
+    &:hover {
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+    }
+  }
 }
 
 // 服务信息
@@ -364,6 +378,10 @@ onMounted(() => {
   font-weight: 700;
   color: $text-primary;
   margin-bottom: $spacing-md;
+  background: linear-gradient(135deg, $text-primary, $primary-light);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .service-meta {
@@ -379,6 +397,14 @@ onMounted(() => {
   gap: $spacing-xs;
   color: $text-secondary;
   font-size: 14px;
+  padding: 4px 10px;
+  background: rgba(148, 163, 184, 0.06);
+  border-radius: 6px;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: rgba(148, 163, 184, 0.1);
+  }
 
   .el-icon {
     color: $warning-color;
@@ -397,6 +423,10 @@ onMounted(() => {
   display: flex;
   align-items: baseline;
   gap: $spacing-sm;
+  padding: $spacing-md;
+  background: rgba(148, 163, 184, 0.04);
+  border-radius: $border-radius;
+  border: 1px solid rgba(148, 163, 184, 0.06);
 }
 
 .price-label {
@@ -415,6 +445,7 @@ onMounted(() => {
   font-size: 28px;
   font-weight: 700;
   color: $danger-color;
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 }
 
 .discount-tag {
@@ -425,6 +456,7 @@ onMounted(() => {
   border-radius: 4px;
   font-size: 12px;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(238, 90, 90, 0.3);
 }
 
 .activity-tag {
@@ -436,6 +468,10 @@ onMounted(() => {
   align-items: center;
   gap: $spacing-sm;
   margin-top: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  background: rgba(34, 197, 94, 0.06);
+  border-radius: $border-radius;
+  border: 1px solid rgba(34, 197, 94, 0.1);
 }
 
 .discount-text {
@@ -449,6 +485,11 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: $spacing-md;
+
+  :deep(.el-avatar) {
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+    border: 2px solid rgba(148, 163, 184, 0.1);
+  }
 }
 
 .provider-detail {
@@ -491,7 +532,13 @@ onMounted(() => {
 
 .review-item {
   padding: $spacing-md;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: rgba(148, 163, 184, 0.04);
+  }
 
   &:last-child {
     border-bottom: none;
@@ -530,11 +577,12 @@ onMounted(() => {
 }
 
 .review-reply {
-  background: $bg-hover;
+  background: rgba(99, 102, 241, 0.06);
   border-radius: $border-radius;
   padding: $spacing-sm $spacing-md;
   font-size: 13px;
   color: $text-secondary;
+  border-left: 3px solid $primary-color;
 }
 
 .reply-label {
@@ -554,13 +602,16 @@ onMounted(() => {
   bottom: 0;
   left: 0;
   right: 0;
-  background: $bg-card;
-  border-top: 1px solid $border-color;
+  background: $glass-bg;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid $glass-border;
   padding: $spacing-md $spacing-xl;
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .action-left {
@@ -575,9 +626,17 @@ onMounted(() => {
   border-radius: $border-radius;
   background: linear-gradient(135deg, $primary-color, $primary-dark);
   border: none;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  transition: all $transition-normal;
 
   &:hover {
     background: linear-gradient(135deg, $primary-light, $primary-color);
+    box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 

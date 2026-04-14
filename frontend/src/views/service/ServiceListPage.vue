@@ -266,6 +266,15 @@ async function fetchServices() {
 
 .provider-header-section {
   margin-bottom: $spacing-md;
+
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-glow;
+  }
 }
 
 .provider-header {
@@ -286,11 +295,24 @@ async function fetchServices() {
   font-size: 20px;
   font-weight: 700;
   color: $text-primary;
+  background: linear-gradient(135deg, $text-primary, $primary-light);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 // 筛选区域
 .filter-section {
   margin-bottom: $spacing-md;
+
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-glow;
+  }
 }
 
 .filter-row {
@@ -310,6 +332,7 @@ async function fetchServices() {
   font-size: 14px;
   color: $text-secondary;
   font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .price-inputs {
@@ -333,6 +356,12 @@ async function fetchServices() {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  background: $glass-bg;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid $glass-border;
+  border-radius: $border-radius-lg;
 }
 
 .result-count {
@@ -354,6 +383,12 @@ async function fetchServices() {
 
 .service-card-wrapper {
   min-height: 0;
+  transition: transform $transition-normal, box-shadow $transition-normal;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-glow;
+  }
 }
 
 .pagination-wrapper {

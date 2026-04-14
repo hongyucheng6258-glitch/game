@@ -69,27 +69,47 @@ const showRankingBadge = computed(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .service-card {
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  border-radius: 12px;
+  transition: all $transition-normal;
+  border-radius: $border-radius-lg;
   overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.06);
+
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), $shadow-glow;
+    border-color: rgba($primary-color, 0.2);
   }
+
   :deep(.el-card__body) {
     padding: 0;
   }
 }
+
 .service-cover {
-  height: 140px;
+  height: 150px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   padding: 12px;
   position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+    pointer-events: none;
+  }
 }
+
 .cover-badges {
   position: absolute;
   top: 12px;
@@ -98,12 +118,15 @@ const showRankingBadge = computed(() => {
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
+  z-index: 1;
 }
+
 .service-type-tag {
   position: relative;
   top: auto;
   left: auto;
 }
+
 .ranking-badge {
   display: flex;
   align-items: center;
@@ -115,6 +138,7 @@ const showRankingBadge = computed(() => {
   font-size: 12px;
   font-weight: 600;
 }
+
 .activity-badge {
   display: flex;
   align-items: center;
@@ -126,64 +150,82 @@ const showRankingBadge = computed(() => {
   font-size: 12px;
   font-weight: 600;
 }
+
 .game-type {
   color: white;
   font-size: 12px;
-  background: rgba(0,0,0,0.3);
-  padding: 2px 8px;
-  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  padding: 4px 10px;
+  border-radius: 6px;
+  z-index: 1;
 }
+
 .service-info {
   padding: 16px;
 }
+
 .service-title {
   font-size: 15px;
   font-weight: 600;
-  color: #f1f5f9;
-  margin-bottom: 8px;
+  color: $text-primary;
+  margin-bottom: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color $transition-fast;
 }
+
+.service-card:hover .service-title {
+  color: $primary-light;
+}
+
 .service-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
+
 .price {
-  color: #f59e0b;
+  color: $warning-color;
   font-size: 18px;
   font-weight: 700;
+
   .original-price-small {
     font-size: 12px;
     text-decoration: line-through;
-    color: #94a3b8;
+    color: $text-muted;
     font-weight: 400;
     margin-right: 4px;
   }
+
   .price-unit {
     font-size: 12px;
     font-weight: 400;
-    color: #94a3b8;
+    color: $text-muted;
   }
 }
+
 .duration {
-  color: #94a3b8;
+  color: $text-muted;
   font-size: 13px;
 }
+
 .service-stats {
   display: flex;
   gap: 16px;
-  color: #94a3b8;
+  color: $text-muted;
   font-size: 13px;
+
   span {
     display: flex;
     align-items: center;
     gap: 4px;
   }
 }
+
 .activity-info {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 </style>

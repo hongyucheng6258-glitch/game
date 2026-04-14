@@ -2,15 +2,29 @@
   <header class="app-header">
     <div class="header-inner">
       <router-link to="/" class="logo">
-        <el-icon :size="28" color="#6366f1"><Trophy /></el-icon>
+        <div class="logo-icon">
+          <el-icon :size="22" color="#a78bfa"><Trophy /></el-icon>
+        </div>
         <span class="logo-text">{{ systemStore.settings.siteName }}</span>
       </router-link>
 
       <nav class="nav-links">
-        <router-link to="/">首页</router-link>
-        <router-link to="/service">服务列表</router-link>
-        <router-link to="/ranking">排行榜</router-link>
-        <router-link to="/announcement">公告</router-link>
+        <router-link to="/" class="nav-item">
+          <el-icon :size="16"><HomeFilled /></el-icon>
+          <span>首页</span>
+        </router-link>
+        <router-link to="/service" class="nav-item">
+          <el-icon :size="16"><Goods /></el-icon>
+          <span>服务列表</span>
+        </router-link>
+        <router-link to="/ranking" class="nav-item">
+          <el-icon :size="16"><Trophy /></el-icon>
+          <span>排行榜</span>
+        </router-link>
+        <router-link to="/announcement" class="nav-item">
+          <el-icon :size="16"><Bell /></el-icon>
+          <span>公告</span>
+        </router-link>
       </nav>
 
       <div class="header-actions">
@@ -39,7 +53,7 @@
         </template>
         <template v-else>
           <el-button type="primary" @click="$router.push('/auth/login')">登录</el-button>
-          <el-button @click="$router.push('/auth/register')">注册</el-button>
+          <el-button plain @click="$router.push('/auth/register')">注册</el-button>
         </template>
       </div>
     </div>
@@ -47,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { Trophy, Bell } from '@element-plus/icons-vue'
+import { Trophy, Bell, HomeFilled, Goods } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/user'
 import { useSystemStore } from '@/stores/system'
 import { useMessageStore } from '@/stores/message'
@@ -91,13 +105,19 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .app-header {
-  background: #1e293b;
-  border-bottom: 1px solid #334155;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
   position: sticky;
   top: 0;
   z-index: 100;
+  transition: all $transition-normal;
 }
+
 .header-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -107,49 +127,115 @@ onUnmounted(() => {
   justify-content: space-between;
   padding: 0 20px;
 }
+
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   text-decoration: none;
+  transition: all $transition-normal;
 }
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(167, 139, 250, 0.2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-normal;
+}
+
+.logo:hover .logo-icon {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(167, 139, 250, 0.3));
+  transform: scale(1.05);
+}
+
 .logo-text {
   font-size: 20px;
   font-weight: 700;
-  background: linear-gradient(135deg, #6366f1, #a78bfa);
+  background: linear-gradient(135deg, #818cf8, #a78bfa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
 .nav-links {
   display: flex;
-  gap: 24px;
-  a {
-    color: #94a3b8;
-    text-decoration: none;
-    font-size: 14px;
-    transition: color 0.2s;
-    &:hover, &.router-link-active {
-      color: #f1f5f9;
+  gap: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $text-secondary;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: $border-radius;
+  transition: all $transition-normal;
+  position: relative;
+
+  &:hover {
+    color: $text-primary;
+    background: rgba($primary-color, 0.08);
+  }
+
+  &.router-link-active {
+    color: $primary-light;
+    background: rgba($primary-color, 0.12);
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 2px;
+      background: $primary-color;
+      border-radius: 1px;
     }
   }
 }
+
 .header-actions {
   display: flex;
   align-items: center;
   gap: 12px;
 }
+
 .message-btn {
-  color: #94a3b8;
-  &:hover { color: #f1f5f9; }
+  color: $text-secondary;
+  padding: 8px;
+  border-radius: $border-radius;
+  transition: all $transition-normal;
+  &:hover {
+    color: $text-primary;
+    background: rgba($primary-color, 0.08);
+  }
 }
+
 .user-info {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  padding: 4px 12px 4px 4px;
+  border-radius: 24px;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: rgba($primary-color, 0.08);
+  }
 }
+
 .username {
-  color: #f1f5f9;
+  color: $text-primary;
   font-size: 14px;
+  font-weight: 500;
 }
 </style>

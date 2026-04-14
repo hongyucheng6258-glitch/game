@@ -87,24 +87,68 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
-:deep(.el-tabs__item) {
-  color: $text-secondary;
-  &.is-active {
-    color: $primary-light;
+:deep(.el-tabs) {
+  .el-tabs__header {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-lg;
+    padding: 4px $spacing-md;
   }
-}
 
-:deep(.el-tabs__active-bar) {
-  background-color: $primary-color;
+  .el-tabs__item {
+    color: $text-secondary;
+    transition: color $transition-fast;
+
+    &.is-active {
+      color: $primary-light;
+      text-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+    }
+
+    &:hover {
+      color: $primary-light;
+    }
+  }
+
+  .el-tabs__active-bar {
+    background: linear-gradient(90deg, $primary-color, $primary-light);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+  }
+
+  .el-tabs__nav-wrap::after {
+    display: none;
+  }
 }
 
 .ranking-content {
   min-height: 400px;
+
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-xl;
+    box-shadow: $shadow-glow;
+    transition: transform $transition-normal, box-shadow $transition-normal;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2), 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+  }
 }
 </style>

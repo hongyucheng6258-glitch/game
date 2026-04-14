@@ -246,12 +246,40 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   margin-bottom: $spacing-lg;
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $primary-dark);
+    border: none;
+    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: linear-gradient(135deg, $primary-light, $primary-color);
+      box-shadow: 0 6px 20px rgba($primary-color, 0.45);
+      transform: translateY(-1px);
+    }
+  }
 }
 
 .page-title {
   font-size: 24px;
   font-weight: 700;
   color: $text-primary;
+  position: relative;
+  padding-left: 16px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, $primary-light, $primary-dark);
+    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+  }
 }
 
 // 账号列表
@@ -263,6 +291,19 @@ onMounted(() => {
 }
 
 .account-card {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  transition: transform $transition-normal, box-shadow $transition-normal;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-glow, $shadow-lg;
+  }
+
   :deep(.el-card__body) {
     padding: $spacing-md;
   }
@@ -278,11 +319,13 @@ onMounted(() => {
   width: 48px;
   height: 48px;
   border-radius: $border-radius;
-  background: $bg-hover;
+  background: linear-gradient(135deg, rgba($primary-color, 0.15), rgba($primary-color, 0.05));
+  border: 1px solid rgba($primary-color, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 0 12px rgba($primary-color, 0.1);
 }
 
 .account-info {

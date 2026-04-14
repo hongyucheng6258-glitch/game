@@ -86,6 +86,21 @@ onMounted(() => {
   font-weight: 700;
   color: $text-primary;
   margin-bottom: $spacing-lg;
+  position: relative;
+  padding-left: 16px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, $primary-light, $primary-dark);
+    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+  }
 }
 
 .favorite-list {
@@ -100,6 +115,11 @@ onMounted(() => {
 
 .service-card-wrapper {
   min-height: 0;
+  transition: transform $transition-normal;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
 }
 
 .pagination-wrapper {

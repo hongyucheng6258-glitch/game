@@ -14,16 +14,20 @@ import AppFooter from '@/components/common/AppFooter.vue'
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .app-layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: $bg-dark;
 }
+
 .main-content {
   flex: 1;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px 20px;
 }
 </style>

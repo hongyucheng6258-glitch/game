@@ -104,10 +104,15 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
 .announcement-list {
@@ -119,11 +124,20 @@ onMounted(() => {
 
 .announcement-card {
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-lg !important;
+  transition: transform $transition-normal, box-shadow $transition-normal;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
+    transform: translateY(-3px);
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15), 0 8px 28px rgba(0, 0, 0, 0.25);
+  }
+
+  :deep(.el-card__body) {
+    padding: $spacing-lg;
   }
 }
 
@@ -144,6 +158,16 @@ onMounted(() => {
 
 .top-tag {
   flex-shrink: 0;
+  animation: glow-tag 2s ease-in-out infinite;
+}
+
+@keyframes glow-tag {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+  }
 }
 
 .announcement-title {
@@ -154,6 +178,11 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color $transition-fast;
+
+  .announcement-card:hover & {
+    color: $primary-light;
+  }
 }
 
 .announcement-time {
@@ -167,6 +196,19 @@ onMounted(() => {
   font-size: 14px;
   color: $text-secondary;
   line-height: 1.6;
+  position: relative;
+  padding-left: $spacing-md;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: linear-gradient(180deg, $primary-color, transparent);
+    border-radius: 1px;
+  }
 }
 
 .detail-meta {
@@ -174,7 +216,7 @@ onMounted(() => {
   color: $text-muted;
   margin-bottom: $spacing-md;
   padding-bottom: $spacing-md;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
 }
 
 .detail-content {
@@ -182,6 +224,29 @@ onMounted(() => {
   color: $text-primary;
   line-height: 1.8;
   white-space: pre-wrap;
+}
+
+:deep(.el-dialog) {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius-xl !important;
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.15), 0 16px 48px rgba(0, 0, 0, 0.4);
+
+  .el-dialog__header {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+    padding: $spacing-lg;
+  }
+
+  .el-dialog__title {
+    color: $text-primary;
+    font-weight: 600;
+  }
+
+  .el-dialog__body {
+    padding: $spacing-lg;
+  }
 }
 
 .pagination-wrapper {

@@ -197,6 +197,21 @@ onMounted(() => {
   font-weight: 700;
   color: $text-primary;
   margin-bottom: $spacing-lg;
+  position: relative;
+  padding-left: 16px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, $primary-light, $primary-dark);
+    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+  }
 }
 
 // 评价列表
@@ -208,6 +223,19 @@ onMounted(() => {
 }
 
 .review-card {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  transition: transform $transition-normal, box-shadow $transition-normal;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-glow, $shadow-lg;
+  }
+
   :deep(.el-card__body) {
     padding: $spacing-lg;
   }
@@ -219,7 +247,7 @@ onMounted(() => {
   justify-content: space-between;
   margin-bottom: $spacing-md;
   padding-bottom: $spacing-sm;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
 }
 
 .review-service {
@@ -277,6 +305,7 @@ onMounted(() => {
   color: $warning-color;
   font-size: 14px;
   font-weight: 600;
+  text-shadow: 0 0 8px rgba($warning-color, 0.3);
 }
 
 .review-content {
@@ -292,7 +321,10 @@ onMounted(() => {
 
 // 商家回复
 .review-reply {
-  background: $bg-hover;
+  background: rgba($primary-color, 0.06);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-left: 3px solid $primary-color;
   border-radius: $border-radius;
   padding: $spacing-md;
   margin-top: $spacing-sm;
@@ -305,7 +337,10 @@ onMounted(() => {
   margin-bottom: $spacing-sm;
   border-bottom: none;
   padding-bottom: 0;
-  margin-bottom: $spacing-sm;
+
+  :deep(.el-icon) {
+    color: $primary-light;
+  }
 }
 
 .reply-title {
@@ -325,9 +360,22 @@ onMounted(() => {
 .review-actions {
   margin-top: $spacing-md;
   padding-top: $spacing-md;
-  border-top: 1px solid $border-color;
+  border-top: 1px solid rgba(148, 163, 184, 0.06);
   display: flex;
   justify-content: flex-end;
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $primary-dark);
+    border: none;
+    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: linear-gradient(135deg, $primary-light, $primary-color);
+      box-shadow: 0 6px 20px rgba($primary-color, 0.45);
+      transform: translateY(-1px);
+    }
+  }
 }
 
 .pagination-wrapper {

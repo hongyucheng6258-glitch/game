@@ -22,6 +22,7 @@ html, body {
 a {
   color: $primary-light;
   text-decoration: none;
+  transition: color $transition-fast;
   &:hover {
     color: $primary-color;
   }
@@ -45,7 +46,11 @@ a {
   background: $text-muted;
 }
 
-// Element Plus dark theme overrides
+::selection {
+  background: rgba($primary-color, 0.3);
+  color: $text-primary;
+}
+
 .el-menu {
   border-right: none !important;
 }
@@ -54,6 +59,8 @@ a {
   background-color: $bg-card;
   border-color: $border-color;
   color: $text-primary;
+  border-radius: $border-radius-lg;
+  transition: all $transition-normal;
 }
 
 .el-table {
@@ -69,6 +76,8 @@ a {
 .el-dialog {
   --el-dialog-bg-color: #{$bg-card};
   --el-dialog-title-font-size: 18px;
+  border-radius: $border-radius-xl;
+  border: 1px solid $glass-border;
 }
 
 .el-input__wrapper,
@@ -77,6 +86,20 @@ a {
   background-color: $bg-input !important;
   box-shadow: 0 0 0 1px $border-color inset !important;
   color: $text-primary !important;
+  border-radius: $border-radius !important;
+  transition: all $transition-normal;
+}
+
+.el-input__wrapper:hover,
+.el-textarea__inner:hover,
+.el-select__wrapper:hover {
+  box-shadow: 0 0 0 1px rgba($primary-color, 0.4) inset !important;
+}
+
+.el-input__wrapper.is-focus,
+.el-textarea__inner:focus,
+.el-select__wrapper.is-focus {
+  box-shadow: 0 0 0 1px $primary-color inset, 0 0 0 3px rgba($primary-color, 0.1) !important;
 }
 
 .el-form-item__label {
@@ -88,4 +111,140 @@ a {
   --el-pagination-text-color: #{$text-secondary};
   --el-pagination-button-bg-color: #{$bg-hover};
   --el-pagination-hover-color: #{$primary-light};
+}
+
+.el-button--primary {
+  background: linear-gradient(135deg, $primary-color, $primary-dark);
+  border-color: $primary-color;
+  transition: all $transition-normal;
+
+  &:hover {
+    background: linear-gradient(135deg, $primary-light, $primary-color);
+    border-color: $primary-light;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.el-tag {
+  border-radius: 6px;
+}
+
+.el-tabs__item {
+  transition: color $transition-fast;
+}
+
+.el-tabs__active-bar {
+  background: linear-gradient(90deg, $primary-color, $primary-light);
+  border-radius: 2px;
+}
+
+.el-dropdown-menu {
+  background-color: $bg-card;
+  border-color: $border-color;
+}
+
+.el-dropdown-menu__item {
+  color: $text-primary;
+  &:hover {
+    background-color: $bg-hover;
+    color: $primary-light;
+  }
+}
+
+.el-message-box {
+  --el-messagebox-title-color: #{$text-primary};
+  --el-messagebox-content-color: #{$text-secondary};
+  background-color: $bg-card;
+  border-color: $border-color;
+}
+
+.el-overlay {
+  backdrop-filter: blur(4px);
+}
+
+.el-loading-mask {
+  background-color: rgba($bg-dark, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.el-empty__description p {
+  color: $text-muted;
+}
+
+.el-descriptions {
+  --el-descriptions-table-border: #{$border-color};
+}
+
+.el-descriptions__label {
+  color: $text-secondary !important;
+}
+
+.el-descriptions__content {
+  color: $text-primary !important;
+}
+
+.el-divider {
+  border-color: $border-color;
+}
+
+.el-alert {
+  border-radius: $border-radius;
+}
+
+.el-rate {
+  --el-rate-fill-color: #{$warning-color};
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity $transition-normal;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all $transition-normal;
+}
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.glass-effect {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid $glass-border;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, $primary-light, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-effect {
+  box-shadow: $shadow-glow;
+}
+
+.card-hover {
+  transition: all $transition-normal;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg, $shadow-glow;
+    border-color: rgba($primary-color, 0.3);
+  }
 }

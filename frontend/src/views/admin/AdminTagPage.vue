@@ -148,10 +148,14 @@ onMounted(() => fetchTags())
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
 .tag-list {
@@ -166,12 +170,16 @@ onMounted(() => fetchTags())
   align-items: center;
   justify-content: space-between;
   padding: $spacing-md;
-  border: 1px solid $border-color;
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
-  transition: background 0.2s;
+  transition: all $transition-normal;
+  background: rgba(30, 41, 59, 0.3);
 
   &:hover {
-    background: $bg-hover;
+    background: rgba($primary-color, 0.06);
+    border-color: rgba($primary-color, 0.2);
+    transform: translateX(4px);
+    box-shadow: $shadow-glow;
   }
 }
 
@@ -190,5 +198,77 @@ onMounted(() => fetchTags())
 .tag-actions {
   display: flex;
   gap: $spacing-xs;
+}
+
+// 卡片毛玻璃效果
+:deep(.el-card) {
+  background: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-lg !important;
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.2) !important;
+    box-shadow: $shadow-glow;
+  }
+}
+
+// 对话框美化
+:deep(.el-dialog) {
+  --el-dialog-bg-color: #0f172a !important;
+  --el-dialog-border-color: rgba(148, 163, 184, 0.06) !important;
+  --el-dialog-title-color: #f1f5f9 !important;
+  background-color: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-xl !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), $shadow-glow;
+}
+
+:deep(.el-dialog__header) {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06) !important;
+  background-color: transparent !important;
+  padding: $spacing-lg $spacing-xl;
+  margin-right: 0;
+}
+
+:deep(.el-dialog__body) {
+  background-color: transparent !important;
+  color: $text-primary !important;
+  padding: $spacing-lg $spacing-xl;
+}
+
+:deep(.el-dialog__footer) {
+  border-top: 1px solid rgba(148, 163, 184, 0.06) !important;
+  background-color: transparent !important;
+  padding: $spacing-md $spacing-xl;
+}
+
+// 按钮渐变效果
+:deep(.el-button--primary) {
+  background: linear-gradient(135deg, $primary-color, $primary-dark) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, $primary-light, $primary-color) !important;
+    box-shadow: 0 4px 16px rgba($primary-color, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+:deep(.el-button--danger) {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #f87171, #ef4444) !important;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+    transform: translateY(-1px);
+  }
 }
 </style>

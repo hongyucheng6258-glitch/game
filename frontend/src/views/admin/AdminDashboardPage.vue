@@ -12,7 +12,7 @@
         <StatCard title="今日新增用户" :value="stats.todayUsers" icon="UserFilled" color="#8b5cf6" @click="$router.push('/admin/users')" />
         <StatCard title="今日订单数" :value="stats.todayOrders" icon="Tickets" color="#ec4899" @click="$router.push('/admin/orders')" />
         <StatCard title="今日收入" :value="stats.todayRevenue" icon="Wallet" color="#14b8a6" prefix="¥" @click="$router.push('/admin/payments')" />
-        <StatCard title="待处理提现" :value="stats.pendingWithdrawals" icon="MoneyFilled" color="#f97316" @click="$router.push('/admin/withdrawals')" />
+        <StatCard title="待处理提现" :value="stats.pendingWithdrawals" icon="CreditCard" color="#f97316" @click="$router.push('/admin/withdrawals')" />
       </div>
     </section>
 
@@ -163,7 +163,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
-import { ArrowRight, User, Goods, Document, Money, Trophy, Wallet, Bell, Setting, ChatDotRound, UserFilled, MoneyFilled } from '@element-plus/icons-vue'
+import { ArrowRight, User, Goods, Document, Money, Trophy, Wallet, Bell, Setting, ChatDotRound, UserFilled, CreditCard } from '@element-plus/icons-vue'
 import { getDashboardStats, getAdminOrders, getAdminUsers } from '@/api/admin'
 import { get } from '@/api/request'
 import type { Order } from '@/types/order'
@@ -343,10 +343,14 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
 .stats-grid {
@@ -371,16 +375,40 @@ onMounted(() => {
   align-items: center;
   gap: $spacing-sm;
   padding: $spacing-lg $spacing-md;
-  background: $bg-card;
-  border: 1px solid $border-color;
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius-lg;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all $transition-normal;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $primary-color, transparent);
+    opacity: 0;
+    transition: opacity $transition-normal;
+  }
 
   &:hover {
-    border-color: $primary-color;
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
+    border-color: rgba($primary-color, 0.3);
+    transform: translateY(-4px);
+    box-shadow: $shadow-glow, 0 8px 24px rgba(0, 0, 0, 0.3);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .quick-label {
+      color: $text-primary;
+    }
   }
 }
 
@@ -388,6 +416,7 @@ onMounted(() => {
   font-size: 14px;
   color: $text-secondary;
   font-weight: 500;
+  transition: color $transition-normal;
 }
 
 .charts-section {
@@ -398,6 +427,29 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: $spacing-md;
+}
+
+.chart-card {
+  background: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-lg !important;
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.2) !important;
+    box-shadow: $shadow-glow;
+  }
+
+  :deep(.el-card__header) {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+    padding: $spacing-md $spacing-lg;
+  }
+
+  :deep(.el-card__body) {
+    padding: $spacing-lg;
+  }
 }
 
 .card-title {
@@ -422,6 +474,30 @@ onMounted(() => {
   gap: $spacing-md;
 }
 
+.ranking-card,
+.recent-card {
+  background: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-lg !important;
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.2) !important;
+    box-shadow: $shadow-glow;
+  }
+
+  :deep(.el-card__header) {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+    padding: $spacing-md $spacing-lg;
+  }
+
+  :deep(.el-card__body) {
+    padding: $spacing-md $spacing-lg;
+  }
+}
+
 .ranking-list,
 .recent-list {
   min-height: 100px;
@@ -431,21 +507,22 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: $spacing-md;
-  padding: $spacing-md 0;
-  border-bottom: 1px solid $border-color;
+  padding: $spacing-md;
+  margin: 0 (-$spacing-md);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all $transition-fast;
+  border-radius: $border-radius;
 
   &:last-child {
     border-bottom: none;
   }
 
   &:hover {
-    background: $bg-hover;
+    background: rgba($primary-color, 0.06);
     margin: 0 (-$spacing-md);
     padding-left: $spacing-md;
     padding-right: $spacing-md;
-    border-radius: $border-radius;
   }
 }
 
@@ -458,22 +535,26 @@ onMounted(() => {
   justify-content: center;
   font-size: 14px;
   font-weight: 700;
-  background: #1e293b;
-  color: #94a3b8;
+  background: rgba(30, 41, 59, 0.8);
+  color: $text-secondary;
+  flex-shrink: 0;
 
   &.rank-1 {
     background: linear-gradient(135deg, #fbbf24, #f59e0b);
     color: #fff;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
   }
 
   &.rank-2 {
     background: linear-gradient(135deg, #94a3b8, #64748b);
     color: #fff;
+    box-shadow: 0 0 12px rgba(148, 163, 184, 0.3);
   }
 
   &.rank-3 {
     background: linear-gradient(135deg, #fb923c, #ea580c);
     color: #fff;
+    box-shadow: 0 0 12px rgba(234, 88, 12, 0.3);
   }
 }
 
@@ -505,21 +586,22 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $spacing-md 0;
-  border-bottom: 1px solid $border-color;
+  padding: $spacing-md;
+  margin: 0 (-$spacing-md);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all $transition-fast;
+  border-radius: $border-radius;
 
   &:last-child {
     border-bottom: none;
   }
 
   &:hover {
-    background: $bg-hover;
+    background: rgba($primary-color, 0.06);
     margin: 0 (-$spacing-md);
     padding-left: $spacing-md;
     padding-right: $spacing-md;
-    border-radius: $border-radius;
   }
 }
 
@@ -554,29 +636,57 @@ onMounted(() => {
   white-space: nowrap;
 }
 
+// 全局卡片毛玻璃效果
+:deep(.el-card) {
+  background: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-lg !important;
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.2) !important;
+    box-shadow: $shadow-glow;
+  }
+}
+
 :deep(.el-table) {
   --el-table-bg-color: #0f172a;
   --el-table-tr-bg-color: #0f172a;
   --el-table-header-bg-color: #1e293b;
   --el-table-row-hover-bg-color: #334155;
-  --el-table-border-color: #334155;
+  --el-table-border-color: rgba(148, 163, 184, 0.06);
   --el-table-text-color: #f1f5f9;
   --el-table-header-text-color: #94a3b8;
+}
+
+// 按钮渐变效果
+:deep(.el-button--primary) {
+  background: linear-gradient(135deg, $primary-color, $primary-dark) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, $primary-light, $primary-color) !important;
+    box-shadow: 0 4px 16px rgba($primary-color, 0.4);
+    transform: translateY(-1px);
+  }
 }
 
 @media (max-width: 1200px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .quick-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .charts-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .bottom-grid {
     grid-template-columns: 1fr;
   }
@@ -586,7 +696,7 @@ onMounted(() => {
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .quick-grid {
     grid-template-columns: 1fr;
   }

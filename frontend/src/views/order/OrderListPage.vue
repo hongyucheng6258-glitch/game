@@ -171,6 +171,10 @@ onMounted(() => {
   font-weight: 700;
   color: $text-primary;
   margin-bottom: $spacing-lg;
+  background: linear-gradient(135deg, $text-primary, $primary-light);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 // Tab
@@ -195,8 +199,23 @@ onMounted(() => {
 }
 
 .order-card {
+  transition: transform $transition-normal, box-shadow $transition-normal;
+
   :deep(.el-card__body) {
     padding: $spacing-md;
+  }
+
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-lg;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-glow;
   }
 }
 
@@ -205,13 +224,15 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding-bottom: $spacing-sm;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
   margin-bottom: $spacing-sm;
 }
 
 .order-no {
   color: $text-muted;
   font-size: 13px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
 }
 
 .order-body {
@@ -220,6 +241,12 @@ onMounted(() => {
   justify-content: space-between;
   cursor: pointer;
   padding: $spacing-sm 0;
+  border-radius: $border-radius;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: rgba(148, 163, 184, 0.04);
+  }
 
   &:hover .order-title {
     color: $primary-light;
@@ -237,7 +264,7 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
-  transition: color 0.2s;
+  transition: color $transition-fast;
 }
 
 .order-provider,
@@ -252,6 +279,7 @@ onMounted(() => {
   color: $danger-color;
   white-space: nowrap;
   margin-left: $spacing-md;
+  text-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
 }
 
 .order-footer {
@@ -259,7 +287,7 @@ onMounted(() => {
   justify-content: flex-end;
   gap: $spacing-sm;
   padding-top: $spacing-sm;
-  border-top: 1px solid $border-color;
+  border-top: 1px solid rgba(148, 163, 184, 0.06);
 }
 
 .pagination-wrapper {

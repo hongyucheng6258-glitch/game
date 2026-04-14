@@ -1,27 +1,34 @@
 <template>
   <div class="home-page">
-    <!-- 轮播图 -->
     <section class="banner-section">
-      <el-carousel height="360px" :interval="5000" arrow="hover">
+      <el-carousel height="400px" :interval="5000" arrow="hover">
         <el-carousel-item v-for="(banner, index) in banners" :key="index">
           <div class="banner-item" :style="{ background: banner.gradient }">
+            <div class="banner-overlay"></div>
             <div class="banner-content">
               <h2 class="banner-title">{{ banner.title }}</h2>
               <p class="banner-desc">{{ banner.desc }}</p>
-              <el-button type="primary" size="large" round @click="$router.push('/service')">
+              <el-button type="primary" size="large" round class="banner-btn" @click="$router.push('/service')">
                 立即体验
+                <el-icon class="btn-icon"><ArrowRight /></el-icon>
               </el-button>
+            </div>
+            <div class="banner-decoration">
+              <div class="deco-circle deco-1"></div>
+              <div class="deco-circle deco-2"></div>
+              <div class="deco-circle deco-3"></div>
             </div>
           </div>
         </el-carousel-item>
       </el-carousel>
     </section>
 
-    <!-- 热门游戏分类 -->
     <section class="game-section">
       <div class="section-header">
-        <h2 class="section-title">热门游戏</h2>
-        <p class="section-subtitle">选择你喜欢的游戏，找到最合适的队友</p>
+        <div class="section-header-left">
+          <h2 class="section-title">热门游戏</h2>
+          <p class="section-subtitle">选择你喜欢的游戏，找到最合适的队友</p>
+        </div>
       </div>
       <div class="game-grid">
         <div
@@ -38,11 +45,15 @@
       </div>
     </section>
 
-    <!-- 进行中的活动 -->
     <section v-if="activities.length > 0" class="activity-section">
       <div class="section-header">
-        <h2 class="section-title">限时活动</h2>
-        <p class="section-subtitle">优惠不容错过</p>
+        <div class="section-header-left">
+          <h2 class="section-title">
+            <el-icon class="section-icon"><Promotion /></el-icon>
+            限时活动
+          </h2>
+          <p class="section-subtitle">优惠不容错过</p>
+        </div>
       </div>
       <div class="activity-grid">
         <div v-for="activity in activities" :key="activity.id" class="activity-card">
@@ -58,6 +69,7 @@
             <h3 class="activity-title">{{ activity.title }}</h3>
             <p v-if="activity.description" class="activity-desc">{{ activity.description }}</p>
             <div class="activity-time">
+              <el-icon><Timer /></el-icon>
               <span>{{ formatActivityTime(activity.endTime) }}结束</span>
             </div>
           </div>
@@ -65,12 +77,13 @@
       </div>
     </section>
 
-    <!-- 推荐服务 -->
     <section class="service-section">
       <div class="section-header">
-        <h2 class="section-title">推荐服务</h2>
-        <p class="section-subtitle">精选优质陪玩代打服务</p>
-        <el-button text type="primary" @click="$router.push('/service')">
+        <div class="section-header-left">
+          <h2 class="section-title">推荐服务</h2>
+          <p class="section-subtitle">精选优质陪玩代打服务</p>
+        </div>
+        <el-button text type="primary" class="view-more-btn" @click="$router.push('/service')">
           查看更多 <el-icon><ArrowRight /></el-icon>
         </el-button>
       </div>
@@ -90,7 +103,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ArrowRight } from '@element-plus/icons-vue'
+import { ArrowRight, Promotion, Timer } from '@element-plus/icons-vue'
 import { get } from '@/api/request'
 import type { Service } from '@/types/service'
 import type { PageData } from '@/types/common'
@@ -196,11 +209,26 @@ onMounted(() => {
   min-height: 100vh;
 }
 
-// 轮播图
 .banner-section {
+  margin: -24px -20px 0;
   :deep(.el-carousel__item) {
-    border-radius: $border-radius-lg;
+    border-radius: 0 0 $border-radius-xl $border-radius-xl;
     overflow: hidden;
+  }
+  :deep(.el-carousel__indicators) {
+    .el-carousel__indicator {
+      .el-carousel__button {
+        width: 24px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.3);
+        opacity: 1;
+      }
+      &.is-active .el-carousel__button {
+        width: 36px;
+        background: white;
+      }
+    }
   }
 }
 
@@ -209,28 +237,99 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(255, 255, 255, 0.05), transparent 70%);
+  pointer-events: none;
 }
 
 .banner-content {
   text-align: center;
   color: #fff;
+  position: relative;
+  z-index: 2;
 }
 
 .banner-title {
-  font-size: 36px;
-  font-weight: 700;
+  font-size: 42px;
+  font-weight: 800;
   margin-bottom: $spacing-md;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.5px;
 }
 
 .banner-desc {
-  font-size: 16px;
-  margin-bottom: $spacing-lg;
+  font-size: 18px;
+  margin-bottom: $spacing-xl;
   opacity: 0.9;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-// 通用 section
+.banner-btn {
+  height: 48px;
+  padding: 0 32px;
+  font-size: 16px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all $transition-normal;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.btn-icon {
+  margin-left: 4px;
+  transition: transform $transition-fast;
+}
+
+.banner-btn:hover .btn-icon {
+  transform: translateX(4px);
+}
+
+.banner-decoration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.deco-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.deco-1 {
+  width: 300px;
+  height: 300px;
+  right: -50px;
+  top: -50px;
+}
+
+.deco-2 {
+  width: 200px;
+  height: 200px;
+  left: -30px;
+  bottom: -30px;
+}
+
+.deco-3 {
+  width: 150px;
+  height: 150px;
+  right: 20%;
+  bottom: 10%;
+}
+
 .game-section,
 .service-section {
   padding: $spacing-xl 0;
@@ -242,12 +341,26 @@ onMounted(() => {
   gap: $spacing-md;
   margin-bottom: $spacing-lg;
   flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.section-header-left {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing-md;
 }
 
 .section-title {
   font-size: 24px;
   font-weight: 700;
   color: $text-primary;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-icon {
+  color: $danger-color;
 }
 
 .section-subtitle {
@@ -255,14 +368,17 @@ onMounted(() => {
   font-size: 14px;
 }
 
-// 游戏分类
+.view-more-btn {
+  font-weight: 500;
+  font-size: 14px;
+}
+
 .game-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: $spacing-md;
 }
 
-// 活动区域
 .activity-section {
   padding: $spacing-xl 0;
 }
@@ -275,19 +391,20 @@ onMounted(() => {
 
 .activity-card {
   background: $bg-card;
-  border: 1px solid $border-color;
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius-lg;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all $transition-normal;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-lg, $shadow-glow;
+    border-color: rgba($primary-color, 0.2);
   }
 }
 
 .activity-banner {
-  height: 120px;
+  height: 130px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -306,7 +423,7 @@ onMounted(() => {
 }
 
 .activity-discount-num {
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 800;
   color: white;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -336,6 +453,9 @@ onMounted(() => {
   font-size: 12px;
   color: $danger-color;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .game-card {
@@ -344,16 +464,17 @@ onMounted(() => {
   align-items: center;
   gap: $spacing-sm;
   padding: $spacing-lg $spacing-md;
-  background: $bg-card;
-  border: 1px solid $border-color;
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius-lg;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all $transition-normal;
 
   &:hover {
-    border-color: $primary-color;
+    border-color: rgba($primary-color, 0.3);
     transform: translateY(-4px);
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-md, $shadow-glow;
   }
 }
 
@@ -364,6 +485,11 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform $transition-normal;
+}
+
+.game-card:hover .game-icon {
+  transform: scale(1.1);
 }
 
 .game-emoji {
@@ -376,7 +502,6 @@ onMounted(() => {
   color: $text-primary;
 }
 
-// 服务列表
 .service-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -388,10 +513,9 @@ onMounted(() => {
   min-height: 0;
 }
 
-// 响应式
 @media (max-width: 768px) {
   .banner-title {
-    font-size: 24px;
+    font-size: 28px;
   }
 
   .banner-desc {
@@ -409,6 +533,11 @@ onMounted(() => {
   .section-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .section-header-left {
+    flex-direction: column;
+    gap: $spacing-xs;
   }
 }
 </style>

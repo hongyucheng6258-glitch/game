@@ -242,25 +242,54 @@ onActivated(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
 .tab-badge {
   margin-left: 4px;
 }
 
-:deep(.el-tabs__item) {
-  color: $text-secondary;
-  &.is-active {
-    color: $primary-light;
+:deep(.el-tabs) {
+  .el-tabs__header {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-lg;
+    padding: 4px $spacing-md;
   }
-}
 
-:deep(.el-tabs__active-bar) {
-  background-color: $primary-color;
+  .el-tabs__item {
+    color: $text-secondary;
+    transition: color $transition-fast;
+
+    &.is-active {
+      color: $primary-light;
+      text-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+    }
+
+    &:hover {
+      color: $primary-light;
+    }
+  }
+
+  .el-tabs__active-bar {
+    background: linear-gradient(90deg, $primary-color, $primary-light);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+  }
+
+  .el-tabs__nav-wrap::after {
+    display: none;
+  }
 }
 
 // 系统消息
@@ -276,25 +305,46 @@ onActivated(() => {
   align-items: flex-start;
   gap: $spacing-md;
   padding: $spacing-md;
-  background: $bg-card;
-  border: 1px solid $border-color;
-  border-radius: $border-radius;
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius-lg;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform $transition-normal, box-shadow $transition-normal, background $transition-fast;
   position: relative;
 
   &:hover {
-    background: $bg-hover;
+    background: rgba(51, 65, 85, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.1), 0 8px 24px rgba(0, 0, 0, 0.2);
   }
 
   &.unread {
     border-left: 3px solid $primary-color;
+    background: rgba(99, 102, 241, 0.05);
+
+    .message-title {
+      color: $text-primary;
+    }
   }
 }
 
 .message-icon {
   flex-shrink: 0;
   margin-top: 2px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: $border-radius;
+  transition: background $transition-fast;
+
+  .message-item:hover & {
+    background: rgba(99, 102, 241, 0.2);
+  }
 }
 
 .message-content {
@@ -316,6 +366,7 @@ onActivated(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color $transition-fast;
 }
 
 .message-time {
@@ -342,6 +393,17 @@ onActivated(() => {
   background: $primary-color;
   flex-shrink: 0;
   margin-top: 6px;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.8);
+  }
 }
 
 .message-actions {
@@ -349,6 +411,12 @@ onActivated(() => {
   display: flex;
   align-items: center;
   margin-top: 2px;
+  opacity: 0;
+  transition: opacity $transition-fast;
+
+  .message-item:hover & {
+    opacity: 1;
+  }
 }
 
 // 聊天消息
@@ -364,14 +432,18 @@ onActivated(() => {
   align-items: center;
   gap: $spacing-md;
   padding: $spacing-md;
-  background: $bg-card;
-  border: 1px solid $border-color;
-  border-radius: $border-radius;
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius-lg;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform $transition-normal, box-shadow $transition-normal, background $transition-fast;
 
   &:hover {
-    background: $bg-hover;
+    background: rgba(51, 65, 85, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.1), 0 8px 24px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -391,6 +463,11 @@ onActivated(() => {
   font-size: 15px;
   font-weight: 600;
   color: $text-primary;
+  transition: color $transition-fast;
+
+  .conversation-item:hover & {
+    color: $primary-light;
+  }
 }
 
 .conversation-time {
@@ -409,6 +486,15 @@ onActivated(() => {
 .actions-bar {
   display: flex;
   justify-content: flex-end;
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $primary-light);
+    border: none;
+
+    &:hover {
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+    }
+  }
 }
 
 .pagination-wrapper {

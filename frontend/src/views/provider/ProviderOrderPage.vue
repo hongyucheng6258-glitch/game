@@ -151,21 +151,50 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
-:deep(.el-tabs__item) {
-  color: $text-secondary;
-  &.is-active {
-    color: $primary-light;
+:deep(.el-tabs) {
+  .el-tabs__header {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-lg;
+    padding: 4px $spacing-md;
   }
-}
 
-:deep(.el-tabs__active-bar) {
-  background-color: $primary-color;
+  .el-tabs__item {
+    color: $text-secondary;
+    transition: color $transition-fast;
+
+    &.is-active {
+      color: $primary-light;
+      text-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+    }
+
+    &:hover {
+      color: $primary-light;
+    }
+  }
+
+  .el-tabs__active-bar {
+    background: linear-gradient(90deg, $primary-color, $primary-light);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+  }
+
+  .el-tabs__nav-wrap::after {
+    display: none;
+  }
 }
 
 .order-list {
@@ -176,8 +205,20 @@ onMounted(() => {
 }
 
 .order-card {
+  background: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-lg !important;
+  transition: transform $transition-normal, box-shadow $transition-normal;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.12), 0 8px 28px rgba(0, 0, 0, 0.25);
+  }
+
   :deep(.el-card__body) {
-    padding: $spacing-md;
+    padding: $spacing-lg;
   }
 }
 
@@ -186,13 +227,15 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding-bottom: $spacing-sm;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
   margin-bottom: $spacing-sm;
 }
 
 .order-no {
   color: $text-muted;
   font-size: 13px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.3px;
 }
 
 .order-body {
@@ -201,9 +244,13 @@ onMounted(() => {
   justify-content: space-between;
   cursor: pointer;
   padding: $spacing-sm 0;
+  transition: background $transition-fast;
+  border-radius: $border-radius;
 
-  &:hover .order-title {
-    color: $primary-light;
+  &:hover {
+    .order-title {
+      color: $primary-light;
+    }
   }
 }
 
@@ -218,7 +265,7 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
-  transition: color 0.2s;
+  transition: color $transition-fast;
 }
 
 .order-user,
@@ -230,10 +277,11 @@ onMounted(() => {
 .order-req {
   font-size: 13px;
   color: $text-secondary;
-  background: $bg-hover;
+  background: rgba(51, 65, 85, 0.4);
   padding: $spacing-xs $spacing-sm;
   border-radius: $border-radius;
   margin-top: $spacing-xs;
+  border-left: 2px solid $primary-color;
 }
 
 .order-amount {
@@ -242,6 +290,7 @@ onMounted(() => {
   color: $danger-color;
   white-space: nowrap;
   margin-left: $spacing-md;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
 }
 
 .order-footer {
@@ -249,7 +298,27 @@ onMounted(() => {
   justify-content: flex-end;
   gap: $spacing-sm;
   padding-top: $spacing-sm;
-  border-top: 1px solid $border-color;
+  border-top: 1px solid rgba(148, 163, 184, 0.06);
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $primary-light);
+    border: none;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
+    }
+  }
+
+  :deep(.el-button--success) {
+    background: linear-gradient(135deg, $success-color, #4ade80);
+    border: none;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(34, 197, 94, 0.5);
+    }
+  }
 }
 
 .pagination-wrapper {

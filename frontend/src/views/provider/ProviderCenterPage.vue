@@ -151,16 +151,35 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: $spacing-md;
+
+  :deep(.stat-card) {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-lg;
+    transition: transform $transition-normal, box-shadow $transition-normal;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.12), 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+  }
 }
 
 .card-title {
@@ -175,10 +194,50 @@ onMounted(() => {
   justify-content: space-between;
 }
 
+.actions-section,
+.recent-section {
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-glow;
+    transition: transform $transition-normal, box-shadow $transition-normal;
+
+    &:hover {
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2), 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
 .actions-grid {
   display: flex;
   gap: $spacing-md;
   flex-wrap: wrap;
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $primary-light);
+    border: none;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
+      transform: translateY(-1px);
+    }
+  }
+
+  :deep(.el-button--default) {
+    background: rgba(51, 65, 85, 0.5);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    color: $text-secondary;
+
+    &:hover {
+      background: rgba(51, 65, 85, 0.8);
+      color: $primary-light;
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+  }
 }
 
 .recent-list {
@@ -190,20 +249,24 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: $spacing-md 0;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all $transition-fast;
+  border-radius: $border-radius;
 
   &:last-child {
     border-bottom: none;
   }
 
   &:hover {
-    background: $bg-hover;
+    background: rgba(51, 65, 85, 0.4);
     margin: 0 (-$spacing-md);
     padding-left: $spacing-md;
     padding-right: $spacing-md;
-    border-radius: $border-radius;
+
+    .recent-title {
+      color: $primary-light;
+    }
   }
 }
 
@@ -218,6 +281,7 @@ onMounted(() => {
   font-size: 14px;
   color: $text-primary;
   font-weight: 500;
+  transition: color $transition-fast;
 }
 
 .recent-time {
@@ -236,6 +300,7 @@ onMounted(() => {
   font-weight: 600;
   color: $danger-color;
   white-space: nowrap;
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
 }
 
 @media (max-width: 1024px) {

@@ -46,18 +46,22 @@ const menus = computed(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .user-layout {
   min-height: 100vh;
-  background: #0f172a;
+  background: $bg-dark;
 }
+
 .user-content {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   display: flex;
-  gap: 20px;
-  padding: 20px;
+  gap: 24px;
+  padding: 24px 20px;
 }
+
 .user-main {
   flex: 1;
   min-width: 0;

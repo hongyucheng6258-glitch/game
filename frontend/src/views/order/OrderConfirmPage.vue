@@ -454,12 +454,30 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
+
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-glow;
+    transition: box-shadow $transition-normal;
+
+    &:hover {
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+    }
+  }
 }
 
 .page-title {
   font-size: 24px;
   font-weight: 700;
   color: $text-primary;
+  background: linear-gradient(135deg, $text-primary, $primary-light);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .card-header-title {
@@ -512,6 +530,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: $spacing-sm;
+  text-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
 
   .original-price-small {
     font-size: 14px;
@@ -541,18 +560,20 @@ onMounted(() => {
 
 .account-item {
   padding: $spacing-md;
-  border: 1px solid $border-color;
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all $transition-fast;
   display: flex;
   align-items: center;
   gap: $spacing-md;
+  background: rgba(148, 163, 184, 0.02);
 
   &:hover,
   &.active {
     border-color: $primary-color;
     background: rgba($primary-color, 0.05);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.1);
   }
 }
 
@@ -603,6 +624,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: $spacing-xs 0;
 }
 
 .amount-label {
@@ -640,6 +662,7 @@ onMounted(() => {
   font-size: 28px;
   font-weight: 700;
   color: $danger-color;
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
 }
 
 // 提交
@@ -651,12 +674,21 @@ onMounted(() => {
   width: 100%;
   height: 48px;
   font-size: 16px;
-  border-radius: $border-radius;
+  border-radius: $border-radius-lg;
   background: linear-gradient(135deg, $primary-color, $primary-dark);
   border: none;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+  transition: all $transition-normal;
+  letter-spacing: 1px;
 
   &:hover {
     background: linear-gradient(135deg, $primary-light, $primary-color);
+    box-shadow: 0 6px 30px rgba(99, 102, 241, 0.45);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 

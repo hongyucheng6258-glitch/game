@@ -159,13 +159,29 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $primary-light);
+    border: none;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
+      transform: translateY(-1px);
+    }
+  }
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: $text-primary;
   margin: 0;
+  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
 }
 
 .service-list {
@@ -176,8 +192,20 @@ onMounted(() => {
 }
 
 .service-item {
+  background: $glass-bg !important;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-radius: $border-radius-lg !important;
+  transition: transform $transition-normal, box-shadow $transition-normal;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15), 0 8px 28px rgba(0, 0, 0, 0.25);
+  }
+
   :deep(.el-card__body) {
-    padding: $spacing-md;
+    padding: $spacing-lg;
   }
 }
 
@@ -196,12 +224,19 @@ onMounted(() => {
   display: flex;
   align-items: flex-start;
   padding: $spacing-sm;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: box-shadow $transition-normal;
+
+  .service-item:hover & {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
 }
 
 .cover-tag {
   position: absolute;
   top: $spacing-sm;
   left: $spacing-sm;
+  backdrop-filter: blur(4px);
 }
 
 .service-item-info {
@@ -220,6 +255,11 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color $transition-fast;
+
+  .service-item:hover & {
+    color: $primary-light;
+  }
 }
 
 .service-item-meta {
@@ -237,6 +277,7 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 700;
   color: $warning-color;
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
 }
 
 .service-item-stats {
@@ -249,6 +290,11 @@ onMounted(() => {
     display: flex;
     align-items: center;
     gap: 4px;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $text-secondary;
+    }
   }
 }
 
@@ -263,6 +309,30 @@ onMounted(() => {
 .action-buttons {
   display: flex;
   gap: $spacing-xs;
+
+  :deep(.el-button--warning) {
+    background: linear-gradient(135deg, $warning-color, #fbbf24);
+    border: none;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
+  }
+
+  :deep(.el-button--success) {
+    background: linear-gradient(135deg, $success-color, #4ade80);
+    border: none;
+    box-shadow: 0 2px 6px rgba(34, 197, 94, 0.3);
+  }
+
+  :deep(.el-button--default) {
+    background: rgba(51, 65, 85, 0.5);
+    border: 1px solid rgba(148, 163, 184, 0.06);
+    color: $text-secondary;
+
+    &:hover {
+      background: rgba(51, 65, 85, 0.8);
+      color: $primary-light;
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+  }
 }
 
 .pagination-wrapper {

@@ -484,12 +484,30 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
+
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-glow;
+    transition: box-shadow $transition-normal;
+
+    &:hover {
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+    }
+  }
 }
 
 .page-title {
   font-size: 24px;
   font-weight: 700;
   color: $text-primary;
+  background: linear-gradient(135deg, $text-primary, $primary-light);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .card-header-title {
@@ -525,10 +543,11 @@ onMounted(() => {
   justify-content: center;
   font-size: 18px;
   font-weight: 600;
-  background: #334155;
+  background: rgba(51, 65, 85, 0.6);
   color: #94a3b8;
-  border: 2px solid #475569;
+  border: 2px solid rgba(71, 85, 105, 0.5);
   transition: all 0.3s;
+  backdrop-filter: blur(4px);
 
   .check-icon {
     font-size: 20px;
@@ -536,16 +555,18 @@ onMounted(() => {
 }
 
 .step-item.step-finished .step-icon {
-  background: #22c55e;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
   color: white;
   border-color: #22c55e;
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.35);
 }
 
 .step-item.step-active .step-icon {
-  background: #6366f1;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
   color: white;
   border-color: #6366f1;
   animation: pulse 1.5s infinite;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
 }
 
 @keyframes pulse {
@@ -566,6 +587,7 @@ onMounted(() => {
   font-weight: 500;
   color: #94a3b8;
   margin-bottom: 4px;
+  transition: color $transition-normal;
 }
 
 .step-item.step-finished .step-title,
@@ -582,14 +604,16 @@ onMounted(() => {
 .step-line {
   flex: 1;
   height: 3px;
-  background: #334155;
+  background: rgba(51, 65, 85, 0.6);
   margin: 0 -10px;
   margin-top: -45px;
   transition: background 0.3s;
+  border-radius: 2px;
 }
 
 .step-line.line-finished {
-  background: #22c55e;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
 }
 
 // 信息网格
@@ -603,6 +627,13 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: $spacing-xs;
+  padding: $spacing-sm;
+  border-radius: $border-radius;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: rgba(148, 163, 184, 0.04);
+  }
 
   &.full {
     grid-column: 1 / -1;
@@ -622,6 +653,7 @@ onMounted(() => {
     color: $danger-color;
     font-size: 18px;
     font-weight: 700;
+    text-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
   }
 }
 
@@ -630,6 +662,11 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: $spacing-md;
+
+  :deep(.el-avatar) {
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+    border: 2px solid rgba(148, 163, 184, 0.1);
+  }
 }
 
 .user-name {
@@ -646,6 +683,19 @@ onMounted(() => {
 // 操作按钮
 .action-section {
   padding: $spacing-md 0;
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $primary-dark);
+    border: none;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: linear-gradient(135deg, $primary-light, $primary-color);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+      transform: translateY(-1px);
+    }
+  }
 }
 
 .action-buttons {
@@ -679,14 +729,16 @@ onMounted(() => {
 
 .payment-method-item {
   padding: $spacing-md;
-  border: 1px solid $border-color;
+  border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all $transition-fast;
+  background: rgba(148, 163, 184, 0.02);
 
   &:hover {
     border-color: $primary-color;
     background: rgba($primary-color, 0.05);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.1);
   }
 
   :deep(.el-radio__label) {

@@ -183,19 +183,45 @@ onMounted(() => {
   font-weight: 700;
   color: $text-primary;
   margin-bottom: $spacing-lg;
+  position: relative;
+  padding-left: 16px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, $primary-light, $primary-dark);
+    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+  }
 }
 
 // Tab
 :deep(.el-tabs__item) {
   color: $text-secondary;
+  transition: color $transition-fast;
 
   &.is-active {
+    color: $primary-light;
+    text-shadow: 0 0 8px rgba($primary-color, 0.3);
+  }
+
+  &:hover {
     color: $primary-light;
   }
 }
 
 :deep(.el-tabs__active-bar) {
   background-color: $primary-color;
+  box-shadow: 0 0 8px rgba($primary-color, 0.4);
+}
+
+:deep(.el-tabs__nav-wrap::after) {
+  background-color: rgba(148, 163, 184, 0.06);
 }
 
 // 记录列表
@@ -205,6 +231,29 @@ onMounted(() => {
 
 .record-table-card {
   overflow: hidden;
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-md;
+
+  :deep(.el-table) {
+    --el-table-bg-color: transparent;
+    --el-table-tr-bg-color: transparent;
+    --el-table-header-bg-color: rgba($primary-color, 0.06);
+    --el-table-row-hover-bg-color: rgba($primary-color, 0.04);
+    --el-table-border-color: rgba(148, 163, 184, 0.06);
+    --el-table-text-color: #{$text-primary};
+    --el-table-header-text-color: #{$text-secondary};
+
+    th.el-table__cell {
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
 }
 
 .amount-text {
@@ -212,17 +261,20 @@ onMounted(() => {
 
   &.income {
     color: $success-color;
+    text-shadow: 0 0 8px rgba($success-color, 0.3);
   }
 
   &.expense {
     color: $danger-color;
+    text-shadow: 0 0 8px rgba($danger-color, 0.3);
   }
 }
 
 .transaction-no {
   color: $text-muted;
   font-size: 13px;
-  font-family: monospace;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.3px;
 }
 
 .pagination-wrapper {

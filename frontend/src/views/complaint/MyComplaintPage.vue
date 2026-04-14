@@ -162,11 +162,51 @@ onMounted(() => {
   font-size: 24px;
   font-weight: 700;
   color: $text-primary;
+  position: relative;
+  padding-left: 16px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, $primary-light, $primary-dark);
+    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+  }
 }
 
 .table-card {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+
   :deep(.el-card__body) {
     padding: 0;
+  }
+
+  :deep(.el-table) {
+    --el-table-bg-color: transparent;
+    --el-table-tr-bg-color: transparent;
+    --el-table-header-bg-color: rgba($primary-color, 0.06);
+    --el-table-row-hover-bg-color: rgba($primary-color, 0.04);
+    --el-table-border-color: rgba(148, 163, 184, 0.06);
+    --el-table-text-color: #{$text-primary};
+    --el-table-header-text-color: #{$text-secondary};
+
+    th.el-table__cell {
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
   }
 }
 
@@ -174,5 +214,6 @@ onMounted(() => {
   padding: $spacing-md;
   display: flex;
   justify-content: flex-end;
+  border-top: 1px solid rgba(148, 163, 184, 0.06);
 }
 </style>
