@@ -1,0 +1,117 @@
+<template>
+  <div class="favorite-page">
+    <h2 class="page-title">我的收藏</h2>
+
+    <div v-loading="loading" class="favorite-list">
+      <template v-if="services.length > 0">
+        <div class="service-grid">
+          <div v-for="item in services" :key="item.id" class="service-card-wrapper">
+            <ServiceCard :service="item" />
+          </div>
+        </div>
+      </template>
+      <el-empty v-else description="暂无收藏的服务">
+        <el-button type="primary" @click="$router.push('/service')">去发现好服务</el-button>
+      </el-empty>
+    </div>
+
+    <!-- 分页 -->
+    <div v-if="total > 0" class="pagination-wrapper">
+      <el-pagination
+        v-model:current-page="pagination.page"
+        v-model:page-size="pagination.size"
+        :total="total"
+        :page-sizes="[12, 24, 36]"
+        layout="total, sizes, prev, pager, next"
+        background
+        @size-change="fetchFavorites"
+        @current-change="fetchFavorites"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, onMounted } from 'vue'
+import { getFavorites } from '@/api/favorite'
+import type { Service } from '@/types/service'
+import type { PageData } from '@/types/common'
+import ServiceCard from '@/components/business/ServiceCard.vue'
+import { ElMessage } from 'element-plus'
+
+const loading = ref(false)
+const services = ref<Service[]>([])
+const total = ref(0)
+
+const pagination = reactive({
+  page: 1,
+  size: 12,
+})
+
+async function fetchFavorites() {
+  loading.value = true
+  try {
+    const res = await getFavorites({
+      page: pagination.page,
+      size: pagination.size,
+    })
+    if (res.code === 200) {
+      // 这里需要根据实际的响应结构调整
+      services.value = (res.data.records || []).map(item => item.service || {})
+      total.value = res.data.total || 0
+    } else {
+      ElMessage.error('获取收藏列表失败')
+    }
+  } catch (error) {
+    ElMessage.error('网络错误，请稍后重试')
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchFavorites()
+})
+</script>
+
+<style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
+.favorite-page {
+  padding: $spacing-lg 0;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: $spacing-lg;
+}
+
+.favorite-list {
+  min-height: 300px;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $spacing-md;
+}
+
+.service-card-wrapper {
+  min-height: 0;
+}
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: $spacing-xl;
+}
+
+// 响应式
+@media (max-width: 768px) {
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

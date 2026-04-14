@@ -1,0 +1,91 @@
+@use './variables' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: $bg-dark;
+  color: $text-primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  height: 100%;
+}
+
+a {
+  color: $primary-light;
+  text-decoration: none;
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $bg-hover;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $text-muted;
+}
+
+// Element Plus dark theme overrides
+.el-menu {
+  border-right: none !important;
+}
+
+.el-card {
+  background-color: $bg-card;
+  border-color: $border-color;
+  color: $text-primary;
+}
+
+.el-table {
+  --el-table-bg-color: #{$bg-card};
+  --el-table-tr-bg-color: #{$bg-card};
+  --el-table-header-bg-color: #{$bg-hover};
+  --el-table-row-hover-bg-color: #{$bg-hover};
+  --el-table-text-color: #{$text-primary};
+  --el-table-header-text-color: #{$text-secondary};
+  --el-table-border-color: #{$border-color};
+}
+
+.el-dialog {
+  --el-dialog-bg-color: #{$bg-card};
+  --el-dialog-title-font-size: 18px;
+}
+
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select__wrapper {
+  background-color: $bg-input !important;
+  box-shadow: 0 0 0 1px $border-color inset !important;
+  color: $text-primary !important;
+}
+
+.el-form-item__label {
+  color: $text-secondary !important;
+}
+
+.el-pagination {
+  --el-pagination-bg-color: transparent;
+  --el-pagination-text-color: #{$text-secondary};
+  --el-pagination-button-bg-color: #{$bg-hover};
+  --el-pagination-hover-color: #{$primary-light};
+}

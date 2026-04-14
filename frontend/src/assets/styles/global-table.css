@@ -1,0 +1,102 @@
+/* 全局表格样式 */
+body .el-table {
+  --el-table-bg-color: #0f172a !important;
+  --el-table-header-bg-color: #1e293b !important;
+  --el-table-row-hover-bg-color: #334155 !important;
+  --el-table-border-color: #334155 !important;
+  --el-table-text-color: #f1f5f9 !important;
+  --el-table-header-text-color: #94a3b8 !important;
+  background-color: #0f172a !important;
+}
+
+body .el-table__row {
+  background-color: #0f172a !important;
+}
+
+body .el-table__row:nth-child(even) {
+  background-color: #0f172a !important;
+}
+
+body .el-table__row.el-table__row--striped {
+  background-color: #0f172a !important;
+}
+
+body .el-table__row.el-table__row--striped:hover {
+  background-color: #334155 !important;
+}
+
+body .el-table__row:hover {
+  background-color: #334155 !important;
+}
+
+body .el-table__body-wrapper {
+  background-color: #0f172a !important;
+}
+
+body .el-table__header-wrapper {
+  background-color: #1e293b !important;
+}
+
+body .el-table__body {
+  background-color: #0f172a !important;
+}
+
+body .el-table__header {
+  background-color: #1e293b !important;
+}
+
+body .el-table__cell {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+body .el-table__header-cell {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* 全局弹窗样式 */
+body .el-dialog {
+  --el-dialog-bg-color: #0f172a !important;
+  --el-dialog-border-color: #334155 !important;
+  --el-dialog-title-color: #f1f5f9 !important;
+  background-color: #0f172a !important;
+}
+
+body .el-dialog__header {
+  border-bottom: 1px solid #334155 !important;
+  background-color: #0f172a !important;
+}
+
+body .el-dialog__body {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+body .el-dialog__footer {
+  border-top: 1px solid #334155 !important;
+  background-color: #0f172a !important;
+}
+
+/* 全局描述列表样式 */
+body .el-descriptions {
+  --el-descriptions-table-border: #334155 !important;
+  --el-descriptions-item-bordered-label-background: #1e293b !important;
+  --el-descriptions-item-bordered-content-background: #0f172a !important;
+  --el-descriptions-item-content-color: #f1f5f9 !important;
+  --el-descriptions-item-label-color: #94a3b8 !important;
+}
+
+body .el-descriptions__label {
+  color: #94a3b8 !important;
+  background-color: #1e293b !important;
+}
+
+body .el-descriptions__content {
+  color: #f1f5f9 !important;
+  background-color: #0f172a !important;
+}
+
+body .el-descriptions__cell {
+  border-color: #334155 !important;
+}

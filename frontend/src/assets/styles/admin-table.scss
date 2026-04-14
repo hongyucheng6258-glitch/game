@@ -1,0 +1,19 @@
+// 管理后台表格样式
+.admin-table {
+  :deep(.el-table) {
+    --el-table-bg-color: #0f172a;
+    --el-table-header-bg-color: #1e293b;
+    --el-table-row-hover-bg-color: #334155;
+    --el-table-border-color: #334155;
+    --el-table-text-color: #f1f5f9;
+    --el-table-header-text-color: #94a3b8;
+  }
+
+  :deep(.el-table__row) {
+    background-color: #0f172a !important;
+  }
+
+  :deep(.el-table__row:nth-child(even)) {
+    background-color: #1e293b !important;
+  }
+}
