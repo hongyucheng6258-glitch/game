@@ -743,15 +743,19 @@ onMounted(() => {
   padding: $spacing-lg 0;
 }
 
+// 页面标题 - Orbitron字体 + 渐变文字
 .page-title {
   font-size: 24px;
   font-weight: 700;
   color: $text-primary;
   margin-bottom: $spacing-lg;
-  background: linear-gradient(135deg, $text-primary, $primary-light);
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 8px rgba($neon-cyan, 0.3));
 }
 
 .profile-container {
@@ -783,20 +787,21 @@ onMounted(() => {
   }
 }
 
-// 侧边栏卡片毛玻璃
+// 侧边栏卡片 - neon-border 毛玻璃
 .user-info-card,
 .stats-card {
   :deep(.el-card) {
     background: $glass-bg;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid $glass-border;
+    border: 1px solid $border-glow;
     border-radius: $border-radius-lg;
-    box-shadow: $shadow-glow;
-    transition: box-shadow $transition-normal;
+    box-shadow: $shadow-glow, $shadow-neon-cyan;
+    transition: box-shadow $transition-normal, border-color $transition-normal;
 
     &:hover {
-      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+      border-color: rgba($neon-cyan, 0.35);
+      box-shadow: 0 0 30px rgba($neon-cyan, 0.2), 0 0 40px rgba($primary-color, 0.15);
     }
   }
 }
@@ -810,10 +815,27 @@ onMounted(() => {
   border-bottom: 1px solid rgba(148, 163, 184, 0.06);
 }
 
+// 头像霓虹光环
 .user-avatar {
   background: linear-gradient(135deg, $primary-color, $primary-dark);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
-  border: 3px solid rgba(148, 163, 184, 0.1);
+  border: 3px solid $neon-cyan;
+  box-shadow:
+    0 0 12px rgba($neon-cyan, 0.5),
+    0 0 24px rgba($neon-cyan, 0.2);
+  animation: avatar-glow 3s ease-in-out infinite;
+}
+
+@keyframes avatar-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 12px rgba($neon-cyan, 0.5),
+      0 0 24px rgba($neon-cyan, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba($neon-cyan, 0.7),
+      0 0 36px rgba($neon-cyan, 0.3);
+  }
 }
 
 .user-basic-info {
@@ -872,18 +894,20 @@ onMounted(() => {
   transition: all $transition-normal;
 
   &:hover {
-    border-color: rgba(99, 102, 241, 0.15);
-    box-shadow: 0 0 12px rgba(99, 102, 241, 0.1);
+    border-color: rgba($neon-cyan, 0.2);
+    box-shadow: 0 0 12px rgba($neon-cyan, 0.15);
     transform: translateY(-2px);
   }
 }
 
+// 统计数字 - Orbitron字体
 .stat-value {
   font-size: 20px;
   font-weight: 700;
   color: $primary-light;
   margin-bottom: $spacing-xs;
-  text-shadow: 0 0 12px rgba(129, 140, 248, 0.3);
+  font-family: 'Orbitron', monospace;
+  text-shadow: 0 0 12px rgba($primary-light, 0.4);
 }
 
 .stat-label {
@@ -906,6 +930,7 @@ onMounted(() => {
   }
 }
 
+// 头像上传区域 - 霓虹虚线边框
 .avatar-section {
   display: flex;
   align-items: center;
@@ -913,10 +938,73 @@ onMounted(() => {
   margin-bottom: $spacing-xl;
   padding-bottom: $spacing-xl;
   border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  padding: $spacing-lg;
+  margin-bottom: $spacing-xl;
+  border: 2px dashed rgba($neon-cyan, 0.3);
+  border-radius: $border-radius-lg;
+  background: rgba($neon-cyan, 0.02);
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: rgba($neon-cyan, 0.5);
+    background: rgba($neon-cyan, 0.04);
+    box-shadow: 0 0 20px rgba($neon-cyan, 0.08);
+  }
 
   :deep(.el-avatar) {
-    box-shadow: 0 0 16px rgba(99, 102, 241, 0.2);
-    border: 2px solid rgba(148, 163, 184, 0.1);
+    box-shadow:
+      0 0 12px rgba($neon-cyan, 0.4),
+      0 0 24px rgba($neon-cyan, 0.15);
+    border: 2px solid rgba($neon-cyan, 0.4);
+  }
+
+  // 更换头像按钮 - 霓虹发光hover
+  :deep(.el-button--primary.is-plain) {
+    border-color: rgba($neon-cyan, 0.4);
+    color: $neon-cyan;
+    background: rgba($neon-cyan, 0.05);
+
+    &:hover {
+      background: rgba($neon-cyan, 0.15);
+      border-color: $neon-cyan;
+      box-shadow: 0 0 16px rgba($neon-cyan, 0.3);
+      color: $neon-cyan;
+    }
+  }
+}
+
+// 表单输入框 - focus时cyan发光边框
+.profile-card {
+  :deep(.el-input__wrapper) {
+    background: $bg-input;
+    border: 1px solid $border-color;
+    box-shadow: none;
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: rgba($neon-cyan, 0.25);
+    }
+
+    &.is-focus {
+      border-color: $neon-cyan;
+      box-shadow:
+        0 0 0 1px rgba($neon-cyan, 0.3),
+        0 0 12px rgba($neon-cyan, 0.15);
+    }
+  }
+
+  // 保存/重置按钮 - 霓虹发光hover
+  :deep(.el-button--primary:not(.is-plain)) {
+    background: linear-gradient(135deg, $primary-color, $neon-purple);
+    border: none;
+    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+
+    &:hover {
+      box-shadow:
+        0 0 16px rgba($neon-cyan, 0.4),
+        0 0 30px rgba($primary-color, 0.3);
+      transform: translateY(-1px);
+    }
   }
 }
 
@@ -930,7 +1018,7 @@ onMounted(() => {
   border-radius: $border-radius;
 
   &:hover {
-    background: rgba(148, 163, 184, 0.03);
+    background: rgba($neon-cyan, 0.02);
   }
 
   &:last-child {
@@ -946,8 +1034,8 @@ onMounted(() => {
 
 .security-icon {
   font-size: 32px;
-  color: $primary-color;
-  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));
+  color: $neon-cyan;
+  filter: drop-shadow(0 0 10px rgba($neon-cyan, 0.4));
 }
 
 .security-text {
@@ -965,6 +1053,22 @@ onMounted(() => {
   }
 }
 
+// 安全按钮 - 霓虹发光hover
+.security-item {
+  :deep(.el-button--primary.is-plain) {
+    border-color: rgba($neon-cyan, 0.3);
+    color: $neon-cyan;
+    background: rgba($neon-cyan, 0.05);
+
+    &:hover:not(:disabled) {
+      background: rgba($neon-cyan, 0.15);
+      border-color: $neon-cyan;
+      box-shadow: 0 0 16px rgba($neon-cyan, 0.3);
+      color: $neon-cyan;
+    }
+  }
+}
+
 .verify-content {
   text-align: center;
   padding: $spacing-xl;
@@ -973,7 +1077,7 @@ onMounted(() => {
 .verify-icon {
   font-size: 64px;
   margin-bottom: $spacing-lg;
-  filter: drop-shadow(0 0 16px rgba(99, 102, 241, 0.2));
+  filter: drop-shadow(0 0 20px rgba($neon-cyan, 0.3));
 }
 
 .verify-success,
@@ -1001,7 +1105,7 @@ onMounted(() => {
     padding-left: $spacing-xs;
 
     &::marker {
-      color: $primary-light;
+      color: $neon-cyan;
     }
   }
 }

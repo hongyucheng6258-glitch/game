@@ -65,19 +65,75 @@ function handleItemClick(item: RankingItem) {
   gap: $spacing-md;
   padding: $spacing-md;
   border-bottom: 1px solid $border-color;
-  transition: all 0.2s;
+  transition: all $transition-normal;
   cursor: pointer;
+  position: relative;
 
   &:hover {
     background: $bg-hover;
     transform: translateX(4px);
+
+    .ranking-info {
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.15);
+    }
   }
 
   &.top-three {
-    background: rgba(99, 102, 241, 0.05);
-    border-radius: $border-radius;
+    border-radius: $border-radius-lg;
     margin-bottom: $spacing-xs;
     border-bottom: none;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: $border-radius-lg;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    &:nth-child(1) {
+      background: rgba(255, 215, 0, 0.06);
+      border: 1px solid rgba(255, 215, 0, 0.12);
+
+      &::before {
+        background: linear-gradient(90deg, rgba(255, 215, 0, 0.04), transparent);
+      }
+
+      &:hover {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.15), inset 0 0 20px rgba(255, 215, 0, 0.03);
+        border-color: rgba(255, 215, 0, 0.25);
+      }
+    }
+
+    &:nth-child(2) {
+      background: rgba(192, 192, 192, 0.06);
+      border: 1px solid rgba(192, 192, 192, 0.12);
+
+      &::before {
+        background: linear-gradient(90deg, rgba(192, 192, 192, 0.04), transparent);
+      }
+
+      &:hover {
+        box-shadow: 0 0 20px rgba(192, 192, 192, 0.15), inset 0 0 20px rgba(192, 192, 192, 0.03);
+        border-color: rgba(192, 192, 192, 0.25);
+      }
+    }
+
+    &:nth-child(3) {
+      background: rgba(205, 127, 50, 0.06);
+      border: 1px solid rgba(205, 127, 50, 0.12);
+
+      &::before {
+        background: linear-gradient(90deg, rgba(205, 127, 50, 0.04), transparent);
+      }
+
+      &:hover {
+        box-shadow: 0 0 20px rgba(205, 127, 50, 0.15), inset 0 0 20px rgba(205, 127, 50, 0.03);
+        border-color: rgba(205, 127, 50, 0.25);
+      }
+    }
   }
 }
 
@@ -93,24 +149,60 @@ function handleItemClick(item: RankingItem) {
   color: $text-muted;
   font-weight: 700;
   font-size: 14px;
+  position: relative;
+  z-index: 1;
 
   &.rank-1 {
-    background: linear-gradient(135deg, #fbbf24, #f59e0b);
-    color: white;
+    background: linear-gradient(135deg, #ffd700, #f59e0b);
+    color: #1a1a2e;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.5), 0 0 24px rgba(255, 215, 0, 0.2);
+    animation: glow-gold 2.5s ease-in-out infinite;
   }
 
   &.rank-2 {
-    background: linear-gradient(135deg, #d1d5db, #9ca3af);
-    color: white;
+    background: linear-gradient(135deg, #e8e8e8, #a8a8a8);
+    color: #1a1a2e;
+    box-shadow: 0 0 12px rgba(192, 192, 192, 0.5), 0 0 24px rgba(192, 192, 192, 0.2);
+    animation: glow-silver 2.5s ease-in-out infinite;
   }
 
   &.rank-3 {
-    background: linear-gradient(135deg, #d97706, #b45309);
-    color: white;
+    background: linear-gradient(135deg, #cd7f32, #a0522d);
+    color: #1a1a2e;
+    box-shadow: 0 0 12px rgba(205, 127, 50, 0.5), 0 0 24px rgba(205, 127, 50, 0.2);
+    animation: glow-bronze 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes glow-gold {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.5), 0 0 24px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(255, 215, 0, 0.7), 0 0 36px rgba(255, 215, 0, 0.3);
+  }
+}
+
+@keyframes glow-silver {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(192, 192, 192, 0.5), 0 0 24px rgba(192, 192, 192, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(192, 192, 192, 0.7), 0 0 36px rgba(192, 192, 192, 0.3);
+  }
+}
+
+@keyframes glow-bronze {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(205, 127, 50, 0.5), 0 0 24px rgba(205, 127, 50, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(205, 127, 50, 0.7), 0 0 36px rgba(205, 127, 50, 0.3);
   }
 }
 
 .rank-number {
+  font-family: 'Orbitron', sans-serif;
   font-size: 16px;
   font-weight: 700;
 }
@@ -121,6 +213,9 @@ function handleItemClick(item: RankingItem) {
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+  position: relative;
+  z-index: 1;
+  transition: text-shadow $transition-normal;
 }
 
 .ranking-name {
@@ -146,12 +241,16 @@ function handleItemClick(item: RankingItem) {
   flex-direction: column;
   align-items: flex-end;
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .value-number {
+  font-family: 'Orbitron', sans-serif;
   font-size: 18px;
   font-weight: 700;
-  color: $warning-color;
+  color: $neon-cyan;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
 
 .value-label {

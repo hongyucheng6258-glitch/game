@@ -179,9 +179,15 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.25));
   margin-bottom: $spacing-lg;
   position: relative;
   padding-left: 16px;
@@ -193,31 +199,32 @@ onMounted(() => {
     top: 50%;
     transform: translateY(-50%);
     width: 4px;
-    height: 24px;
+    height: 28px;
     border-radius: 2px;
-    background: linear-gradient(180deg, $primary-light, $primary-dark);
-    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+    background: linear-gradient(180deg, $neon-cyan, $neon-purple);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
   }
 }
 
 // Tab
 :deep(.el-tabs__item) {
   color: $text-secondary;
-  transition: color $transition-fast;
+  transition: color $transition-normal, text-shadow $transition-normal;
 
   &.is-active {
-    color: $primary-light;
-    text-shadow: 0 0 8px rgba($primary-color, 0.3);
+    color: $neon-cyan;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
   }
 
   &:hover {
-    color: $primary-light;
+    color: $neon-cyan;
+    text-shadow: 0 0 6px rgba(0, 240, 255, 0.2);
   }
 }
 
 :deep(.el-tabs__active-bar) {
-  background-color: $primary-color;
-  box-shadow: 0 0 8px rgba($primary-color, 0.4);
+  background: linear-gradient(90deg, $neon-cyan, $primary-color);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
 }
 
 :deep(.el-tabs__nav-wrap::after) {
@@ -227,6 +234,10 @@ onMounted(() => {
 // 记录列表
 .record-list {
   min-height: 300px;
+
+  :deep(.el-empty__image svg) {
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.2));
+  }
 }
 
 .record-table-card {
@@ -234,39 +245,89 @@ onMounted(() => {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid $glass-border;
   border-radius: $border-radius-xl;
   box-shadow: $shadow-md;
+  transition: border-color $transition-normal, box-shadow $transition-normal;
+
+  &:hover {
+    border-color: rgba(0, 240, 255, 0.15);
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.08), $shadow-md;
+  }
 
   :deep(.el-table) {
     --el-table-bg-color: transparent;
     --el-table-tr-bg-color: transparent;
-    --el-table-header-bg-color: rgba($primary-color, 0.06);
-    --el-table-row-hover-bg-color: rgba($primary-color, 0.04);
+    --el-table-header-bg-color: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(99, 102, 241, 0.08));
+    --el-table-row-hover-bg-color: rgba(0, 240, 255, 0.04);
     --el-table-border-color: rgba(148, 163, 184, 0.06);
     --el-table-text-color: #{$text-primary};
-    --el-table-header-text-color: #{$text-secondary};
+    --el-table-header-text-color: #{$neon-cyan};
 
     th.el-table__cell {
       font-weight: 600;
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      color: $neon-cyan;
+      text-shadow: 0 0 6px rgba(0, 240, 255, 0.2);
+    }
+
+    tr {
+      transition: background $transition-normal;
+
+      &:hover > td {
+        background: rgba(0, 240, 255, 0.03) !important;
+        box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.02);
+      }
+    }
+  }
+
+  // 状态标签增强
+  :deep(.el-tag) {
+    backdrop-filter: blur(4px);
+    transition: all $transition-normal;
+
+    &.el-tag--success {
+      background: rgba(57, 255, 20, 0.1);
+      color: $neon-green;
+      border-color: rgba(57, 255, 20, 0.3);
+      box-shadow: 0 0 8px rgba(57, 255, 20, 0.15);
+    }
+
+    &.el-tag--danger {
+      background: rgba(255, 45, 120, 0.1);
+      color: $neon-pink;
+      border-color: rgba(255, 45, 120, 0.3);
+      box-shadow: 0 0 8px rgba(255, 45, 120, 0.15);
+    }
+
+    &.el-tag--warning {
+      background: rgba(255, 230, 0, 0.1);
+      color: $neon-yellow;
+      border-color: rgba(255, 230, 0, 0.3);
+      box-shadow: 0 0 8px rgba(255, 230, 0, 0.15);
+    }
+
+    &.el-tag--info {
+      background: rgba(148, 163, 184, 0.08);
+      color: $text-secondary;
+      border-color: rgba(148, 163, 184, 0.2);
     }
   }
 }
 
 .amount-text {
-  font-weight: 600;
+  font-weight: 700;
 
   &.income {
-    color: $success-color;
-    text-shadow: 0 0 8px rgba($success-color, 0.3);
+    color: $neon-green;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.35);
   }
 
   &.expense {
-    color: $danger-color;
-    text-shadow: 0 0 8px rgba($danger-color, 0.3);
+    color: $neon-pink;
+    text-shadow: 0 0 10px rgba(255, 45, 120, 0.35);
   }
 }
 

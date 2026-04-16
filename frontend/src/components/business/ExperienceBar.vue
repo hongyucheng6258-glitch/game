@@ -37,6 +37,8 @@ const expToNext = computed(() => Math.max(0, props.nextLevelExp - props.currentE
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/styles/variables' as *;
+
 .exp-bar-container {
   width: 100%;
   
@@ -45,37 +47,70 @@ const expToNext = computed(() => Math.max(0, props.nextLevelExp - props.currentE
     justify-content: space-between;
     margin-bottom: 6px;
     font-size: 12px;
-    color: #999;
     
     .exp-text {
-      color: #666;
+      color: $text-muted;
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
     }
     
     .exp-percentage {
-      color: var(--el-color-primary);
+      color: $neon-cyan;
       font-weight: 600;
+      font-family: 'Orbitron', monospace;
+      text-shadow: 0 0 8px rgba($neon-cyan, 0.4);
     }
   }
   
   .exp-bar {
-    height: 8px;
-    background: #f0f0f0;
-    border-radius: 4px;
+    height: 10px;
+    background: rgba($bg-hover, 0.8);
+    border-radius: 5px;
     overflow: hidden;
+    border: 1px solid rgba($neon-cyan, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
     
     .exp-progress {
       height: 100%;
-      background: linear-gradient(90deg, #409eff, #66b1ff);
-      border-radius: 4px;
+      // 渐变填充：$neon-cyan 到 $primary-color
+      background: linear-gradient(90deg, $neon-cyan, $primary-color);
+      border-radius: 5px;
       transition: width 0.5s ease;
+      // 霓虹发光效果
+      box-shadow:
+        0 0 8px rgba($neon-cyan, 0.4),
+        0 0 16px rgba($neon-cyan, 0.2);
+      position: relative;
+
+      // 进度条高光扫描效果
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        animation: shimmer 2.5s ease-in-out infinite;
+      }
     }
   }
   
   .exp-to-next {
     margin-top: 6px;
     font-size: 12px;
-    color: #999;
+    color: $text-muted;
     text-align: right;
   }
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
 }
 </style>

@@ -217,6 +217,7 @@ onMounted(() => {
     text-align: center;
     margin-bottom: $spacing-md;
     
+    // 页面标题 - Orbitron字体 + 渐变文字
     h2 {
       font-size: 28px;
       color: $text-primary;
@@ -224,6 +225,12 @@ onMounted(() => {
       position: relative;
       display: inline-block;
       padding: 0 20px;
+      font-family: 'Orbitron', monospace;
+      background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 10px rgba($neon-cyan, 0.4));
 
       &::before,
       &::after {
@@ -232,17 +239,18 @@ onMounted(() => {
         top: 50%;
         width: 40px;
         height: 2px;
-        background: linear-gradient(90deg, transparent, $primary-color);
       }
 
       &::before {
         left: -30px;
-        background: linear-gradient(90deg, transparent, $primary-color);
+        background: linear-gradient(90deg, transparent, $neon-cyan);
+        box-shadow: 0 0 8px rgba($neon-cyan, 0.4);
       }
 
       &::after {
         right: -30px;
-        background: linear-gradient(270deg, transparent, $primary-color);
+        background: linear-gradient(270deg, transparent, $neon-cyan);
+        box-shadow: 0 0 8px rgba($neon-cyan, 0.4);
       }
     }
     
@@ -252,19 +260,40 @@ onMounted(() => {
     }
   }
   
+  // 当前等级卡片 - 渐变边框 + 霓虹发光
   .my-level-card {
     margin-bottom: 0;
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $border-glow;
     border-radius: $border-radius-xl;
-    box-shadow: $shadow-glow, $shadow-md;
-    transition: transform $transition-normal, box-shadow $transition-normal;
+    box-shadow: $shadow-glow, $shadow-neon-cyan;
+    transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
+    position: relative;
+
+    // 渐变边框效果
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: $border-radius-xl;
+      padding: 1px;
+      background: linear-gradient(135deg, $neon-cyan, $primary-color, $neon-purple, $neon-cyan);
+      background-size: 300% 300%;
+      animation: border-glow 4s ease-in-out infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba($primary-color, 0.25), $shadow-lg;
+      box-shadow:
+        0 0 30px rgba($neon-cyan, 0.25),
+        0 0 50px rgba($primary-color, 0.15);
+      border-color: rgba($neon-cyan, 0.4);
     }
     
     .my-level-content {
@@ -280,7 +309,8 @@ onMounted(() => {
         
         .level-icon {
           font-size: 64px;
-          filter: drop-shadow(0 0 12px rgba($primary-color, 0.4));
+          filter: drop-shadow(0 0 16px rgba($neon-cyan, 0.5));
+          animation: icon-float 3s ease-in-out infinite;
         }
         
         .level-info {
@@ -289,17 +319,18 @@ onMounted(() => {
           .level-name {
             font-size: 32px;
             font-weight: 700;
-            background: linear-gradient(135deg, $primary-light, #a78bfa);
+            background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 16px rgba($primary-color, 0.35));
+            filter: drop-shadow(0 0 16px rgba($neon-cyan, 0.4));
             margin-bottom: 4px;
           }
           
           .level-number {
             font-size: 16px;
             color: $text-muted;
+            font-family: 'Orbitron', monospace;
           }
         }
       }
@@ -324,10 +355,21 @@ onMounted(() => {
           font-size: 20px;
           font-weight: 600;
           color: $danger-color;
-          text-shadow: 0 0 8px rgba($danger-color, 0.3);
+          font-family: 'Orbitron', monospace;
+          text-shadow: 0 0 10px rgba($danger-color, 0.4);
         }
       }
     }
+  }
+
+  @keyframes border-glow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes icon-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
   }
   
   .privileges-card {
@@ -335,7 +377,7 @@ onMounted(() => {
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $border-glow;
     border-radius: $border-radius-xl;
     box-shadow: $shadow-md;
     
@@ -367,21 +409,22 @@ onMounted(() => {
 
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba($primary-color, 0.1);
+          box-shadow: 0 4px 12px rgba($neon-cyan, 0.15);
+          border-color: rgba($neon-cyan, 0.15);
         }
         
         &.active {
-          border-left-color: $success-color;
-          background: linear-gradient(135deg, rgba($success-color, 0.06), rgba($success-color, 0.02));
+          border-left-color: $neon-green;
+          background: linear-gradient(135deg, rgba($neon-green, 0.06), rgba($neon-green, 0.02));
           
           .privilege-badge {
-            background: linear-gradient(135deg, $success-color, #16a34a);
+            background: linear-gradient(135deg, $neon-green, #16a34a);
             color: white;
             padding: 2px 8px;
             border-radius: 10px;
             font-size: 11px;
             font-weight: 600;
-            box-shadow: 0 2px 8px rgba($success-color, 0.3);
+            box-shadow: 0 2px 8px rgba($neon-green, 0.4);
           }
         }
         
@@ -402,7 +445,7 @@ onMounted(() => {
           .privilege-value {
             font-size: 18px;
             font-weight: 700;
-            background: linear-gradient(135deg, $primary-light, #a78bfa);
+            background: linear-gradient(135deg, $neon-cyan, $primary-light);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -418,13 +461,30 @@ onMounted(() => {
     }
   }
   
+  // 等级列表卡片 - 渐变边框
   .all-levels-card {
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $border-glow;
     border-radius: $border-radius-xl;
     box-shadow: $shadow-md;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: $border-radius-xl;
+      padding: 1px;
+      background: linear-gradient(135deg, $neon-cyan, transparent, $neon-purple, transparent);
+      background-size: 200% 200%;
+      animation: border-glow 6s ease-in-out infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
 
     .card-header {
       display: flex;
@@ -442,19 +502,24 @@ onMounted(() => {
         padding: 16px;
         border-bottom: 1px solid rgba(148, 163, 184, 0.06);
         border-radius: $border-radius;
-        transition: background $transition-fast;
+        transition: all $transition-fast;
         
         &:last-child {
           border-bottom: none;
         }
 
         &:hover {
-          background: rgba($primary-color, 0.03);
+          background: rgba($neon-cyan, 0.03);
         }
         
+        // 当前等级高亮显示
         &.current {
-          background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($primary-light, 0.05));
-          border: 1px solid rgba($primary-color, 0.15);
+          background: linear-gradient(135deg, rgba($neon-cyan, 0.1), rgba($primary-color, 0.05));
+          border: 1px solid rgba($neon-cyan, 0.25);
+          box-shadow:
+            0 0 15px rgba($neon-cyan, 0.1),
+            inset 0 0 20px rgba($neon-cyan, 0.03);
+          animation: current-pulse 3s ease-in-out infinite;
         }
         
         &.unlocked:not(.current) {
@@ -463,7 +528,7 @@ onMounted(() => {
         
         .level-icon {
           font-size: 36px;
-          filter: drop-shadow(0 0 6px rgba($primary-color, 0.2));
+          filter: drop-shadow(0 0 8px rgba($neon-cyan, 0.3));
         }
         
         .level-main {
@@ -484,6 +549,7 @@ onMounted(() => {
             .level-number {
               font-size: 12px;
               color: $text-muted;
+              font-family: 'Orbitron', monospace;
             }
           }
           
@@ -498,9 +564,10 @@ onMounted(() => {
             }
             
             .exp-reached {
-              color: $success-color;
+              color: $neon-green;
               margin-left: 8px;
               font-weight: 600;
+              text-shadow: 0 0 6px rgba($neon-green, 0.3);
             }
           }
           
@@ -518,10 +585,11 @@ onMounted(() => {
               border: 1px solid rgba(148, 163, 184, 0.06);
               
               &.highlight {
-                background: linear-gradient(135deg, rgba($warning-color, 0.15), rgba($warning-color, 0.05));
-                color: $warning-color;
+                background: linear-gradient(135deg, rgba($neon-yellow, 0.15), rgba($neon-yellow, 0.05));
+                color: $neon-yellow;
                 font-weight: 600;
-                border-color: rgba($warning-color, 0.15);
+                border-color: rgba($neon-yellow, 0.2);
+                box-shadow: 0 0 6px rgba($neon-yellow, 0.1);
               }
             }
           }
@@ -529,12 +597,25 @@ onMounted(() => {
       }
     }
   }
+
+  @keyframes current-pulse {
+    0%, 100% {
+      box-shadow:
+        0 0 15px rgba($neon-cyan, 0.1),
+        inset 0 0 20px rgba($neon-cyan, 0.03);
+    }
+    50% {
+      box-shadow:
+        0 0 25px rgba($neon-cyan, 0.18),
+        inset 0 0 30px rgba($neon-cyan, 0.05);
+    }
+  }
   
   .tips-card {
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $border-glow;
     border-radius: $border-radius-xl;
     box-shadow: $shadow-md;
 
@@ -558,7 +639,7 @@ onMounted(() => {
           width: 28px;
           height: 28px;
           border-radius: 50%;
-          background: linear-gradient(135deg, $primary-color, $primary-dark);
+          background: linear-gradient(135deg, $neon-cyan, $primary-color);
           color: white;
           display: flex;
           align-items: center;
@@ -566,7 +647,7 @@ onMounted(() => {
           font-weight: 700;
           font-size: 14px;
           flex-shrink: 0;
-          box-shadow: 0 2px 8px rgba($primary-color, 0.35);
+          box-shadow: 0 2px 8px rgba($neon-cyan, 0.4);
         }
         
         .tip-text {

@@ -81,6 +81,7 @@ onMounted(() => {
   padding: $spacing-lg 0;
 }
 
+// 页面标题 - Orbitron字体 + 渐变文字
 .page-title {
   font-size: 24px;
   font-weight: 700;
@@ -88,6 +89,12 @@ onMounted(() => {
   margin-bottom: $spacing-lg;
   position: relative;
   padding-left: 16px;
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba($neon-cyan, 0.3));
 
   &::before {
     content: '';
@@ -98,8 +105,8 @@ onMounted(() => {
     width: 4px;
     height: 24px;
     border-radius: 2px;
-    background: linear-gradient(180deg, $primary-light, $primary-dark);
-    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+    background: linear-gradient(180deg, $neon-cyan, $primary-color);
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.5);
   }
 }
 
@@ -113,12 +120,55 @@ onMounted(() => {
   gap: $spacing-md;
 }
 
+// 收藏卡片 - hover发光效果
 .service-card-wrapper {
   min-height: 0;
   transition: transform $transition-normal;
+  border-radius: $border-radius-lg;
 
   &:hover {
     transform: translateY(-4px);
+
+    :deep(.el-card) {
+      border-color: rgba($neon-cyan, 0.3);
+      box-shadow:
+        $shadow-neon-cyan,
+        0 0 30px rgba($neon-cyan, 0.12);
+    }
+  }
+
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid $border-glow;
+    border-radius: $border-radius-lg;
+    transition: border-color $transition-normal, box-shadow $transition-normal;
+  }
+}
+
+// 空状态优化
+.favorite-list {
+  :deep(.el-empty) {
+    padding: $spacing-3xl 0;
+
+    .el-empty__description p {
+      color: $text-muted;
+      font-size: 15px;
+    }
+
+    .el-button--primary {
+      background: linear-gradient(135deg, $neon-cyan, $primary-color);
+      border: none;
+      box-shadow: 0 4px 12px rgba($neon-cyan, 0.3);
+
+      &:hover {
+        box-shadow:
+          0 0 20px rgba($neon-cyan, 0.5),
+          0 0 40px rgba($neon-cyan, 0.2);
+        transform: translateY(-1px);
+      }
+    }
   }
 }
 

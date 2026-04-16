@@ -260,8 +260,57 @@ async function fetchServices() {
 <style scoped lang="scss">
 @use '@/assets/styles/variables' as *;
 
+// --- 交错入场动画 ---
+@keyframes card-stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// --- 霓虹脉冲动画 ---
+@keyframes neon-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.3), 0 0 20px rgba($neon-cyan, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba($neon-cyan, 0.5), 0 0 35px rgba($neon-cyan, 0.2);
+  }
+}
+
+// --- 标题渐变动画 ---
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .service-list-page {
   padding: $spacing-lg 0;
+  position: relative;
+
+  // 赛博网格背景
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba($primary-color, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($primary-color, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // 让所有子内容在网格之上
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .provider-header-section {
@@ -274,6 +323,12 @@ async function fetchServices() {
     border: 1px solid $glass-border;
     border-radius: $border-radius-lg;
     box-shadow: $shadow-glow;
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: $border-color-hover;
+      box-shadow: $shadow-glow-strong;
+    }
   }
 }
 
@@ -292,16 +347,20 @@ async function fetchServices() {
 
 .provider-name {
   margin: 0;
-  font-size: 20px;
+  font-family: 'Orbitron', 'Noto Sans SC', sans-serif;
+  font-size: 22px;
   font-weight: 700;
-  color: $text-primary;
-  background: linear-gradient(135deg, $text-primary, $primary-light);
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 8px rgba($neon-cyan, 0.25));
 }
 
-// 筛选区域
+// --- 筛选区域 ---
 .filter-section {
   margin-bottom: $spacing-md;
 
@@ -312,6 +371,11 @@ async function fetchServices() {
     border: 1px solid $glass-border;
     border-radius: $border-radius-lg;
     box-shadow: $shadow-glow;
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: $border-color-hover;
+    }
   }
 }
 
@@ -329,10 +393,77 @@ async function fetchServices() {
 }
 
 .filter-label {
-  font-size: 14px;
-  color: $text-secondary;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  color: $text-muted;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+// --- 搜索框霓虹边框 focus ---
+:deep(.el-input__wrapper) {
+  background-color: $bg-input !important;
+  box-shadow: 0 0 0 1px $border-color inset !important;
+  transition: all $transition-normal !important;
+
+  &:hover {
+    box-shadow: 0 0 0 1px $border-color-hover inset !important;
+  }
+
+  &.is-focus {
+    box-shadow:
+      0 0 0 1px $neon-cyan inset,
+      0 0 0 3px rgba($neon-cyan, 0.15),
+      0 0 20px rgba($neon-cyan, 0.1) !important;
+    border-color: transparent !important;
+  }
+}
+
+// --- 筛选标签/按钮 active 状态 ---
+:deep(.el-radio-button) {
+  .el-radio-button__inner {
+    background: $bg-elevated;
+    border-color: $border-color;
+    color: $text-secondary;
+    font-weight: 500;
+    transition: all $transition-normal;
+    box-shadow: none !important;
+  }
+
+  &.is-active {
+    .el-radio-button__inner {
+      background: rgba($neon-cyan, 0.12);
+      border-color: $neon-cyan;
+      color: $neon-cyan;
+      font-weight: 700;
+      box-shadow:
+        0 0 8px rgba($neon-cyan, 0.3),
+        0 0 20px rgba($neon-cyan, 0.1),
+        inset 0 0 12px rgba($neon-cyan, 0.05) !important;
+      animation: neon-glow-pulse 2.5s ease-in-out infinite;
+    }
+  }
+}
+
+// --- Select 下拉框 focus ---
+:deep(.el-select__wrapper) {
+  &.is-focus {
+    box-shadow:
+      0 0 0 1px $neon-cyan inset,
+      0 0 0 3px rgba($neon-cyan, 0.15),
+      0 0 20px rgba($neon-cyan, 0.1) !important;
+  }
+}
+
+// --- InputNumber focus ---
+:deep(.el-input-number) {
+  .el-input__wrapper.is-focus {
+    box-shadow:
+      0 0 0 1px $neon-cyan inset,
+      0 0 0 3px rgba($neon-cyan, 0.15),
+      0 0 20px rgba($neon-cyan, 0.1) !important;
+  }
 }
 
 .price-inputs {
@@ -343,9 +474,11 @@ async function fetchServices() {
 
 .price-separator {
   color: $text-muted;
+  font-family: 'Orbitron', monospace;
+  font-weight: 600;
 }
 
-// 排序栏
+// --- 排序栏 ---
 .sort-section {
   margin-bottom: $spacing-md;
 }
@@ -362,14 +495,42 @@ async function fetchServices() {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid $glass-border;
   border-radius: $border-radius-lg;
+  transition: all $transition-normal;
+
+  &:hover {
+    border-color: $border-color-hover;
+  }
+
+  // 排序按钮 active 状态
+  :deep(.el-radio-button.is-active) {
+    .el-radio-button__inner {
+      background: rgba($neon-cyan, 0.12);
+      border-color: $neon-cyan;
+      color: $neon-cyan;
+      font-weight: 700;
+      box-shadow:
+        0 0 8px rgba($neon-cyan, 0.3),
+        0 0 20px rgba($neon-cyan, 0.1),
+        inset 0 0 12px rgba($neon-cyan, 0.05) !important;
+      animation: neon-glow-pulse 2.5s ease-in-out infinite;
+    }
+  }
 }
 
 .result-count {
-  color: $text-secondary;
+  font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+  color: $text-muted;
   font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+
+  // 数字高亮
+  :deep(&) {
+    // 使用伪元素无法生效，直接给文字加样式
+  }
 }
 
-// 服务列表
+// --- 服务列表 ---
 .list-section {
   min-height: 400px;
 }
@@ -381,23 +542,94 @@ async function fetchServices() {
   min-height: 300px;
 }
 
+// --- 服务卡片交错入场动画 ---
 .service-card-wrapper {
   min-height: 0;
+  opacity: 0;
+  animation: card-stagger-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   transition: transform $transition-normal, box-shadow $transition-normal;
 
+  // 交错延迟：每张卡片递增 60ms
+  @for $i from 1 through 36 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.06}s;
+    }
+  }
+
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: $shadow-glow;
+    transform: translateY(-6px) scale(1.02);
+    box-shadow:
+      $shadow-glow-strong,
+      0 0 30px rgba($neon-cyan, 0.08);
   }
 }
 
+// --- 分页器样式优化 ---
 .pagination-wrapper {
   display: flex;
   justify-content: center;
   margin-top: $spacing-xl;
+  padding: $spacing-md 0;
+
+  :deep(.el-pagination) {
+    --el-pagination-bg-color: transparent;
+    --el-pagination-text-color: #{$text-secondary};
+    --el-pagination-button-bg-color: #{$bg-elevated};
+    --el-pagination-hover-color: #{$neon-cyan};
+
+    .btn-prev,
+    .btn-next,
+    .el-pager li {
+      background: $bg-elevated !important;
+      border: 1px solid $border-color;
+      border-radius: $border-radius !important;
+      color: $text-secondary !important;
+      font-weight: 500;
+      transition: all $transition-normal;
+      min-width: 36px;
+      margin: 0 2px;
+
+      &:hover {
+        border-color: $neon-cyan;
+        color: $neon-cyan !important;
+        box-shadow: 0 0 10px rgba($neon-cyan, 0.2);
+      }
+
+      &.is-active {
+        background: rgba($neon-cyan, 0.15) !important;
+        border-color: $neon-cyan;
+        color: $neon-cyan !important;
+        font-weight: 700;
+        box-shadow:
+          0 0 8px rgba($neon-cyan, 0.3),
+          0 0 20px rgba($neon-cyan, 0.1);
+      }
+    }
+
+    .el-pagination__total,
+    .el-pagination__jump {
+      color: $text-muted;
+      font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+    }
+
+    .el-pagination__sizes {
+      .el-select .el-select__wrapper {
+        background: $bg-elevated !important;
+        border: 1px solid $border-color;
+      }
+    }
+
+    // 跳转输入框
+    .el-pagination__jump {
+      .el-input__wrapper {
+        background: $bg-elevated !important;
+        border: 1px solid $border-color;
+      }
+    }
+  }
 }
 
-// 响应式
+// --- 响应式 ---
 @media (max-width: 768px) {
   .filter-row {
     flex-direction: column;
@@ -411,6 +643,14 @@ async function fetchServices() {
 
   .service-grid {
     grid-template-columns: 1fr;
+  }
+
+  .service-card-wrapper {
+    @for $i from 1 through 36 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.08}s;
+      }
+    }
   }
 }
 </style>

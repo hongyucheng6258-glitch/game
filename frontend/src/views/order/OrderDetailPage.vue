@@ -492,28 +492,32 @@ onMounted(() => {
     border: 1px solid $glass-border;
     border-radius: $border-radius-lg;
     box-shadow: $shadow-glow;
-    transition: box-shadow $transition-normal;
+    transition: border-color $transition-normal, box-shadow $transition-normal;
 
     &:hover {
-      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+      border-color: $neon-cyan;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15), 0 0 40px rgba(0, 240, 255, 0.06);
     }
   }
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
-  background: linear-gradient(135deg, $text-primary, $primary-light);
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.25));
 }
 
 .card-header-title {
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
+  letter-spacing: 0.5px;
 }
 
 // 自定义步骤条
@@ -555,26 +559,26 @@ onMounted(() => {
 }
 
 .step-item.step-finished .step-icon {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background: linear-gradient(135deg, $neon-green, #16a34a);
   color: white;
-  border-color: #22c55e;
-  box-shadow: 0 0 16px rgba(34, 197, 94, 0.35);
+  border-color: $neon-green;
+  box-shadow: 0 0 16px rgba(57, 255, 20, 0.35);
 }
 
 .step-item.step-active .step-icon {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  background: linear-gradient(135deg, $neon-cyan, $primary-color);
   color: white;
-  border-color: #6366f1;
+  border-color: $neon-cyan;
   animation: pulse 1.5s infinite;
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
 }
 
 @keyframes pulse {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.4);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+    box-shadow: 0 0 0 8px rgba(0, 240, 255, 0);
   }
 }
 
@@ -612,8 +616,8 @@ onMounted(() => {
 }
 
 .step-line.line-finished {
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+  background: linear-gradient(90deg, $neon-green, #16a34a);
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.3);
 }
 
 // 信息网格
@@ -627,12 +631,15 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: $spacing-xs;
-  padding: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
   border-radius: $border-radius;
-  transition: background $transition-fast;
+  border: 1px solid rgba(148, 163, 184, 0.04);
+  transition: all $transition-normal;
 
   &:hover {
-    background: rgba(148, 163, 184, 0.04);
+    background: rgba(0, 240, 255, 0.03);
+    border-color: rgba(0, 240, 255, 0.1);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.06);
   }
 
   &.full {
@@ -650,10 +657,51 @@ onMounted(() => {
   font-size: 14px;
 
   &.amount {
-    color: $danger-color;
-    font-size: 18px;
+    color: $neon-cyan;
+    font-size: 20px;
     font-weight: 700;
-    text-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
+  }
+}
+
+// 状态标签增强
+:deep(.el-tag) {
+  backdrop-filter: blur(4px);
+  transition: all $transition-normal;
+
+  &.el-tag--primary {
+    background: rgba(0, 240, 255, 0.1);
+    color: $neon-cyan;
+    border-color: rgba(0, 240, 255, 0.3);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.15);
+  }
+
+  &.el-tag--success {
+    background: rgba(57, 255, 20, 0.1);
+    color: $neon-green;
+    border-color: rgba(57, 255, 20, 0.3);
+    box-shadow: 0 0 8px rgba(57, 255, 20, 0.15);
+  }
+
+  &.el-tag--warning {
+    background: rgba(255, 230, 0, 0.1);
+    color: $neon-yellow;
+    border-color: rgba(255, 230, 0, 0.3);
+    box-shadow: 0 0 8px rgba(255, 230, 0, 0.15);
+  }
+
+  &.el-tag--danger {
+    background: rgba(255, 45, 120, 0.1);
+    color: $neon-pink;
+    border-color: rgba(255, 45, 120, 0.3);
+    box-shadow: 0 0 8px rgba(255, 45, 120, 0.15);
+  }
+
+  &.el-tag--info {
+    background: rgba(148, 163, 184, 0.08);
+    color: $text-secondary;
+    border-color: rgba(148, 163, 184, 0.2);
   }
 }
 
@@ -664,8 +712,8 @@ onMounted(() => {
   gap: $spacing-md;
 
   :deep(.el-avatar) {
-    box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
-    border: 2px solid rgba(148, 163, 184, 0.1);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+    border: 2px solid rgba(0, 240, 255, 0.15);
   }
 }
 
@@ -685,15 +733,38 @@ onMounted(() => {
   padding: $spacing-md 0;
 
   :deep(.el-button--primary) {
-    background: linear-gradient(135deg, $primary-color, $primary-dark);
-    border: none;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    background: linear-gradient(135deg, $primary-color, $neon-purple);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 240, 255, 0.12);
     transition: all $transition-normal;
 
     &:hover {
-      background: linear-gradient(135deg, $primary-light, $primary-color);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+      background: linear-gradient(135deg, $neon-cyan, $primary-color);
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.3);
+      border-color: $neon-cyan;
       transform: translateY(-1px);
+    }
+  }
+
+  :deep(.el-button--warning) {
+    border: 1px solid rgba(255, 45, 120, 0.15);
+    box-shadow: 0 2px 8px rgba(255, 45, 120, 0.1);
+    transition: all $transition-normal;
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(255, 45, 120, 0.25);
+      border-color: $neon-pink;
+      transform: translateY(-1px);
+    }
+  }
+
+  :deep(.el-button--default) {
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      color: $neon-cyan;
     }
   }
 }
@@ -732,13 +803,13 @@ onMounted(() => {
   border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
   cursor: pointer;
-  transition: all $transition-fast;
+  transition: all $transition-normal;
   background: rgba(148, 163, 184, 0.02);
 
   &:hover {
-    border-color: $primary-color;
-    background: rgba($primary-color, 0.05);
-    box-shadow: 0 0 12px rgba(99, 102, 241, 0.1);
+    border-color: $neon-cyan;
+    background: rgba(0, 240, 255, 0.04);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.12);
   }
 
   :deep(.el-radio__label) {

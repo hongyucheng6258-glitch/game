@@ -104,15 +104,29 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: $text-primary;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
   margin: 0;
-  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  background: linear-gradient(135deg, $neon-cyan 0%, $primary-light 50%, $neon-purple 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.5px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, transparent);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+  }
 }
 
 .announcement-list {
@@ -127,13 +141,14 @@ onMounted(() => {
   background: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $glass-border !important;
   border-radius: $border-radius-lg !important;
-  transition: transform $transition-normal, box-shadow $transition-normal;
+  transition: all $transition-normal;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15), 0 8px 28px rgba(0, 0, 0, 0.25);
+    box-shadow: $shadow-neon-cyan, 0 8px 28px rgba(0, 0, 0, 0.25);
+    border-color: rgba(0, 240, 255, 0.25) !important;
   }
 
   :deep(.el-card__body) {
@@ -172,16 +187,17 @@ onMounted(() => {
 
 .announcement-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: $text-primary;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: color $transition-fast;
+  transition: color $transition-fast, text-shadow $transition-fast;
 
   .announcement-card:hover & {
-    color: $primary-light;
+    color: $neon-cyan;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
   }
 }
 
@@ -190,6 +206,7 @@ onMounted(() => {
   color: $text-muted;
   flex-shrink: 0;
   margin-left: $spacing-md;
+  font-variant-numeric: tabular-nums;
 }
 
 .announcement-summary {
@@ -206,8 +223,9 @@ onMounted(() => {
     top: 4px;
     bottom: 4px;
     width: 2px;
-    background: linear-gradient(180deg, $primary-color, transparent);
+    background: linear-gradient(180deg, $neon-cyan, transparent);
     border-radius: 1px;
+    box-shadow: 0 0 4px rgba(0, 240, 255, 0.3);
   }
 }
 
@@ -216,7 +234,7 @@ onMounted(() => {
   color: $text-muted;
   margin-bottom: $spacing-md;
   padding-bottom: $spacing-md;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  border-bottom: 1px solid $glass-border;
 }
 
 .detail-content {
@@ -230,18 +248,18 @@ onMounted(() => {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid $glass-border;
   border-radius: $border-radius-xl !important;
-  box-shadow: 0 0 40px rgba(99, 102, 241, 0.15), 0 16px 48px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.1), 0 16px 48px rgba(0, 0, 0, 0.4);
 
   .el-dialog__header {
-    border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+    border-bottom: 1px solid $glass-border;
     padding: $spacing-lg;
   }
 
   .el-dialog__title {
     color: $text-primary;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .el-dialog__body {
@@ -252,5 +270,62 @@ onMounted(() => {
 .pagination-wrapper {
   display: flex;
   justify-content: center;
+  padding: $spacing-md 0;
+
+  :deep(.el-pagination) {
+    .el-pager li {
+      background: $glass-bg;
+      border: 1px solid $glass-border;
+      border-radius: $border-radius;
+      color: $text-secondary;
+      font-weight: 600;
+      transition: all $transition-fast;
+
+      &:hover {
+        border-color: rgba(0, 240, 255, 0.3);
+        color: $neon-cyan;
+      }
+
+      &.is-active {
+        background: rgba(0, 240, 255, 0.1);
+        border-color: $neon-cyan;
+        color: $neon-cyan;
+        box-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+      }
+    }
+
+    button {
+      background: $glass-bg;
+      border: 1px solid $glass-border;
+      border-radius: $border-radius;
+      color: $text-secondary;
+      transition: all $transition-fast;
+
+      &:hover {
+        border-color: rgba(0, 240, 255, 0.3);
+        color: $neon-cyan;
+      }
+
+      &:disabled {
+        opacity: 0.4;
+      }
+    }
+
+    .el-pagination__total {
+      color: $text-secondary;
+    }
+
+    .el-pagination__sizes {
+      .el-select .el-input__wrapper {
+        background: $glass-bg;
+        border: 1px solid $glass-border;
+        box-shadow: none;
+
+        &:hover {
+          border-color: rgba(0, 240, 255, 0.3);
+        }
+      }
+    }
+  }
 }
 </style>

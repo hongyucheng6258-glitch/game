@@ -79,4 +79,11 @@ public class SystemAnnouncementServiceImpl implements SystemAnnouncementService 
         }
         systemAnnouncementMapper.delete(announcement);
     }
+
+    @Override
+    public void toggleTop(Long adminId, Long id, boolean top) {
+        SystemAnnouncement announcement = getById(id);
+        announcement.setIsTop(top);
+        systemAnnouncementMapper.save(announcement);
+    }
 }

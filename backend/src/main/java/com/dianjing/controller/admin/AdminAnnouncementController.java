@@ -91,4 +91,14 @@ public class AdminAnnouncementController {
         announcementService.delete(adminId, id);
         return Result.success();
     }
+
+    /**
+     * 置顶/取消置顶公告
+     */
+    @PostMapping("/{id}/top")
+    public Result<Void> toggleTop(@PathVariable Long id, @RequestParam boolean top) {
+        Long adminId = getCurrentAdminId();
+        announcementService.toggleTop(adminId, id, top);
+        return Result.success();
+    }
 }

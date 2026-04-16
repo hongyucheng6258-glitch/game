@@ -1,6 +1,7 @@
 package com.dianjing.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -19,9 +20,11 @@ public class SystemAnnouncement {
     private String content;
 
     @Column(name = "is_published", nullable = false)
+    @JsonProperty("status")
     private Integer isPublished = 0;
 
     @Column(name = "is_top")
+    @JsonProperty("isTop")
     private Boolean isTop = false;
 
     @Column(name = "publish_time")

@@ -37,6 +37,7 @@ export function getAdminAnnouncements(params?: any) { return get('/admin/announc
 export function createAnnouncement(data: any) { return post('/admin/announcements', data) }
 export function updateAnnouncement(id: number, data: any) { return put(`/admin/announcements/${id}`, data) }
 export function publishAnnouncement(id: number) { return post(`/admin/announcements/${id}/publish`) }
+export function toggleAnnouncementTop(id: number, top: boolean) { return post(`/admin/announcements/${id}/top?top=${top}`) }
 export function deleteAnnouncement(id: number) { return del(`/admin/announcements/${id}`) }
 
 // Admin Tags

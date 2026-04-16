@@ -193,9 +193,15 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.25));
   margin-bottom: $spacing-lg;
   position: relative;
   padding-left: 16px;
@@ -207,10 +213,10 @@ onMounted(() => {
     top: 50%;
     transform: translateY(-50%);
     width: 4px;
-    height: 24px;
+    height: 28px;
     border-radius: 2px;
-    background: linear-gradient(180deg, $primary-light, $primary-dark);
-    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+    background: linear-gradient(180deg, $neon-cyan, $neon-purple);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
   }
 }
 
@@ -220,20 +226,42 @@ onMounted(() => {
   flex-direction: column;
   gap: $spacing-md;
   min-height: 300px;
+
+  :deep(.el-empty__image svg) {
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.2));
+  }
 }
 
 .review-card {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid $glass-border;
+  border-left: 3px solid $neon-cyan;
   border-radius: $border-radius-lg;
   box-shadow: $shadow-md;
-  transition: transform $transition-normal, box-shadow $transition-normal;
+  transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: $shadow-glow, $shadow-lg;
+    border-left-color: $neon-purple;
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.1), $shadow-lg;
+  }
+
+  &:nth-child(2n) {
+    border-left-color: $neon-pink;
+
+    &:hover {
+      border-left-color: $neon-cyan;
+    }
+  }
+
+  &:nth-child(3n) {
+    border-left-color: $neon-purple;
+
+    &:hover {
+      border-left-color: $neon-green;
+    }
   }
 
   :deep(.el-card__body) {
@@ -265,6 +293,7 @@ onMounted(() => {
 .order-id {
   font-size: 13px;
   color: $text-muted;
+  font-family: 'Courier New', monospace;
 }
 
 .review-time {
@@ -290,8 +319,9 @@ onMounted(() => {
 }
 
 .user-name {
-  color: $text-primary;
+  color: $neon-cyan;
   font-weight: 500;
+  text-shadow: 0 0 6px rgba(0, 240, 255, 0.2);
 }
 
 .review-rating {
@@ -302,10 +332,10 @@ onMounted(() => {
 }
 
 .rating-text {
-  color: $warning-color;
+  color: $neon-yellow;
   font-size: 14px;
   font-weight: 600;
-  text-shadow: 0 0 8px rgba($warning-color, 0.3);
+  text-shadow: 0 0 10px rgba(255, 230, 0, 0.35);
 }
 
 .review-content {
@@ -317,17 +347,25 @@ onMounted(() => {
 
 .anonymous-tag {
   margin-top: $spacing-sm;
+
+  :deep(.el-tag) {
+    background: rgba(191, 90, 242, 0.1);
+    color: $neon-purple;
+    border-color: rgba(191, 90, 242, 0.3);
+    box-shadow: 0 0 8px rgba(191, 90, 242, 0.15);
+  }
 }
 
 // 商家回复
 .review-reply {
-  background: rgba($primary-color, 0.06);
+  background: rgba(0, 240, 255, 0.04);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(148, 163, 184, 0.06);
-  border-left: 3px solid $primary-color;
+  border: 1px solid rgba(0, 240, 255, 0.08);
+  border-left: 3px solid $neon-cyan;
   border-radius: $border-radius;
   padding: $spacing-md;
   margin-top: $spacing-sm;
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.04);
 }
 
 .reply-header {
@@ -339,14 +377,16 @@ onMounted(() => {
   padding-bottom: 0;
 
   :deep(.el-icon) {
-    color: $primary-light;
+    color: $neon-cyan;
+    filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.3));
   }
 }
 
 .reply-title {
   font-size: 13px;
   font-weight: 600;
-  color: $primary-light;
+  color: $neon-cyan;
+  text-shadow: 0 0 6px rgba(0, 240, 255, 0.2);
 }
 
 .reply-content {
@@ -365,14 +405,15 @@ onMounted(() => {
   justify-content: flex-end;
 
   :deep(.el-button--primary) {
-    background: linear-gradient(135deg, $primary-color, $primary-dark);
-    border: none;
-    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+    background: linear-gradient(135deg, $primary-color, $neon-purple);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 240, 255, 0.12);
     transition: all $transition-normal;
 
     &:hover {
-      background: linear-gradient(135deg, $primary-light, $primary-color);
-      box-shadow: 0 6px 20px rgba($primary-color, 0.45);
+      background: linear-gradient(135deg, $neon-cyan, $primary-color);
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.3);
+      border-color: $neon-cyan;
       transform: translateY(-1px);
     }
   }

@@ -365,9 +365,15 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.25));
   position: relative;
   padding-left: 16px;
 
@@ -378,10 +384,10 @@ onMounted(() => {
     top: 50%;
     transform: translateY(-50%);
     width: 4px;
-    height: 24px;
+    height: 28px;
     border-radius: 2px;
-    background: linear-gradient(180deg, $primary-light, $primary-dark);
-    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+    background: linear-gradient(180deg, $neon-cyan, $neon-purple);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
   }
 }
 
@@ -390,14 +396,15 @@ onMounted(() => {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid $glass-border;
   border-radius: $border-radius-xl;
   box-shadow: $shadow-glow, $shadow-md;
-  transition: transform $transition-normal, box-shadow $transition-normal;
+  transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 30px rgba($primary-color, 0.25), $shadow-lg;
+    border-color: $neon-cyan;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), 0 0 40px rgba(0, 240, 255, 0.06), $shadow-lg;
   }
 
   :deep(.el-card__body) {
@@ -420,17 +427,17 @@ onMounted(() => {
 .balance-label {
   color: $text-secondary;
   font-size: 14px;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .balance-amount {
-  font-size: 36px;
+  font-size: 42px;
   font-weight: 700;
-  background: linear-gradient(135deg, $primary-light, #a78bfa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 12px rgba($primary-color, 0.3));
+  font-family: 'Orbitron', sans-serif;
+  color: $neon-cyan;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5), 0 0 40px rgba(0, 240, 255, 0.2);
+  letter-spacing: 2px;
 }
 
 .balance-actions {
@@ -438,15 +445,16 @@ onMounted(() => {
   gap: $spacing-sm;
 
   :deep(.el-button--primary) {
-    background: linear-gradient(135deg, $primary-color, $primary-dark);
-    border: none;
-    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+    background: linear-gradient(135deg, $primary-color, $neon-purple);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 240, 255, 0.15);
     transition: all $transition-normal;
 
     &:hover {
-      background: linear-gradient(135deg, $primary-light, $primary-color);
-      box-shadow: 0 6px 20px rgba($primary-color, 0.45);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, $neon-cyan, $primary-color);
+      box-shadow: 0 6px 24px rgba(0, 240, 255, 0.35), 0 0 40px rgba(0, 240, 255, 0.1);
+      border-color: $neon-cyan;
+      transform: translateY(-2px);
     }
   }
 
@@ -459,9 +467,10 @@ onMounted(() => {
 
     &:hover {
       background: $bg-hover;
-      border-color: rgba($primary-color, 0.3);
-      color: $primary-light;
+      border-color: rgba(0, 240, 255, 0.3);
+      color: $neon-cyan;
       transform: translateY(-1px);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.1);
     }
   }
 }
@@ -487,18 +496,19 @@ onMounted(() => {
   transition: all $transition-normal;
 
   &:hover {
-    border-color: rgba($primary-color, 0.3);
-    color: $primary-light;
-    background: rgba($primary-color, 0.08);
+    border-color: rgba(0, 240, 255, 0.3);
+    color: $neon-cyan;
+    background: rgba(0, 240, 255, 0.06);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba($primary-color, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 240, 255, 0.12);
   }
 
   &.active {
-    border-color: $primary-color;
-    color: $primary-light;
-    background: rgba($primary-color, 0.12);
-    box-shadow: 0 0 16px rgba($primary-color, 0.2), inset 0 0 12px rgba($primary-color, 0.05);
+    border-color: $neon-cyan;
+    color: $neon-cyan;
+    background: rgba(0, 240, 255, 0.1);
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.2), inset 0 0 12px rgba(0, 240, 255, 0.05);
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
   }
 }
 
@@ -508,9 +518,15 @@ onMounted(() => {
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $glass-border;
     border-radius: $border-radius-xl;
     box-shadow: $shadow-md;
+    transition: border-color $transition-normal, box-shadow $transition-normal;
+
+    &:hover {
+      border-color: rgba(0, 240, 255, 0.15);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.08), $shadow-md;
+    }
   }
 }
 
@@ -518,6 +534,7 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
+  letter-spacing: 0.5px;
 }
 
 .card-header-row {
@@ -528,6 +545,10 @@ onMounted(() => {
 
 .record-list {
   min-height: 100px;
+
+  :deep(.el-empty__image svg) {
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.2));
+  }
 }
 
 .record-item {
@@ -537,10 +558,11 @@ onMounted(() => {
   padding: $spacing-md $spacing-sm;
   border-bottom: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
-  transition: background $transition-fast;
+  transition: all $transition-normal;
 
   &:hover {
-    background: rgba($primary-color, 0.04);
+    background: rgba(0, 240, 255, 0.03);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.04);
   }
 
   &:last-child {
@@ -567,24 +589,24 @@ onMounted(() => {
 
 .record-amount {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
 
   &.income {
-    color: $success-color;
-    text-shadow: 0 0 8px rgba($success-color, 0.3);
+    color: $neon-green;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.35);
   }
 
   &.expense {
-    color: $danger-color;
-    text-shadow: 0 0 8px rgba($danger-color, 0.3);
+    color: $neon-pink;
+    text-shadow: 0 0 10px rgba(255, 45, 120, 0.35);
   }
 }
 
 // 手续费预览
 .fee-preview {
-  background: rgba($primary-color, 0.06);
+  background: rgba(0, 240, 255, 0.04);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.1);
   border-radius: $border-radius;
   padding: $spacing-md;
   margin-bottom: $spacing-md;
@@ -598,7 +620,7 @@ onMounted(() => {
   font-size: 14px;
 
   &.total {
-    border-top: 1px dashed rgba(148, 163, 184, 0.12);
+    border-top: 1px dashed rgba(0, 240, 255, 0.15);
     margin-top: $spacing-xs;
     padding-top: $spacing-sm;
     font-weight: 600;
@@ -614,17 +636,20 @@ onMounted(() => {
   font-weight: 500;
 
   &.fee-amount {
-    color: $warning-color;
+    color: $neon-yellow;
+    text-shadow: 0 0 8px rgba(255, 230, 0, 0.25);
   }
 
   &.actual-amount {
-    color: $success-color;
+    color: $neon-green;
     font-size: 16px;
-    text-shadow: 0 0 8px rgba($success-color, 0.25);
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
   }
 
   &.discount {
-    color: $success-color;
+    color: $neon-green;
+    text-shadow: 0 0 6px rgba(57, 255, 20, 0.2);
   }
 }
 

@@ -84,18 +84,33 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: $spacing-lg;
+  position: relative;
 }
 
 .page-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: $text-primary;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
   margin: 0;
-  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  background: linear-gradient(135deg, $neon-cyan 0%, $primary-light 50%, $neon-purple 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.5px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, transparent);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+  }
 }
 
 :deep(.el-tabs) {
@@ -103,29 +118,32 @@ onMounted(() => {
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $glass-border;
     border-radius: $border-radius-lg;
     padding: 4px $spacing-md;
   }
 
   .el-tabs__item {
     color: $text-secondary;
-    transition: color $transition-fast;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all $transition-normal;
 
     &.is-active {
-      color: $primary-light;
-      text-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+      color: $neon-cyan;
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.6), 0 0 24px rgba(0, 240, 255, 0.3);
     }
 
     &:hover {
-      color: $primary-light;
+      color: $neon-cyan;
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
     }
   }
 
   .el-tabs__active-bar {
-    background: linear-gradient(90deg, $primary-color, $primary-light);
+    background: $neon-cyan;
     border-radius: 2px;
-    box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.6), 0 0 20px rgba(0, 240, 255, 0.3);
   }
 
   .el-tabs__nav-wrap::after {
@@ -135,19 +153,36 @@ onMounted(() => {
 
 .ranking-content {
   min-height: 400px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: $border-radius-xl;
+    background-image:
+      linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
   :deep(.el-card) {
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $glass-border;
     border-radius: $border-radius-xl;
     box-shadow: $shadow-glow;
     transition: transform $transition-normal, box-shadow $transition-normal;
+    position: relative;
+    z-index: 1;
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2), 0 8px 32px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3);
+      border-color: rgba(0, 240, 255, 0.15);
     }
   }
 }

@@ -329,9 +329,68 @@ onMounted(() => {
 <style scoped lang="scss">
 @use '@/assets/styles/variables' as *;
 
+// --- 霓虹光环旋转动画 ---
+@keyframes neon-ring-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// --- 霓虹脉冲动画 ---
+@keyframes neon-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.3), 0 0 20px rgba($neon-cyan, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba($neon-cyan, 0.5), 0 0 35px rgba($neon-cyan, 0.2);
+  }
+}
+
+// --- 按钮呼吸发光 ---
+@keyframes btn-glow-breathe {
+  0%, 100% {
+    box-shadow:
+      0 0 10px rgba($neon-cyan, 0.3),
+      0 0 30px rgba($neon-cyan, 0.1),
+      0 4px 15px rgba($primary-color, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba($neon-cyan, 0.5),
+      0 0 45px rgba($neon-cyan, 0.15),
+      0 6px 25px rgba($primary-color, 0.4);
+  }
+}
+
+// --- 渐变位移动画 ---
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .service-detail-page {
   padding: $spacing-lg 0;
   padding-bottom: 100px;
+  position: relative;
+
+  // 赛博网格背景
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba($primary-color, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($primary-color, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // 让所有子内容在网格之上
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .detail-container {
@@ -348,15 +407,16 @@ onMounted(() => {
     border: 1px solid $glass-border;
     border-radius: $border-radius-lg;
     box-shadow: $shadow-glow;
-    transition: transform $transition-normal, box-shadow $transition-normal;
+    transition: all $transition-normal;
 
     &:hover {
       box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+      border-color: $border-color-hover;
     }
   }
 }
 
-// 服务信息
+// --- 服务信息 ---
 .service-main {
   display: flex;
   gap: $spacing-xl;
@@ -371,17 +431,34 @@ onMounted(() => {
   gap: $spacing-sm;
   margin-bottom: $spacing-md;
   flex-wrap: wrap;
+
+  :deep(.el-tag) {
+    border: 1px solid $border-color;
+    backdrop-filter: blur(8px);
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: $border-color-hover;
+      box-shadow: 0 0 8px rgba($primary-color, 0.15);
+    }
+  }
 }
 
+// --- 服务标题：大号加粗 + 微弱发光 ---
 .service-title {
-  font-size: 24px;
-  font-weight: 700;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
   color: $text-primary;
   margin-bottom: $spacing-md;
-  background: linear-gradient(135deg, $text-primary, $primary-light);
+  line-height: 1.3;
+  background: linear-gradient(135deg, $text-primary, $primary-light, $neon-cyan);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 12px rgba($neon-cyan, 0.2));
 }
 
 .service-meta {
@@ -397,41 +474,56 @@ onMounted(() => {
   gap: $spacing-xs;
   color: $text-secondary;
   font-size: 14px;
-  padding: 4px 10px;
-  background: rgba(148, 163, 184, 0.06);
-  border-radius: 6px;
-  transition: background $transition-fast;
+  padding: 6px 12px;
+  background: rgba($neon-cyan, 0.04);
+  border: 1px solid rgba($neon-cyan, 0.06);
+  border-radius: $border-radius;
+  transition: all $transition-fast;
 
   &:hover {
-    background: rgba(148, 163, 184, 0.1);
+    background: rgba($neon-cyan, 0.08);
+    border-color: rgba($neon-cyan, 0.15);
+    box-shadow: 0 0 10px rgba($neon-cyan, 0.08);
   }
 
   .el-icon {
-    color: $warning-color;
+    color: $neon-yellow;
   }
 }
 
+// --- 描述区域排版优化，行间距增加 ---
 .service-description {
   color: $text-secondary;
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: 15px;
+  line-height: 2;
   margin-bottom: $spacing-lg;
   white-space: pre-wrap;
+  padding: $spacing-md;
+  background: rgba($primary-color, 0.03);
+  border-radius: $border-radius;
+  border: 1px solid rgba($primary-color, 0.05);
+  letter-spacing: 0.3px;
 }
 
+// --- 价格区域 ---
 .service-price {
   display: flex;
   align-items: baseline;
   gap: $spacing-sm;
-  padding: $spacing-md;
-  background: rgba(148, 163, 184, 0.04);
-  border-radius: $border-radius;
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  padding: $spacing-md $spacing-lg;
+  background: rgba($neon-cyan, 0.04);
+  border-radius: $border-radius-lg;
+  border: 1px solid rgba($neon-cyan, 0.1);
+  box-shadow: inset 0 0 20px rgba($neon-cyan, 0.03);
 }
 
 .price-label {
-  color: $text-secondary;
+  color: $text-muted;
   font-size: 14px;
+  font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .original-price {
@@ -441,22 +533,26 @@ onMounted(() => {
   font-weight: 400;
 }
 
+// --- 价格显示：$neon-cyan色，大号字体 ---
 .price-value {
-  font-size: 28px;
-  font-weight: 700;
-  color: $danger-color;
-  text-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  font-family: 'Orbitron', 'Noto Sans SC', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: $neon-cyan;
+  text-shadow: 0 0 15px rgba($neon-cyan, 0.4), 0 0 30px rgba($neon-cyan, 0.15);
+  letter-spacing: 1px;
 }
 
 .discount-tag {
   display: inline-block;
-  padding: 2px 8px;
-  background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+  padding: 3px 10px;
+  background: linear-gradient(135deg, $neon-pink, $danger-color);
   color: white;
   border-radius: 4px;
   font-size: 12px;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(238, 90, 90, 0.3);
+  font-weight: 700;
+  box-shadow: 0 2px 12px rgba($neon-pink, 0.3);
+  letter-spacing: 0.5px;
 }
 
 .activity-tag {
@@ -469,26 +565,68 @@ onMounted(() => {
   gap: $spacing-sm;
   margin-top: $spacing-sm;
   padding: $spacing-sm $spacing-md;
-  background: rgba(34, 197, 94, 0.06);
+  background: rgba($neon-green, 0.05);
   border-radius: $border-radius;
-  border: 1px solid rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba($neon-green, 0.12);
 }
 
 .discount-text {
-  color: $success-color;
+  color: $neon-green;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba($neon-green, 0.2);
 }
 
-// 服务者信息
+// --- 服务者信息卡片：霓虹光环 ---
+.provider-section {
+  :deep(.el-card) {
+    position: relative;
+    overflow: hidden;
+
+    // 霓虹光环效果
+    &::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        rgba($neon-cyan, 0.3) 10%,
+        transparent 20%,
+        transparent 50%,
+        rgba($neon-purple, 0.3) 60%,
+        transparent 70%
+      );
+      border-radius: inherit;
+      z-index: -1;
+      animation: neon-ring-rotate 6s linear infinite;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      background: $glass-bg;
+      border-radius: inherit;
+      z-index: -1;
+    }
+  }
+}
+
 .provider-info {
   display: flex;
   align-items: center;
   gap: $spacing-md;
 
   :deep(.el-avatar) {
-    box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
-    border: 2px solid rgba(148, 163, 184, 0.1);
+    box-shadow:
+      0 0 12px rgba($neon-cyan, 0.3),
+      0 0 25px rgba($neon-cyan, 0.1);
+    border: 2px solid rgba($neon-cyan, 0.3);
+    transition: all $transition-normal;
   }
 }
 
@@ -501,20 +639,25 @@ onMounted(() => {
 
 .provider-name {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: $text-primary;
+  text-shadow: 0 0 8px rgba($neon-cyan, 0.15);
 }
 
 .provider-id {
+  font-family: 'Rajdhani', monospace;
   font-size: 12px;
   color: $text-muted;
+  letter-spacing: 1px;
 }
 
-// 评价
+// --- 评价区域 ---
 .card-header-title {
+  font-family: 'Noto Sans SC', sans-serif;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: $text-primary;
+  letter-spacing: 0.5px;
 }
 
 .card-header-row {
@@ -530,18 +673,37 @@ onMounted(() => {
   min-height: 100px;
 }
 
+// --- 评价卡片：neon-border 效果 ---
 .review-item {
   padding: $spacing-md;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
-  border-radius: $border-radius;
-  transition: background $transition-fast;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  transition: all $transition-normal;
+  position: relative;
 
-  &:hover {
-    background: rgba(148, 163, 184, 0.04);
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, $neon-cyan, $primary-color);
+    border-radius: 3px 0 0 3px;
+    opacity: 0;
+    transition: opacity $transition-normal;
   }
 
-  &:last-child {
-    border-bottom: none;
+  &:hover {
+    background: rgba($neon-cyan, 0.03);
+    border-color: rgba($neon-cyan, 0.2);
+    box-shadow:
+      0 0 10px rgba($neon-cyan, 0.05),
+      inset 0 0 20px rgba($neon-cyan, 0.02);
+
+    &::before {
+      opacity: 1;
+    }
   }
 }
 
@@ -561,86 +723,159 @@ onMounted(() => {
 
 .review-name {
   font-size: 14px;
+  font-weight: 600;
   color: $text-primary;
 }
 
 .review-time {
+  font-family: 'Rajdhani', monospace;
   font-size: 12px;
   color: $text-muted;
+  letter-spacing: 0.5px;
 }
 
 .review-content {
   color: $text-secondary;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.8;
   margin-bottom: $spacing-sm;
 }
 
 .review-reply {
-  background: rgba(99, 102, 241, 0.06);
+  background: rgba($neon-cyan, 0.04);
   border-radius: $border-radius;
   padding: $spacing-sm $spacing-md;
   font-size: 13px;
   color: $text-secondary;
-  border-left: 3px solid $primary-color;
+  border-left: 3px solid $neon-cyan;
+  box-shadow: inset 0 0 15px rgba($neon-cyan, 0.02);
 }
 
 .reply-label {
-  color: $primary-light;
-  font-weight: 500;
+  color: $neon-cyan;
+  font-weight: 600;
 }
 
 .pagination-wrapper {
   display: flex;
   justify-content: center;
   margin-top: $spacing-lg;
+  padding: $spacing-md 0;
+
+  :deep(.el-pagination) {
+    .btn-prev,
+    .btn-next,
+    .el-pager li {
+      background: $bg-elevated !important;
+      border: 1px solid $border-color;
+      border-radius: $border-radius !important;
+      color: $text-secondary !important;
+      font-weight: 500;
+      transition: all $transition-normal;
+      min-width: 36px;
+      margin: 0 2px;
+
+      &:hover {
+        border-color: $neon-cyan;
+        color: $neon-cyan !important;
+        box-shadow: 0 0 10px rgba($neon-cyan, 0.2);
+      }
+
+      &.is-active {
+        background: rgba($neon-cyan, 0.15) !important;
+        border-color: $neon-cyan;
+        color: $neon-cyan !important;
+        font-weight: 700;
+        box-shadow:
+          0 0 8px rgba($neon-cyan, 0.3),
+          0 0 20px rgba($neon-cyan, 0.1);
+      }
+    }
+  }
 }
 
-// 底部操作栏
+// --- 底部操作栏 ---
 .action-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: $glass-bg;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba($bg-dark, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-top: 1px solid $glass-border;
   padding: $spacing-md $spacing-xl;
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 100;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 -4px 20px rgba(0, 0, 0, 0.4),
+    0 -1px 0 rgba($neon-cyan, 0.08);
 }
 
 .action-left {
   display: flex;
   gap: $spacing-sm;
+
+  :deep(.el-button) {
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: $neon-cyan;
+      color: $neon-cyan;
+      box-shadow: 0 0 10px rgba($neon-cyan, 0.15);
+    }
+  }
 }
 
+// --- 操作按钮：霓虹发光效果 ---
 .order-btn {
-  min-width: 160px;
-  height: 44px;
-  font-size: 16px;
-  border-radius: $border-radius;
-  background: linear-gradient(135deg, $primary-color, $primary-dark);
-  border: none;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  min-width: 180px;
+  height: 48px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  border-radius: $border-radius-lg;
+  background: linear-gradient(135deg, $primary-color, $neon-cyan) !important;
+  border: 1px solid rgba($neon-cyan, 0.3) !important;
+  color: $bg-abyss !important;
+  animation: btn-glow-breathe 3s ease-in-out infinite;
   transition: all $transition-normal;
+  position: relative;
+  overflow: hidden;
+
+  // 光泽扫过效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
 
   &:hover {
-    background: linear-gradient(135deg, $primary-light, $primary-color);
-    box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
-    transform: translateY(-1px);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow:
+      0 0 20px rgba($neon-cyan, 0.5),
+      0 0 50px rgba($neon-cyan, 0.2),
+      0 8px 30px rgba($primary-color, 0.4) !important;
+    border-color: $neon-cyan !important;
+
+    &::before {
+      left: 120%;
+    }
   }
 
   &:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
   }
 }
 
-// 响应式
+// --- 响应式 ---
 @media (max-width: 768px) {
   .service-meta {
     flex-direction: column;
@@ -654,6 +889,15 @@ onMounted(() => {
   .order-btn {
     min-width: 120px;
     font-size: 14px;
+    height: 42px;
+  }
+
+  .service-title {
+    font-size: 22px;
+  }
+
+  .price-value {
+    font-size: 26px;
   }
 }
 </style>

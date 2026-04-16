@@ -346,11 +346,56 @@ onMounted(() => {
   font-size: 28px;
   font-weight: 700;
   margin: 0;
-  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  font-family: 'Orbitron', 'Rajdhani', sans-serif;
+  background: linear-gradient(135deg, $neon-cyan 0%, $primary-light 50%, $neon-purple 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: none;
+  position: relative;
+
+  // 底部霓虹光线装饰
+  &::after {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 2px;
+    margin-top: $spacing-sm;
+    background: linear-gradient(90deg, $neon-cyan, $primary-color, transparent);
+    border-radius: 1px;
+    box-shadow: 0 0 10px rgba($neon-cyan, 0.4);
+  }
+}
+
+// 统计卡片入场动画
+.stats-section {
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-md;
+
+    // 子元素逐个入场动画
+    > * {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: statCardEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+
+      @for $i from 1 through 8 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{$i * 0.08}s;
+        }
+      }
+    }
+  }
+}
+
+@keyframes statCardEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .stats-grid {
@@ -378,7 +423,7 @@ onMounted(() => {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid $border-color;
   border-radius: $border-radius-lg;
   cursor: pointer;
   transition: all $transition-normal;
@@ -392,22 +437,22 @@ onMounted(() => {
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, $primary-color, transparent);
+    background: linear-gradient(90deg, transparent, $neon-cyan, transparent);
     opacity: 0;
     transition: opacity $transition-normal;
   }
 
   &:hover {
-    border-color: rgba($primary-color, 0.3);
+    border-color: rgba($neon-cyan, 0.3);
     transform: translateY(-4px);
-    box-shadow: $shadow-glow, 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: $shadow-glow, 0 0 20px rgba($neon-cyan, 0.1);
 
     &::before {
       opacity: 1;
     }
 
     .quick-label {
-      color: $text-primary;
+      color: $neon-cyan;
     }
   }
 }
@@ -417,6 +462,7 @@ onMounted(() => {
   color: $text-secondary;
   font-weight: 500;
   transition: color $transition-normal;
+  letter-spacing: 0.5px;
 }
 
 .charts-section {
@@ -433,17 +479,40 @@ onMounted(() => {
   background: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $border-color !important;
   border-radius: $border-radius-lg !important;
   transition: all $transition-normal;
+  position: relative;
+  overflow: hidden;
+
+  // 霓虹边框
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba($neon-cyan, 0.2), rgba($primary-color, 0.1), transparent 50%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity $transition-normal;
+  }
 
   &:hover {
-    border-color: rgba($primary-color, 0.2) !important;
-    box-shadow: $shadow-glow;
+    border-color: rgba($neon-cyan, 0.2) !important;
+    box-shadow: $shadow-glow, 0 0 25px rgba($neon-cyan, 0.08);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   :deep(.el-card__header) {
-    border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+    border-bottom: 1px solid rgba($neon-cyan, 0.06);
     padding: $spacing-md $spacing-lg;
   }
 
@@ -456,6 +525,7 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
+  letter-spacing: 0.5px;
 }
 
 .card-header-row {
@@ -479,17 +549,40 @@ onMounted(() => {
   background: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $border-color !important;
   border-radius: $border-radius-lg !important;
   transition: all $transition-normal;
+  position: relative;
+  overflow: hidden;
+
+  // 霓虹边框
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba($neon-cyan, 0.15), rgba($primary-color, 0.08), transparent 50%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity $transition-normal;
+  }
 
   &:hover {
-    border-color: rgba($primary-color, 0.2) !important;
-    box-shadow: $shadow-glow;
+    border-color: rgba($neon-cyan, 0.2) !important;
+    box-shadow: $shadow-glow, 0 0 20px rgba($neon-cyan, 0.06);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   :deep(.el-card__header) {
-    border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+    border-bottom: 1px solid rgba($neon-cyan, 0.06);
     padding: $spacing-md $spacing-lg;
   }
 
@@ -509,7 +602,7 @@ onMounted(() => {
   gap: $spacing-md;
   padding: $spacing-md;
   margin: 0 (-$spacing-md);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  border-bottom: 1px solid rgba($neon-cyan, 0.04);
   cursor: pointer;
   transition: all $transition-fast;
   border-radius: $border-radius;
@@ -519,10 +612,11 @@ onMounted(() => {
   }
 
   &:hover {
-    background: rgba($primary-color, 0.06);
+    background: rgba($neon-cyan, 0.04);
     margin: 0 (-$spacing-md);
     padding-left: $spacing-md;
     padding-right: $spacing-md;
+    box-shadow: inset 0 0 20px rgba($neon-cyan, 0.02);
   }
 }
 
@@ -538,6 +632,7 @@ onMounted(() => {
   background: rgba(30, 41, 59, 0.8);
   color: $text-secondary;
   flex-shrink: 0;
+  font-family: 'Orbitron', monospace;
 
   &.rank-1 {
     background: linear-gradient(135deg, #fbbf24, #f59e0b);
@@ -579,7 +674,9 @@ onMounted(() => {
 .ranking-value {
   font-size: 16px;
   font-weight: 600;
-  color: $success-color;
+  color: $neon-green;
+  font-family: 'Orbitron', monospace;
+  text-shadow: 0 0 8px rgba($neon-green, 0.3);
 }
 
 .recent-item {
@@ -588,7 +685,7 @@ onMounted(() => {
   justify-content: space-between;
   padding: $spacing-md;
   margin: 0 (-$spacing-md);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  border-bottom: 1px solid rgba($neon-cyan, 0.04);
   cursor: pointer;
   transition: all $transition-fast;
   border-radius: $border-radius;
@@ -598,10 +695,11 @@ onMounted(() => {
   }
 
   &:hover {
-    background: rgba($primary-color, 0.06);
+    background: rgba($neon-cyan, 0.04);
     margin: 0 (-$spacing-md);
     padding-left: $spacing-md;
     padding-right: $spacing-md;
+    box-shadow: inset 0 0 20px rgba($neon-cyan, 0.02);
   }
 }
 
@@ -632,49 +730,101 @@ onMounted(() => {
 .recent-amount {
   font-size: 16px;
   font-weight: 600;
-  color: $danger-color;
+  color: $neon-pink;
   white-space: nowrap;
+  font-family: 'Orbitron', monospace;
+  text-shadow: 0 0 8px rgba($neon-pink, 0.3);
 }
 
-// 全局卡片毛玻璃效果
+// 全局卡片毛玻璃效果 + 霓虹边框
 :deep(.el-card) {
   background: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $border-color !important;
   border-radius: $border-radius-lg !important;
   transition: all $transition-normal;
 
   &:hover {
-    border-color: rgba($primary-color, 0.2) !important;
-    box-shadow: $shadow-glow;
+    border-color: rgba($neon-cyan, 0.2) !important;
+    box-shadow: $shadow-glow, 0 0 15px rgba($neon-cyan, 0.06);
   }
 }
 
 :deep(.el-table) {
-  --el-table-bg-color: #0f172a;
-  --el-table-tr-bg-color: #0f172a;
-  --el-table-header-bg-color: #1e293b;
-  --el-table-row-hover-bg-color: #334155;
-  --el-table-border-color: rgba(148, 163, 184, 0.06);
-  --el-table-text-color: #f1f5f9;
-  --el-table-header-text-color: #94a3b8;
+  --el-table-bg-color: #{$bg-dark};
+  --el-table-tr-bg-color: #{$bg-dark};
+  --el-table-header-bg-color: transparent;
+  --el-table-row-hover-bg-color: rgba(0, 240, 255, 0.04);
+  --el-table-border-color: rgba(0, 240, 255, 0.06);
+  --el-table-text-color: #{$text-primary};
+  --el-table-header-text-color: #{$neon-cyan};
 }
 
-// 按钮渐变效果
+// 表头渐变背景 + 霓虹文字
+:deep(.el-table__header-wrapper) {
+  th {
+    background: linear-gradient(135deg, rgba($neon-cyan, 0.06), rgba($primary-color, 0.04)) !important;
+    color: $neon-cyan !important;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+// 按钮霓虹发光效果
 :deep(.el-button--primary) {
-  background: linear-gradient(135deg, $primary-color, $primary-dark) !important;
+  background: linear-gradient(135deg, $neon-cyan, $primary-color) !important;
   border: none !important;
-  box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+  color: #06080f !important;
+  font-weight: 600;
+  box-shadow: 0 2px 12px rgba($neon-cyan, 0.3);
+  transition: all $transition-normal;
 
   &:hover {
-    background: linear-gradient(135deg, $primary-light, $primary-color) !important;
-    box-shadow: 0 4px 16px rgba($primary-color, 0.4);
+    background: linear-gradient(135deg, lighten($neon-cyan, 5%), lighten($primary-color, 5%)) !important;
+    box-shadow: 0 4px 20px rgba($neon-cyan, 0.5), 0 0 30px rgba($neon-cyan, 0.2);
     transform: translateY(-1px);
   }
 }
 
+// 状态标签霓虹风格
+:deep(.el-tag) {
+  border: 1px solid currentColor;
+  backdrop-filter: blur(4px);
+}
+
+:deep(.el-tag--success) {
+  background: rgba($neon-green, 0.1) !important;
+  color: $neon-green !important;
+  border-color: rgba($neon-green, 0.3) !important;
+  box-shadow: 0 0 8px rgba($neon-green, 0.15);
+}
+
+:deep(.el-tag--danger) {
+  background: rgba($neon-pink, 0.1) !important;
+  color: $neon-pink !important;
+  border-color: rgba($neon-pink, 0.3) !important;
+  box-shadow: 0 0 8px rgba($neon-pink, 0.15);
+}
+
+:deep(.el-tag--warning) {
+  background: rgba($neon-yellow, 0.1) !important;
+  color: $neon-yellow !important;
+  border-color: rgba($neon-yellow, 0.3) !important;
+  box-shadow: 0 0 8px rgba($neon-yellow, 0.15);
+}
+
+:deep(.el-tag--info) {
+  background: rgba($neon-cyan, 0.1) !important;
+  color: $neon-cyan !important;
+  border-color: rgba($neon-cyan, 0.3) !important;
+  box-shadow: 0 0 8px rgba($neon-cyan, 0.15);
+}
+
 @media (max-width: 1200px) {
+  .stats-section .stats-grid,
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -693,6 +843,7 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .stats-section .stats-grid,
   .stats-grid {
     grid-template-columns: 1fr;
   }

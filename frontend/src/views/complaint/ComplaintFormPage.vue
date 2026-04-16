@@ -126,14 +126,73 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.25));
   margin-bottom: $spacing-md;
+}
+
+.form-container {
+  :deep(.el-card) {
+    background: $glass-bg;
+    backdrop-filter: blur($glass-blur);
+    -webkit-backdrop-filter: blur($glass-blur);
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-xl;
+    box-shadow: $shadow-glow, $shadow-md;
+    transition: border-color $transition-normal, box-shadow $transition-normal;
+
+    &:hover {
+      border-color: $neon-cyan;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15), 0 0 40px rgba(0, 240, 255, 0.06), $shadow-md;
+    }
+  }
 }
 
 .complaint-form {
   padding: $spacing-md;
+
+  :deep(.el-form-item__label) {
+    color: $text-primary;
+    font-weight: 500;
+  }
+
+  :deep(.el-input__wrapper),
+  :deep(.el-textarea__inner) {
+    background: $bg-input;
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    box-shadow: none;
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: rgba(0, 240, 255, 0.2);
+    }
+
+    &.is-focus,
+    &:focus {
+      border-color: $neon-cyan;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.12), inset 0 0 8px rgba(0, 240, 255, 0.03);
+    }
+  }
+
+  :deep(.el-select) {
+    .el-input__wrapper {
+      &:hover {
+        border-color: rgba(0, 240, 255, 0.2);
+      }
+
+      &.is-focus {
+        border-color: $neon-cyan;
+        box-shadow: 0 0 12px rgba(0, 240, 255, 0.12);
+      }
+    }
+  }
 }
 
 .upload-tip {
@@ -142,6 +201,11 @@ onMounted(() => {
   gap: $spacing-xs;
   color: $text-muted;
   font-size: 13px;
+
+  :deep(.el-icon) {
+    color: $neon-cyan;
+    filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.3));
+  }
 }
 
 .form-footer {
@@ -149,6 +213,30 @@ onMounted(() => {
   justify-content: flex-end;
   gap: $spacing-sm;
   padding-top: $spacing-md;
-  border-top: 1px solid $border-color;
+  border-top: 1px solid rgba(0, 240, 255, 0.08);
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $neon-purple);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 240, 255, 0.12);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: linear-gradient(135deg, $neon-cyan, $primary-color);
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.3);
+      border-color: $neon-cyan;
+      transform: translateY(-1px);
+    }
+  }
+
+  :deep(.el-button--default) {
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      color: $neon-cyan;
+    }
+  }
 }
 </style>

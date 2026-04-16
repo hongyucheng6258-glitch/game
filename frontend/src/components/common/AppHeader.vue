@@ -108,14 +108,31 @@ onUnmounted(() => {
 @use '@/assets/styles/variables' as *;
 
 .app-header {
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+  background: rgba($bg-abyss, 0.88);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: none;
   position: sticky;
   top: 0;
   z-index: 100;
   transition: all $transition-normal;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $neon-cyan, $neon-purple, transparent);
+    box-shadow: 0 0 12px rgba($neon-cyan, 0.4), 0 0 12px rgba($neon-purple, 0.3);
+    animation: neonLinePulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes neonLinePulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 
 .header-inner {
@@ -140,25 +157,33 @@ onUnmounted(() => {
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(167, 139, 250, 0.2));
+  background: linear-gradient(135deg, rgba($neon-cyan, 0.15), rgba($neon-purple, 0.15));
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all $transition-normal;
+  border: 1px solid rgba($neon-cyan, 0.2);
+  box-shadow: 0 0 10px rgba($neon-cyan, 0.1);
 }
 
 .logo:hover .logo-icon {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(167, 139, 250, 0.3));
+  background: linear-gradient(135deg, rgba($neon-cyan, 0.25), rgba($neon-purple, 0.25));
   transform: scale(1.05);
+  box-shadow: 0 0 18px rgba($neon-cyan, 0.25);
+  border-color: rgba($neon-cyan, 0.4);
 }
 
 .logo-text {
+  font-family: 'Orbitron', sans-serif;
   font-size: 20px;
   font-weight: 700;
-  background: linear-gradient(135deg, #818cf8, #a78bfa);
+  background: linear-gradient(135deg, $neon-cyan, $neon-purple);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 6px rgba($neon-cyan, 0.4));
+  letter-spacing: 1px;
 }
 
 .nav-links {
@@ -179,25 +204,37 @@ onUnmounted(() => {
   transition: all $transition-normal;
   position: relative;
 
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, $neon-purple);
+    border-radius: 1px;
+    transition: transform $transition-normal;
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.5);
+  }
+
   &:hover {
     color: $text-primary;
-    background: rgba($primary-color, 0.08);
+    background: rgba($neon-cyan, 0.06);
+
+    &::after {
+      transform: translateX(-50%) scaleX(1);
+    }
   }
 
   &.router-link-active {
-    color: $primary-light;
-    background: rgba($primary-color, 0.12);
+    color: $neon-cyan;
+    background: rgba($neon-cyan, 0.08);
 
     &::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 20px;
-      height: 2px;
-      background: $primary-color;
-      border-radius: 1px;
+      transform: translateX(-50%) scaleX(1);
+      background: $neon-cyan;
+      box-shadow: 0 0 10px rgba($neon-cyan, 0.6), 0 0 20px rgba($neon-cyan, 0.2);
     }
   }
 }
@@ -206,6 +243,36 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 12px;
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, rgba($neon-cyan, 0.15), rgba($neon-purple, 0.15));
+    border: 1px solid rgba($neon-cyan, 0.4);
+    color: $neon-cyan;
+    box-shadow: 0 0 12px rgba($neon-cyan, 0.15), inset 0 0 12px rgba($neon-cyan, 0.05);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: linear-gradient(135deg, rgba($neon-cyan, 0.25), rgba($neon-purple, 0.2));
+      border-color: rgba($neon-cyan, 0.6);
+      box-shadow: 0 0 20px rgba($neon-cyan, 0.3), inset 0 0 16px rgba($neon-cyan, 0.08);
+      color: #fff;
+    }
+  }
+
+  :deep(.el-button:not(.el-button--primary)) {
+    border: 1px solid rgba($neon-purple, 0.35);
+    color: $neon-purple;
+    background: rgba($neon-purple, 0.06);
+    box-shadow: 0 0 10px rgba($neon-purple, 0.1);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: rgba($neon-purple, 0.15);
+      border-color: rgba($neon-purple, 0.6);
+      box-shadow: 0 0 18px rgba($neon-purple, 0.25);
+      color: #fff;
+    }
+  }
 }
 
 .message-btn {
@@ -213,9 +280,11 @@ onUnmounted(() => {
   padding: 8px;
   border-radius: $border-radius;
   transition: all $transition-normal;
+
   &:hover {
-    color: $text-primary;
-    background: rgba($primary-color, 0.08);
+    color: $neon-cyan;
+    background: rgba($neon-cyan, 0.08);
+    box-shadow: 0 0 12px rgba($neon-cyan, 0.15);
   }
 }
 
@@ -227,9 +296,23 @@ onUnmounted(() => {
   padding: 4px 12px 4px 4px;
   border-radius: 24px;
   transition: all $transition-normal;
+  border: 1px solid transparent;
 
   &:hover {
-    background: rgba($primary-color, 0.08);
+    background: rgba($neon-cyan, 0.06);
+    border-color: rgba($neon-cyan, 0.15);
+  }
+
+  :deep(.el-avatar) {
+    border: 2px solid transparent;
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.3), 0 0 16px rgba($neon-purple, 0.2);
+    transition: all $transition-normal;
+    background: linear-gradient(135deg, rgba($neon-cyan, 0.2), rgba($neon-purple, 0.2));
+  }
+
+  &:hover :deep(.el-avatar) {
+    border-color: rgba($neon-cyan, 0.5);
+    box-shadow: 0 0 12px rgba($neon-cyan, 0.5), 0 0 24px rgba($neon-purple, 0.3);
   }
 }
 

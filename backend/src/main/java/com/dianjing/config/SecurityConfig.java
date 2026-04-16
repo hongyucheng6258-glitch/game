@@ -41,6 +41,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/services/{id}").permitAll()
                 .requestMatchers("/api/v1/services/recommend").permitAll()
                 .requestMatchers("/api/v1/service-tags").permitAll()
+                .requestMatchers("/api/v1/level/list").permitAll()
+                .requestMatchers("/api/v1/public/settings").permitAll()
                 .requestMatchers("/api/v1/announcements").permitAll()
                 .requestMatchers("/api/v1/announcements/{id}").permitAll()
                 .requestMatchers("/api/v1/activities").permitAll()

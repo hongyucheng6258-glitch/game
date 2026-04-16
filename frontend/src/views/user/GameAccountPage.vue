@@ -247,26 +247,36 @@ onMounted(() => {
   justify-content: space-between;
   margin-bottom: $spacing-lg;
 
+  // 添加按钮 - 霓虹发光
   :deep(.el-button--primary) {
-    background: linear-gradient(135deg, $primary-color, $primary-dark);
+    background: linear-gradient(135deg, $neon-cyan, $primary-color);
     border: none;
-    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+    box-shadow: 0 4px 12px rgba($neon-cyan, 0.3);
     transition: all $transition-normal;
 
     &:hover {
-      background: linear-gradient(135deg, $primary-light, $primary-color);
-      box-shadow: 0 6px 20px rgba($primary-color, 0.45);
+      background: linear-gradient(135deg, lighten($neon-cyan, 5%), $primary-light);
+      box-shadow:
+        0 0 20px rgba($neon-cyan, 0.5),
+        0 0 40px rgba($neon-cyan, 0.2);
       transform: translateY(-1px);
     }
   }
 }
 
+// 页面标题 - Orbitron字体 + 渐变文字
 .page-title {
   font-size: 24px;
   font-weight: 700;
   color: $text-primary;
   position: relative;
   padding-left: 16px;
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba($neon-cyan, 0.3));
 
   &::before {
     content: '';
@@ -277,8 +287,8 @@ onMounted(() => {
     width: 4px;
     height: 24px;
     border-radius: 2px;
-    background: linear-gradient(180deg, $primary-light, $primary-dark);
-    box-shadow: 0 0 8px rgba($primary-color, 0.4);
+    background: linear-gradient(180deg, $neon-cyan, $primary-color);
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.5);
   }
 }
 
@@ -290,18 +300,22 @@ onMounted(() => {
   min-height: 200px;
 }
 
+// 游戏账号卡片 - neon-border + 对应游戏类型颜色左边框
 .account-card {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid $border-glow;
   border-radius: $border-radius-lg;
-  box-shadow: $shadow-md;
-  transition: transform $transition-normal, box-shadow $transition-normal;
+  box-shadow: $shadow-glow;
+  transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
+  border-left: 4px solid $primary-color;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: $shadow-glow, $shadow-lg;
+    box-shadow: $shadow-glow-strong, $shadow-neon-cyan;
+    border-color: rgba($neon-cyan, 0.3);
+    border-left-color: $neon-cyan;
   }
 
   :deep(.el-card__body) {
@@ -319,13 +333,13 @@ onMounted(() => {
   width: 48px;
   height: 48px;
   border-radius: $border-radius;
-  background: linear-gradient(135deg, rgba($primary-color, 0.15), rgba($primary-color, 0.05));
-  border: 1px solid rgba($primary-color, 0.1);
+  background: linear-gradient(135deg, rgba($neon-cyan, 0.15), rgba($primary-color, 0.05));
+  border: 1px solid rgba($neon-cyan, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 0 12px rgba($primary-color, 0.1);
+  box-shadow: 0 0 12px rgba($neon-cyan, 0.1);
 }
 
 .account-info {
@@ -363,6 +377,13 @@ onMounted(() => {
   display: flex;
   gap: $spacing-sm;
   flex-shrink: 0;
+
+  // 操作按钮 - 霓虹发光hover
+  :deep(.el-button--primary.is-text) {
+    &:hover {
+      text-shadow: 0 0 8px rgba($neon-cyan, 0.5);
+    }
+  }
 }
 
 // 响应式

@@ -246,15 +246,44 @@ onActivated(() => {
   font-weight: 700;
   color: $text-primary;
   margin: 0;
-  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  background: linear-gradient(135deg, $neon-cyan 0%, $primary-light 50%, $neon-pink 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, transparent);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  }
 }
 
 .tab-badge {
   margin-left: 4px;
+
+  :deep(.el-badge__content) {
+    background: $neon-pink;
+    border: none;
+    box-shadow: 0 0 10px rgba(255, 45, 120, 0.6), 0 0 20px rgba(255, 45, 120, 0.3);
+    animation: badge-pulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes badge-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 45, 120, 0.5), 0 0 16px rgba(255, 45, 120, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(255, 45, 120, 0.8), 0 0 28px rgba(255, 45, 120, 0.4);
+  }
 }
 
 :deep(.el-tabs) {
@@ -262,29 +291,30 @@ onActivated(() => {
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $glass-border;
     border-radius: $border-radius-lg;
     padding: 4px $spacing-md;
   }
 
   .el-tabs__item {
     color: $text-secondary;
-    transition: color $transition-fast;
+    transition: color $transition-fast, text-shadow $transition-fast;
 
     &.is-active {
-      color: $primary-light;
-      text-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+      color: $neon-cyan;
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
     }
 
     &:hover {
-      color: $primary-light;
+      color: $neon-cyan;
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
     }
   }
 
   .el-tabs__active-bar {
-    background: linear-gradient(90deg, $primary-color, $primary-light);
+    background: linear-gradient(90deg, $neon-cyan, $primary-color);
     border-radius: 2px;
-    box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
   }
 
   .el-tabs__nav-wrap::after {
@@ -308,21 +338,22 @@ onActivated(() => {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid $glass-border;
   border-radius: $border-radius-lg;
   cursor: pointer;
-  transition: transform $transition-normal, box-shadow $transition-normal, background $transition-fast;
+  transition: transform $transition-normal, box-shadow $transition-normal, background $transition-fast, border-color $transition-normal;
   position: relative;
 
   &:hover {
     background: rgba(51, 65, 85, 0.6);
     transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.1), 0 8px 24px rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 240, 255, 0.25);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.1), 0 0 24px rgba(0, 240, 255, 0.05), 0 8px 24px rgba(0, 0, 0, 0.2);
   }
 
   &.unread {
-    border-left: 3px solid $primary-color;
-    background: rgba(99, 102, 241, 0.05);
+    border-left: 3px solid $neon-cyan;
+    background: rgba(0, 240, 255, 0.03);
 
     .message-title {
       color: $text-primary;
@@ -338,12 +369,14 @@ onActivated(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.1);
   border-radius: $border-radius;
-  transition: background $transition-fast;
+  transition: background $transition-fast, box-shadow $transition-fast;
 
   .message-item:hover & {
-    background: rgba(99, 102, 241, 0.2);
+    background: rgba(0, 240, 255, 0.15);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
   }
 }
 
@@ -390,19 +423,19 @@ onActivated(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: $primary-color;
+  background: $neon-cyan;
   flex-shrink: 0;
   margin-top: 6px;
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
 @keyframes pulse-dot {
   0%, 100% {
-    box-shadow: 0 0 4px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 4px rgba(0, 240, 255, 0.4);
   }
   50% {
-    box-shadow: 0 0 12px rgba(99, 102, 241, 0.8);
+    box-shadow: 0 0 14px rgba(0, 240, 255, 0.9);
   }
 }
 
@@ -435,15 +468,24 @@ onActivated(() => {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid $glass-border;
   border-radius: $border-radius-lg;
   cursor: pointer;
-  transition: transform $transition-normal, box-shadow $transition-normal, background $transition-fast;
+  transition: transform $transition-normal, box-shadow $transition-normal, background $transition-fast, border-color $transition-normal;
 
   &:hover {
     background: rgba(51, 65, 85, 0.6);
     transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.1), 0 8px 24px rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 240, 255, 0.25);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.1), 0 0 24px rgba(0, 240, 255, 0.05), 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  // 未读消息徽章 - neon-pink 发光
+  :deep(.el-badge__content) {
+    background: $neon-pink;
+    border: none;
+    box-shadow: 0 0 10px rgba(255, 45, 120, 0.6), 0 0 20px rgba(255, 45, 120, 0.3);
+    animation: badge-pulse 2s ease-in-out infinite;
   }
 }
 
@@ -463,10 +505,11 @@ onActivated(() => {
   font-size: 15px;
   font-weight: 600;
   color: $text-primary;
-  transition: color $transition-fast;
+  transition: color $transition-fast, text-shadow $transition-fast;
 
   .conversation-item:hover & {
-    color: $primary-light;
+    color: $neon-cyan;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
   }
 }
 
@@ -488,11 +531,11 @@ onActivated(() => {
   justify-content: flex-end;
 
   :deep(.el-button--primary) {
-    background: linear-gradient(135deg, $primary-color, $primary-light);
+    background: linear-gradient(135deg, $neon-cyan, $primary-color);
     border: none;
 
     &:hover {
-      box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
     }
   }
 }
@@ -501,5 +544,16 @@ onActivated(() => {
   display: flex;
   justify-content: center;
   margin-top: $spacing-md;
+}
+
+// 空状态图标微弱发光
+:deep(.el-empty) {
+  .el-empty__image svg {
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.2));
+  }
+
+  .el-empty__description {
+    color: $text-muted;
+  }
 }
 </style>

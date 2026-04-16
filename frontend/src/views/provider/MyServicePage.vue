@@ -161,13 +161,19 @@ onMounted(() => {
   justify-content: space-between;
 
   :deep(.el-button--primary) {
-    background: linear-gradient(135deg, $primary-color, $primary-light);
-    border: none;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, $primary-color, $neon-cyan);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 240, 255, 0.2);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all $transition-normal;
 
     &:hover {
-      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
-      transform: translateY(-1px);
+      box-shadow:
+        0 0 16px rgba(0, 240, 255, 0.4),
+        0 0 32px rgba(0, 240, 255, 0.15);
+      transform: translateY(-2px);
+      border-color: rgba(0, 240, 255, 0.6);
     }
   }
 }
@@ -175,13 +181,29 @@ onMounted(() => {
 .page-title {
   font-size: 28px;
   font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
   color: $text-primary;
   margin: 0;
-  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  background: linear-gradient(135deg, $neon-cyan 0%, $primary-light 50%, $neon-purple 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: $spacing-md;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, $primary-light, $neon-purple);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.5), 0 0 24px rgba(191, 90, 242, 0.3);
+    border-radius: 2px;
+  }
 }
 
 .service-list {
@@ -195,13 +217,35 @@ onMounted(() => {
   background: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $border-glow !important;
   border-radius: $border-radius-lg !important;
-  transition: transform $transition-normal, box-shadow $transition-normal;
+  transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, $primary-light, $neon-purple);
+    opacity: 0;
+    transition: opacity $transition-normal;
+  }
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15), 0 8px 28px rgba(0, 0, 0, 0.25);
+    border-color: rgba(0, 240, 255, 0.35) !important;
+    box-shadow:
+      0 0 24px rgba(0, 240, 255, 0.12),
+      0 0 48px rgba(99, 102, 241, 0.08),
+      0 8px 28px rgba(0, 0, 0, 0.3);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   :deep(.el-card__body) {
@@ -225,10 +269,12 @@ onMounted(() => {
   align-items: flex-start;
   padding: $spacing-sm;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: box-shadow $transition-normal;
+  transition: all $transition-normal;
 
   .service-item:hover & {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.4),
+      0 0 16px rgba(0, 240, 255, 0.15);
   }
 }
 
@@ -237,6 +283,8 @@ onMounted(() => {
   top: $spacing-sm;
   left: $spacing-sm;
   backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
 }
 
 .service-item-info {
@@ -255,10 +303,11 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: color $transition-fast;
+  transition: all $transition-fast;
 
   .service-item:hover & {
-    color: $primary-light;
+    color: $neon-cyan;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
   }
 }
 
@@ -276,8 +325,9 @@ onMounted(() => {
 .price {
   font-size: 16px;
   font-weight: 700;
-  color: $warning-color;
-  text-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+  color: $neon-cyan;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+  font-family: 'Orbitron', sans-serif;
 }
 
 .service-item-stats {
@@ -293,7 +343,8 @@ onMounted(() => {
     transition: color $transition-fast;
 
     &:hover {
-      color: $text-secondary;
+      color: $neon-cyan;
+      text-shadow: 0 0 6px rgba(0, 240, 255, 0.3);
     }
   }
 }
@@ -304,6 +355,39 @@ onMounted(() => {
   align-items: flex-end;
   gap: $spacing-sm;
   flex-shrink: 0;
+
+  :deep(.el-tag) {
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    backdrop-filter: blur(4px);
+
+    &.el-tag--success {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: rgba(34, 197, 94, 0.4);
+      color: $neon-green;
+      box-shadow: 0 0 8px rgba(57, 255, 20, 0.15);
+    }
+
+    &.el-tag--warning {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: $neon-yellow;
+      box-shadow: 0 0 8px rgba(255, 230, 0, 0.15);
+    }
+
+    &.el-tag--info {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.4);
+      color: $primary-light;
+      box-shadow: 0 0 8px rgba(99, 102, 241, 0.15);
+    }
+
+    &.el-tag--danger {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: $neon-pink;
+      box-shadow: 0 0 8px rgba(255, 45, 120, 0.15);
+    }
+  }
 }
 
 .action-buttons {
@@ -312,25 +396,42 @@ onMounted(() => {
 
   :deep(.el-button--warning) {
     background: linear-gradient(135deg, $warning-color, #fbbf24);
-    border: none;
+    border: 1px solid rgba(255, 230, 0, 0.3);
     box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
+    transition: all $transition-normal;
+
+    &:hover {
+      box-shadow: 0 0 12px rgba(255, 230, 0, 0.4), 0 0 24px rgba(245, 158, 11, 0.15);
+      transform: translateY(-1px);
+      border-color: rgba(255, 230, 0, 0.6);
+    }
   }
 
   :deep(.el-button--success) {
     background: linear-gradient(135deg, $success-color, #4ade80);
-    border: none;
+    border: 1px solid rgba(57, 255, 20, 0.3);
     box-shadow: 0 2px 6px rgba(34, 197, 94, 0.3);
+    transition: all $transition-normal;
+
+    &:hover {
+      box-shadow: 0 0 12px rgba(57, 255, 20, 0.4), 0 0 24px rgba(34, 197, 94, 0.15);
+      transform: translateY(-1px);
+      border-color: rgba(57, 255, 20, 0.6);
+    }
   }
 
   :deep(.el-button--default) {
     background: rgba(51, 65, 85, 0.5);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $border-glow;
     color: $text-secondary;
+    transition: all $transition-normal;
 
     &:hover {
-      background: rgba(51, 65, 85, 0.8);
-      color: $primary-light;
-      border-color: rgba(99, 102, 241, 0.3);
+      background: rgba(0, 240, 255, 0.08);
+      color: $neon-cyan;
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.15);
+      transform: translateY(-1px);
     }
   }
 }

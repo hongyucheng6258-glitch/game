@@ -191,6 +191,18 @@ onUnmounted(() => {
   background: $bg-card;
   border: 1px solid $border-color;
   border-radius: $border-radius-lg $border-radius-lg 0 0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: $spacing-md;
+    right: $spacing-md;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $neon-cyan, $primary-color, transparent);
+    opacity: 0.3;
+  }
 }
 
 .chat-user-info {
@@ -203,15 +215,41 @@ onUnmounted(() => {
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.15);
 }
 
 .chat-body {
   flex: 1;
   min-height: 0;
+  position: relative;
+
+  // 赛博网格纹理背景
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
   .chat-box {
     border-radius: 0 0 $border-radius-lg $border-radius-lg;
     border-top: none;
+    position: relative;
+    z-index: 1;
   }
 }
 </style>

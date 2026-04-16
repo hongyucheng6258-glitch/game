@@ -284,14 +284,142 @@ onMounted(async () => {
 .page-title {
   font-size: 24px;
   font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
   color: $text-primary;
   margin-bottom: $spacing-lg;
+  background: linear-gradient(135deg, $neon-cyan 0%, $primary-light 50%, $neon-purple 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: $spacing-md;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, $primary-light, $neon-purple);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.5), 0 0 24px rgba(191, 90, 242, 0.3);
+    border-radius: 2px;
+  }
+}
+
+:deep(.el-card) {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid $border-glow;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-glow;
+  position: relative;
+  overflow: hidden;
+  transition: border-color $transition-normal, box-shadow $transition-normal;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, $primary-light, $neon-purple);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+  }
+
+  &:hover {
+    border-color: rgba(0, 240, 255, 0.25);
+    box-shadow:
+      0 0 30px rgba(0, 240, 255, 0.08),
+      $shadow-glow;
+  }
 }
 
 .service-form {
   :deep(.el-form-item__label) {
     color: $text-primary;
     font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  :deep(.el-input__wrapper),
+  :deep(.el-textarea__inner) {
+    background: $bg-input;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    box-shadow: none;
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: $border-color-hover;
+    }
+
+    &.is-focus,
+    &:focus {
+      border-color: rgba(0, 240, 255, 0.5);
+      box-shadow:
+        0 0 0 1px rgba(0, 240, 255, 0.2),
+        0 0 12px rgba(0, 240, 255, 0.15),
+        0 0 24px rgba(0, 240, 255, 0.05);
+    }
+  }
+
+  :deep(.el-select .el-input__wrapper) {
+    background: $bg-input;
+    border: 1px solid $border-color;
+    box-shadow: none;
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: $border-color-hover;
+    }
+
+    &.is-focus {
+      border-color: rgba(0, 240, 255, 0.5);
+      box-shadow:
+        0 0 0 1px rgba(0, 240, 255, 0.2),
+        0 0 12px rgba(0, 240, 255, 0.15);
+    }
+  }
+
+  :deep(.el-input-number .el-input__wrapper) {
+    background: $bg-input;
+    border: 1px solid $border-color;
+    box-shadow: none;
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: $border-color-hover;
+    }
+
+    &.is-focus {
+      border-color: rgba(0, 240, 255, 0.5);
+      box-shadow:
+        0 0 0 1px rgba(0, 240, 255, 0.2),
+        0 0 12px rgba(0, 240, 255, 0.15);
+    }
+  }
+
+  :deep(.el-radio-button__inner) {
+    background: $bg-input;
+    border-color: $border-color;
+    color: $text-secondary;
+    transition: all $transition-normal;
+
+    &:hover {
+      color: $neon-cyan;
+    }
+  }
+
+  :deep(.el-radio-button.is-active .el-radio-button__inner) {
+    background: linear-gradient(135deg, $primary-color, $neon-cyan);
+    border-color: rgba(0, 240, 255, 0.4);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
   }
 }
 
@@ -304,16 +432,29 @@ onMounted(async () => {
 }
 
 .tag-item {
-  background: rgba(99, 102, 241, 0.15);
-  border-color: $primary-color;
-  color: $primary-light;
+  background: rgba(0, 240, 255, 0.1);
+  border-color: rgba(0, 240, 255, 0.35);
+  color: $neon-cyan;
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.1);
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(0, 240, 255, 0.18);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+  }
 }
 
 .tag-selector {
   margin-top: $spacing-sm;
   padding: $spacing-md;
-  background: $bg-hover;
+  background: rgba(0, 240, 255, 0.03);
+  border: 1px solid rgba(0, 240, 255, 0.08);
   border-radius: $border-radius;
+  transition: border-color $transition-normal;
+
+  &:hover {
+    border-color: rgba(0, 240, 255, 0.15);
+  }
 
   :deep(.el-checkbox) {
     margin-right: $spacing-lg;
@@ -321,7 +462,13 @@ onMounted(async () => {
 
     &:not(.is-disabled):hover {
       .el-checkbox__label {
-        color: $primary-light;
+        color: $neon-cyan;
+      }
+    }
+
+    &.is-checked {
+      .el-checkbox__label {
+        color: $neon-cyan;
       }
     }
   }
@@ -337,6 +484,39 @@ onMounted(async () => {
   gap: $spacing-md;
   width: 100%;
   justify-content: flex-end;
+
+  :deep(.el-button--default) {
+    background: rgba(51, 65, 85, 0.5);
+    border: 1px solid $border-glow;
+    color: $text-secondary;
+    transition: all $transition-normal;
+
+    &:hover {
+      background: rgba(0, 240, 255, 0.08);
+      color: $neon-cyan;
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.15);
+      transform: translateY(-1px);
+    }
+  }
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $neon-cyan);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 240, 255, 0.2);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all $transition-normal;
+
+    &:hover {
+      box-shadow:
+        0 0 16px rgba(0, 240, 255, 0.4),
+        0 0 32px rgba(0, 240, 255, 0.15),
+        0 0 48px rgba(99, 102, 241, 0.1);
+      transform: translateY(-2px);
+      border-color: rgba(0, 240, 255, 0.6);
+    }
+  }
 }
 
 .price-limit-info {
@@ -344,6 +524,12 @@ onMounted(async () => {
   align-items: center;
   gap: $spacing-sm;
   margin-top: $spacing-sm;
+
+  :deep(.el-tag--info) {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.4);
+    color: $primary-light;
+  }
 }
 
 .limit-text {
@@ -353,5 +539,11 @@ onMounted(async () => {
 
 .price-exceed-alert {
   margin-top: 12px;
+
+  :deep(.el-alert) {
+    background: rgba(255, 45, 120, 0.08);
+    border: 1px solid rgba(255, 45, 120, 0.25);
+    border-radius: $border-radius;
+  }
 }
 </style>

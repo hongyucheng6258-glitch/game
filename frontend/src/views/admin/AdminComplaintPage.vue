@@ -282,28 +282,62 @@ onMounted(() => {
   align-items: center;
 }
 
+// 页面标题 - Orbitron字体 + 霓虹渐变
 .page-title {
+  font-family: 'Orbitron', sans-serif;
   font-size: 28px;
   font-weight: 700;
   margin: 0;
-  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  background: linear-gradient(135deg, $neon-cyan 0%, $primary-light 50%, $neon-purple 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: $spacing-sm;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, transparent);
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.5);
+  }
 }
 
+// 筛选卡片 - neon-border
 .filter-card {
   background: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $glass-border !important;
   border-radius: $border-radius-lg !important;
   transition: all $transition-normal;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $neon-cyan, transparent);
+    opacity: 0;
+    transition: opacity $transition-normal;
+  }
 
   &:hover {
-    border-color: rgba($primary-color, 0.2) !important;
-    box-shadow: $shadow-glow;
+    border-color: $border-glow !important;
+    box-shadow: $shadow-neon-cyan, $shadow-glow;
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   :deep(.el-card__body) {
@@ -311,17 +345,36 @@ onMounted(() => {
   }
 }
 
+// 表格卡片 - neon-border
 .table-card {
   background: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $glass-border !important;
   border-radius: $border-radius-lg !important;
   transition: all $transition-normal;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $neon-cyan, transparent);
+    opacity: 0;
+    transition: opacity $transition-normal;
+    z-index: 1;
+  }
 
   &:hover {
-    border-color: rgba($primary-color, 0.2) !important;
-    box-shadow: $shadow-glow;
+    border-color: $border-glow !important;
+    box-shadow: $shadow-neon-cyan, $shadow-glow;
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   :deep(.el-card__body) {
@@ -335,26 +388,44 @@ onMounted(() => {
   justify-content: flex-end;
 }
 
-// 卡片毛玻璃效果
+// 卡片 - neon-border效果
 :deep(.el-card) {
   background: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $glass-border !important;
   border-radius: $border-radius-lg !important;
   transition: all $transition-normal;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $neon-cyan, transparent);
+    opacity: 0;
+    transition: opacity $transition-normal;
+    z-index: 1;
+  }
 
   &:hover {
-    border-color: rgba($primary-color, 0.2) !important;
-    box-shadow: $shadow-glow;
+    border-color: $border-glow !important;
+    box-shadow: $shadow-neon-cyan, $shadow-glow;
+
+    &::before {
+      opacity: 1;
+    }
   }
 }
 
-// 表格暗色电竞风格
+// 表格 - 赛博朋克电竞风
 :deep(.el-table) {
   --el-table-bg-color: #0f172a;
-  --el-table-header-bg-color: #1e293b;
-  --el-table-row-hover-bg-color: rgba($primary-color, 0.08);
+  --el-table-header-bg-color: transparent;
+  --el-table-row-hover-bg-color: rgba($neon-cyan, 0.06);
   --el-table-border-color: rgba(148, 163, 184, 0.06);
   --el-table-text-color: #f1f5f9;
   --el-table-header-text-color: #94a3b8;
@@ -366,39 +437,70 @@ onMounted(() => {
   }
 }
 
+// 表头 - 渐变背景 + cyan文字
+:deep(.el-table__header-wrapper) {
+  th {
+    background: linear-gradient(135deg, rgba($neon-cyan, 0.08), rgba($primary-color, 0.08)) !important;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: $neon-cyan !important;
+    border-bottom: 1px solid rgba($neon-cyan, 0.15) !important;
+  }
+}
+
 :deep(.el-table__row) {
   transition: all $transition-fast;
 
   &:hover {
-    background-color: rgba($primary-color, 0.08) !important;
+    background-color: rgba($neon-cyan, 0.06) !important;
+    box-shadow: inset 0 0 30px rgba($neon-cyan, 0.03);
   }
 }
 
-:deep(.el-table__header-wrapper) {
-  th {
-    background-color: #1e293b !important;
-    font-weight: 600;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+// 搜索框 - focus时cyan发光
+:deep(.el-input__wrapper),
+:deep(.el-select .el-input__wrapper) {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 1px solid rgba(148, 163, 184, 0.08) !important;
+  box-shadow: none !important;
+  border-radius: $border-radius;
+  transition: all $transition-fast;
+
+  &:focus-within {
+    border-color: rgba($neon-cyan, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba($neon-cyan, 0.1), 0 0 12px rgba($neon-cyan, 0.15) !important;
   }
 }
 
-// 对话框美化
+// 对话框 - 霓虹边框
 :deep(.el-dialog) {
   --el-dialog-bg-color: #0f172a !important;
-  --el-dialog-border-color: rgba(148, 163, 184, 0.06) !important;
+  --el-dialog-border-color: $glass-border !important;
   --el-dialog-title-color: #f1f5f9 !important;
   background-color: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $glass-border !important;
   border-radius: $border-radius-xl !important;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), $shadow-glow;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), $shadow-neon-cyan;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $neon-cyan, $neon-purple, transparent);
+    border-radius: $border-radius-xl $border-radius-xl 0 0;
+  }
 }
 
 :deep(.el-dialog__header) {
-  border-bottom: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-bottom: 1px solid rgba($neon-cyan, 0.1) !important;
   background-color: transparent !important;
   padding: $spacing-lg $spacing-xl;
   margin-right: 0;
@@ -411,14 +513,14 @@ onMounted(() => {
 }
 
 :deep(.el-dialog__footer) {
-  border-top: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border-top: 1px solid rgba($neon-cyan, 0.1) !important;
   background-color: transparent !important;
   padding: $spacing-md $spacing-xl;
 }
 
-// 描述列表美化
+// 描述列表 - 霓虹风格
 :deep(.el-descriptions) {
-  --el-descriptions-table-border: rgba(148, 163, 184, 0.06) !important;
+  --el-descriptions-table-border: rgba($neon-cyan, 0.08) !important;
   --el-descriptions-item-bordered-label-background: rgba(30, 41, 59, 0.6) !important;
   --el-descriptions-item-bordered-content-background: transparent !important;
   --el-descriptions-item-content-color: #f1f5f9 !important;
@@ -436,18 +538,19 @@ onMounted(() => {
 }
 
 :deep(.el-descriptions__cell) {
-  border-color: rgba(148, 163, 184, 0.06) !important;
+  border-color: rgba($neon-cyan, 0.08) !important;
 }
 
-// 按钮渐变效果
+// 操作按钮 - 霓虹发光hover
 :deep(.el-button--primary) {
   background: linear-gradient(135deg, $primary-color, $primary-dark) !important;
   border: none !important;
   box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+  transition: all $transition-normal;
 
   &:hover {
     background: linear-gradient(135deg, $primary-light, $primary-color) !important;
-    box-shadow: 0 4px 16px rgba($primary-color, 0.4);
+    box-shadow: 0 0 16px rgba($primary-color, 0.5), 0 4px 16px rgba($primary-color, 0.3);
     transform: translateY(-1px);
   }
 }
@@ -456,42 +559,104 @@ onMounted(() => {
   background: linear-gradient(135deg, #22c55e, #16a34a) !important;
   border: none !important;
   box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  transition: all $transition-normal;
 
   &:hover {
     background: linear-gradient(135deg, #4ade80, #22c55e) !important;
-    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+    box-shadow: 0 0 16px rgba(34, 197, 94, 0.5), 0 4px 16px rgba(34, 197, 94, 0.3);
     transform: translateY(-1px);
   }
 }
 
-// 分页器美化
+// 状态标签 - 霓虹风格（投诉状态增强）
+:deep(.el-tag) {
+  border: none;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+:deep(.el-tag--success) {
+  background: rgba($neon-green, 0.12) !important;
+  color: $neon-green !important;
+  box-shadow: 0 0 8px rgba($neon-green, 0.2);
+}
+
+:deep(.el-tag--danger) {
+  background: rgba($neon-pink, 0.15) !important;
+  color: $neon-pink !important;
+  box-shadow: 0 0 12px rgba($neon-pink, 0.3);
+  animation: neon-pink-pulse 2s ease-in-out infinite;
+}
+
+:deep(.el-tag--warning) {
+  background: rgba($neon-yellow, 0.12) !important;
+  color: $neon-yellow !important;
+  box-shadow: 0 0 8px rgba($neon-yellow, 0.2);
+}
+
+:deep(.el-tag--info) {
+  background: rgba($neon-cyan, 0.12) !important;
+  color: $neon-cyan !important;
+  box-shadow: 0 0 8px rgba($neon-cyan, 0.2);
+}
+
+// 紧急投诉 - neon-pink发光脉冲动画
+@keyframes neon-pink-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba($neon-pink, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba($neon-pink, 0.5), 0 0 24px rgba($neon-pink, 0.2);
+  }
+}
+
+// 分页器 - 赛博朋克风格
 :deep(.el-pagination) {
+  --el-pagination-bg-color: transparent;
+  --el-pagination-text-color: #{$text-secondary};
+  --el-pagination-button-bg-color: rgba(30, 41, 59, 0.6);
+  --el-pagination-button-color: #{$text-secondary};
+  --el-pagination-hover-color: #{$neon-cyan};
+
   .el-pager li {
     background: rgba(30, 41, 59, 0.6) !important;
-    border: 1px solid rgba(148, 163, 184, 0.06) !important;
+    border: 1px solid rgba(148, 163, 184, 0.08) !important;
     color: $text-secondary !important;
     border-radius: $border-radius;
     transition: all $transition-fast;
+    font-weight: 500;
 
     &:hover {
-      color: $primary-light !important;
-      border-color: rgba($primary-color, 0.3) !important;
+      color: $neon-cyan !important;
+      border-color: rgba($neon-cyan, 0.3) !important;
+      box-shadow: 0 0 8px rgba($neon-cyan, 0.15);
     }
 
     &.is-active {
-      background: linear-gradient(135deg, $primary-color, $primary-dark) !important;
-      border-color: transparent !important;
-      color: #fff !important;
-      box-shadow: 0 2px 8px rgba($primary-color, 0.4);
+      background: linear-gradient(135deg, rgba($neon-cyan, 0.2), rgba($primary-color, 0.2)) !important;
+      border-color: rgba($neon-cyan, 0.4) !important;
+      color: $neon-cyan !important;
+      box-shadow: 0 0 12px rgba($neon-cyan, 0.3);
     }
   }
 
   .btn-prev,
   .btn-next {
     background: rgba(30, 41, 59, 0.6) !important;
-    border: 1px solid rgba(148, 163, 184, 0.06) !important;
+    border: 1px solid rgba(148, 163, 184, 0.08) !important;
     color: $text-secondary !important;
     border-radius: $border-radius;
+    transition: all $transition-fast;
+
+    &:hover {
+      color: $neon-cyan !important;
+      border-color: rgba($neon-cyan, 0.3) !important;
+    }
+  }
+
+  .el-pagination__total,
+  .el-pagination__sizes {
+    color: $text-secondary !important;
   }
 }
 </style>

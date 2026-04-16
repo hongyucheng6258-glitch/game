@@ -1,19 +1,101 @@
-// 管理后台表格样式
+// ============================================
+// 管理后台表格样式 - 赛博朋克电竞风
+// ============================================
+@use './variables' as *;
+
 .admin-table {
   :deep(.el-table) {
-    --el-table-bg-color: #0f172a;
-    --el-table-header-bg-color: #1e293b;
-    --el-table-row-hover-bg-color: #334155;
-    --el-table-border-color: #334155;
-    --el-table-text-color: #f1f5f9;
-    --el-table-header-text-color: #94a3b8;
+    --el-table-bg-color: #{$bg-dark};
+    --el-table-header-bg-color: transparent;
+    --el-table-row-hover-bg-color: rgba(0, 240, 255, 0.04);
+    --el-table-border-color: rgba(0, 240, 255, 0.06);
+    --el-table-text-color: #{$text-primary};
+    --el-table-header-text-color: #{$neon-cyan};
+
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+    border: 1px solid rgba($neon-cyan, 0.08);
+
+    // 表格内部边框
+    &::before {
+      height: 0 !important;
+    }
+
+    .el-table__inner-wrapper {
+      &::before {
+        height: 0 !important;
+      }
+    }
   }
 
+  // 表头 - 渐变背景 + 霓虹文字
+  :deep(.el-table__header-wrapper) {
+    th {
+      background: linear-gradient(135deg, rgba($neon-cyan, 0.06), rgba($primary-color, 0.04)) !important;
+      color: $neon-cyan !important;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba($neon-cyan, 0.12) !important;
+      font-family: 'Rajdhani', 'Orbitron', sans-serif;
+
+      .cell {
+        position: relative;
+
+        // 表头底部微光线
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba($neon-cyan, 0.2), transparent);
+        }
+      }
+    }
+  }
+
+  // 奇数行 - 深色基底
   :deep(.el-table__row) {
-    background-color: #0f172a !important;
+    background-color: $bg-dark !important;
+    transition: all $transition-fast;
+
+    &:hover {
+      background-color: rgba(0, 240, 255, 0.04) !important;
+      box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.03);
+    }
   }
 
+  // 偶数行 - 略浅的对比色
   :deep(.el-table__row:nth-child(even)) {
-    background-color: #1e293b !important;
+    background-color: rgba($bg-elevated, 0.3) !important;
+
+    &:hover {
+      background-color: rgba(0, 240, 255, 0.05) !important;
+      box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.03);
+    }
+  }
+
+  // 条纹行（Element Plus stripe模式）
+  :deep(.el-table__row--striped) {
+    background-color: rgba($bg-elevated, 0.35) !important;
+
+    &:hover {
+      background-color: rgba(0, 240, 255, 0.05) !important;
+    }
+  }
+
+  // 单元格边框
+  :deep(.el-table__body-wrapper) {
+    td {
+      border-bottom: 1px solid rgba(0, 240, 255, 0.04) !important;
+    }
+  }
+
+  // 空状态
+  :deep(.el-table__empty-block) {
+    background: transparent;
   }
 }

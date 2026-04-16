@@ -205,16 +205,60 @@ onMounted(() => {
 <style scoped lang="scss">
 @use '@/assets/styles/variables' as *;
 
+// ============================================
+// 赛博朋克电竞风 - 首页样式
+// ============================================
+
 .home-page {
   min-height: 100vh;
+  position: relative;
+
+  // 全局赛博网格背景
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba($neon-cyan, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($neon-cyan, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // 全局噪点纹理覆盖层
+  &::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // 确保所有内容在覆盖层之上
+  > section {
+    position: relative;
+    z-index: 1;
+  }
 }
 
+// ============================================
+// Banner 区域
+// ============================================
 .banner-section {
   margin: -24px -20px 0;
+
+  :deep(.el-carousel) {
+    height: 450px !important;
+  }
+
   :deep(.el-carousel__item) {
     border-radius: 0 0 $border-radius-xl $border-radius-xl;
     overflow: hidden;
   }
+
   :deep(.el-carousel__indicators) {
     .el-carousel__indicator {
       .el-carousel__button {
@@ -223,10 +267,12 @@ onMounted(() => {
         border-radius: 2px;
         background: rgba(255, 255, 255, 0.3);
         opacity: 1;
+        transition: all $transition-normal;
       }
       &.is-active .el-carousel__button {
         width: 36px;
-        background: white;
+        background: $neon-cyan;
+        box-shadow: 0 0 10px rgba($neon-cyan, 0.5);
       }
     }
   }
@@ -246,6 +292,20 @@ onMounted(() => {
   inset: 0;
   background: radial-gradient(ellipse at 30% 50%, rgba(255, 255, 255, 0.05), transparent 70%);
   pointer-events: none;
+
+  // 赛博网格纹理覆盖层
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba($neon-cyan, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($neon-cyan, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, transparent 80%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, transparent 80%);
+    pointer-events: none;
+  }
 }
 
 .banner-content {
@@ -256,18 +316,27 @@ onMounted(() => {
 }
 
 .banner-title {
-  font-size: 42px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 48px;
   font-weight: 800;
   margin-bottom: $spacing-md;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  letter-spacing: -0.5px;
+  letter-spacing: 2px;
+  text-shadow:
+    0 0 10px rgba($neon-cyan, 0.6),
+    0 0 30px rgba($neon-cyan, 0.3),
+    0 0 60px rgba($neon-cyan, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.5);
+  animation: neonPulse 3s ease-in-out infinite alternate;
 }
 
 .banner-desc {
   font-size: 18px;
   margin-bottom: $spacing-xl;
   opacity: 0.9;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  text-shadow:
+    0 0 8px rgba($neon-cyan, 0.3),
+    0 1px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
 }
 
 .banner-btn {
@@ -275,15 +344,44 @@ onMounted(() => {
   padding: 0 32px;
   font-size: 16px;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba($neon-cyan, 0.5);
+  color: $neon-cyan;
+  text-shadow: 0 0 8px rgba($neon-cyan, 0.5);
+  box-shadow:
+    0 0 10px rgba($neon-cyan, 0.15),
+    inset 0 0 10px rgba($neon-cyan, 0.05);
   transition: all $transition-normal;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, $neon-cyan, $neon-purple, $neon-pink, $neon-cyan);
+    background-size: 300% 300%;
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity $transition-normal;
+    animation: borderGlow 4s ease-in-out infinite;
+  }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba($neon-cyan, 0.12);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    border-color: $neon-cyan;
+    box-shadow:
+      0 0 20px rgba($neon-cyan, 0.4),
+      0 0 40px rgba($neon-cyan, 0.15),
+      inset 0 0 15px rgba($neon-cyan, 0.08);
+    text-shadow: 0 0 12px rgba($neon-cyan, 0.8);
+
+    &::before {
+      opacity: 0.3;
+    }
   }
 }
 
@@ -303,10 +401,12 @@ onMounted(() => {
   overflow: hidden;
 }
 
+// 装饰元素改为六边形/菱形
 .deco-circle {
   position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba($neon-cyan, 0.15);
+  box-shadow: 0 0 15px rgba($neon-cyan, 0.05);
+  animation: decoFloat 8s ease-in-out infinite;
 }
 
 .deco-1 {
@@ -314,6 +414,27 @@ onMounted(() => {
   height: 300px;
   right: -50px;
   top: -50px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border: none;
+  background: transparent;
+  box-shadow: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    border: 1px solid rgba($neon-cyan, 0.15);
+    box-shadow: 0 0 15px rgba($neon-cyan, 0.05);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 15px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    border: 1px solid rgba($neon-cyan, 0.08);
+  }
 }
 
 .deco-2 {
@@ -321,6 +442,20 @@ onMounted(() => {
   height: 200px;
   left: -30px;
   bottom: -30px;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  animation-delay: -3s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    border: 1px solid rgba($neon-purple, 0.15);
+    box-shadow: 0 0 12px rgba($neon-purple, 0.05);
+  }
 }
 
 .deco-3 {
@@ -328,11 +463,47 @@ onMounted(() => {
   height: 150px;
   right: 20%;
   bottom: 10%;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  animation-delay: -5s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    border: 1px solid rgba($neon-pink, 0.12);
+    box-shadow: 0 0 10px rgba($neon-pink, 0.05);
+  }
 }
 
+// ============================================
+// Section 通用样式
+// ============================================
 .game-section,
+.activity-section,
 .service-section {
   padding: $spacing-xl 0;
+  position: relative;
+
+  // 各section之间加渐变分隔线
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba($neon-cyan, 0.2),
+      rgba($neon-purple, 0.2),
+      transparent
+    );
+  }
 }
 
 .section-header {
@@ -357,6 +528,22 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
+  position: relative;
+  padding-left: 16px;
+
+  // 左侧装饰渐变线
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    border-radius: 2px;
+    background: linear-gradient(180deg, $neon-cyan, $neon-purple);
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.4);
+  }
 }
 
 .section-icon {
@@ -371,18 +558,115 @@ onMounted(() => {
 .view-more-btn {
   font-weight: 500;
   font-size: 14px;
+  color: $text-secondary;
+  transition: all $transition-normal;
+  position: relative;
+  padding-bottom: 2px;
+
+  // 霓虹cyan下划线hover效果
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: $neon-cyan;
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.5);
+    transition: width $transition-normal;
+    border-radius: 1px;
+  }
+
+  &:hover {
+    color: $neon-cyan;
+
+    &::after {
+      width: 100%;
+    }
+  }
 }
 
+// ============================================
+// 热门游戏区域
+// ============================================
 .game-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: $spacing-md;
 }
 
-.activity-section {
-  padding: $spacing-xl 0;
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-lg $spacing-md;
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+  border-radius: $border-radius-lg;
+  cursor: pointer;
+  transition: all $transition-normal;
+  position: relative;
+  overflow: hidden;
+
+  // 底部霓虹渐变线
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $neon-cyan, $neon-purple, transparent);
+    opacity: 0;
+    transition: opacity $transition-normal;
+  }
+
+  &:hover {
+    border-color: rgba($neon-cyan, 0.3);
+    transform: translateY(-4px);
+    box-shadow: $shadow-md, 0 0 20px rgba($neon-cyan, 0.1);
+
+    &::after {
+      opacity: 1;
+    }
+  }
 }
 
+.game-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform $transition-normal;
+}
+
+.game-card:hover .game-icon {
+  transform: scale(1.15) rotate(10deg);
+}
+
+.game-emoji {
+  font-size: 28px;
+}
+
+.game-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: $text-primary;
+  transition: color $transition-normal;
+}
+
+.game-card:hover .game-name {
+  color: $neon-cyan;
+  text-shadow: 0 0 8px rgba($neon-cyan, 0.3);
+}
+
+// ============================================
+// 限时活动区域
+// ============================================
 .activity-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -396,10 +680,11 @@ onMounted(() => {
   overflow: hidden;
   transition: all $transition-normal;
 
+  // 发光边框
   &:hover {
     transform: translateY(-4px);
-    box-shadow: $shadow-lg, $shadow-glow;
-    border-color: rgba($primary-color, 0.2);
+    box-shadow: $shadow-lg, 0 0 25px rgba($neon-cyan, 0.15);
+    border-color: rgba($neon-cyan, 0.3);
   }
 }
 
@@ -423,10 +708,15 @@ onMounted(() => {
 }
 
 .activity-discount-num {
+  font-family: 'Orbitron', sans-serif;
   font-size: 40px;
   font-weight: 800;
   color: white;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 30px rgba($neon-pink, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 2px;
 }
 
 .activity-body {
@@ -451,57 +741,17 @@ onMounted(() => {
 
 .activity-time {
   font-size: 12px;
-  color: $danger-color;
+  color: $neon-pink;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 4px;
+  text-shadow: 0 0 6px rgba($neon-pink, 0.3);
 }
 
-.game-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $spacing-sm;
-  padding: $spacing-lg $spacing-md;
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(148, 163, 184, 0.06);
-  border-radius: $border-radius-lg;
-  cursor: pointer;
-  transition: all $transition-normal;
-
-  &:hover {
-    border-color: rgba($primary-color, 0.3);
-    transform: translateY(-4px);
-    box-shadow: $shadow-md, $shadow-glow;
-  }
-}
-
-.game-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform $transition-normal;
-}
-
-.game-card:hover .game-icon {
-  transform: scale(1.1);
-}
-
-.game-emoji {
-  font-size: 28px;
-}
-
-.game-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: $text-primary;
-}
-
+// ============================================
+// 推荐服务区域
+// ============================================
 .service-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -511,11 +761,71 @@ onMounted(() => {
 
 .service-card-wrapper {
   min-height: 0;
+  // 交错动画延迟
+  animation: fadeInUp 0.5s ease-out both;
+
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.08}s;
+    }
+  }
 }
 
+// ============================================
+// 动画关键帧
+// ============================================
+@keyframes neonPulse {
+  0% {
+    text-shadow:
+      0 0 10px rgba($neon-cyan, 0.6),
+      0 0 30px rgba($neon-cyan, 0.3),
+      0 0 60px rgba($neon-cyan, 0.15),
+      0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    text-shadow:
+      0 0 15px rgba($neon-cyan, 0.8),
+      0 0 40px rgba($neon-cyan, 0.4),
+      0 0 80px rgba($neon-cyan, 0.2),
+      0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes borderGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes decoFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// 响应式适配
+// ============================================
 @media (max-width: 768px) {
+  .banner-section {
+    :deep(.el-carousel) {
+      height: 320px !important;
+    }
+  }
+
   .banner-title {
     font-size: 28px;
+    letter-spacing: 1px;
   }
 
   .banner-desc {
@@ -538,6 +848,21 @@ onMounted(() => {
   .section-header-left {
     flex-direction: column;
     gap: $spacing-xs;
+  }
+
+  .deco-1 {
+    width: 180px;
+    height: 180px;
+  }
+
+  .deco-2 {
+    width: 120px;
+    height: 120px;
+  }
+
+  .deco-3 {
+    width: 100px;
+    height: 100px;
   }
 }
 </style>

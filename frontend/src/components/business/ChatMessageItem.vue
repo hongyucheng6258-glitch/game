@@ -220,22 +220,30 @@ function handleRespondPrice() {
   line-height: 1.5;
   word-break: break-word;
   color: $text-primary;
-  background: $bg-hover;
+  background: $bg-elevated;
+  border: 1px solid $border-color;
+  transition: border-color $transition-fast;
 
   &.price-message {
     min-width: 240px;
     padding: 0;
     overflow: hidden;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.08), 0 0 20px rgba(0, 240, 255, 0.04);
   }
 }
 
 .is-self .message-bubble {
-  background: $primary-color;
+  background: linear-gradient(135deg, $primary-color, $primary-light);
   color: white;
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.15);
 
   &.price-message {
-    background: $bg-hover;
+    background: $bg-elevated;
     color: $text-primary;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.08), 0 0 20px rgba(0, 240, 255, 0.04);
   }
 }
 
@@ -244,10 +252,32 @@ function handleRespondPrice() {
   align-items: center;
   gap: 8px;
   padding: $spacing-sm $spacing-md;
-  background: linear-gradient(135deg, $primary-color, #409eff);
+  background: linear-gradient(135deg, $neon-cyan, $primary-color);
   color: white;
   font-weight: 600;
   font-size: 13px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(50%);
+  }
 }
 
 .price-message-content {
@@ -279,7 +309,8 @@ function handleRespondPrice() {
     .negotiated-price {
       font-size: 18px;
       font-weight: 600;
-      color: $danger-color;
+      color: $neon-pink;
+      text-shadow: 0 0 8px rgba(255, 45, 120, 0.3);
     }
   }
 
@@ -294,6 +325,20 @@ function handleRespondPrice() {
   .order-button {
     width: 100%;
     margin-top: $spacing-md;
+    background: linear-gradient(135deg, $neon-cyan, $primary-color);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: box-shadow $transition-normal, transform $transition-fast;
+
+    &:hover {
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4), 0 0 28px rgba(0, 240, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
   }
 }
 

@@ -566,16 +566,17 @@ async function handleRegister() {
 
 <style scoped lang="scss">
 @use '@/assets/styles/variables' as *;
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 .register-page {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
-  
+
   @media (min-width: 1024px) {
     grid-template-columns: 1fr 1fr;
   }
-  
+
   :deep(.el-form-item__label) {
     color: $text-secondary;
     font-weight: 500;
@@ -583,43 +584,83 @@ async function handleRegister() {
     margin-bottom: 6px;
     letter-spacing: 0.3px;
   }
-  
+
   :deep(.el-input__wrapper) {
-    background-color: rgba(15, 23, 42, 0.8) !important;
+    background-color: rgba(6, 8, 15, 0.9) !important;
     border: 1px solid $border-color !important;
     border-radius: 12px !important;
     box-shadow: none !important;
     padding: 8px 16px !important;
     transition: all 0.3s ease;
-    
+
     &:hover {
-      border-color: rgba(99, 102, 241, 0.4) !important;
+      border-color: rgba(0, 240, 255, 0.3) !important;
     }
-    
+
     &.is-focus {
-      border-color: $primary-color !important;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+      border-color: $neon-cyan !important;
+      box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.1), 0 0 15px rgba(0, 240, 255, 0.08) !important;
     }
   }
-  
+
   :deep(.el-input__inner) {
     color: $text-primary;
     font-size: 15px;
-    
+
     &::placeholder {
       color: $text-muted;
     }
   }
 }
 
-// 左侧内容区样式
+// 左侧面板 - 深色渐变 + 赛博网格纹理
 .bg-gradient-to-br {
-  background: $bg-dark;
+  background: linear-gradient(160deg, $bg-dark 0%, $bg-abyss 100%);
+  position: relative;
+  overflow: hidden;
+
+  // 赛博网格纹理
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 240, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 240, 255, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 1;
+    animation: gridPulse 8s ease-in-out infinite;
+  }
+
+  // 顶部扫描线效果
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 240, 255, 0.015) 2px,
+      rgba(0, 240, 255, 0.015) 4px
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
 }
 
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+// 赛博网格纹理层
 .bg-grid-white\/\[0\.05\] {
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
+  background-image:
+    linear-gradient(to right, rgba(0, 240, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 2;
 }
 
 .size-8 {
@@ -627,14 +668,31 @@ async function handleRegister() {
   height: 32px;
 }
 
+// 装饰光晕 - cyan 和 purple 色
 .size-64 {
   width: 256px;
   height: 256px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, transparent 70%) !important;
+  filter: blur(40px);
+  animation: glowFloat1 6s ease-in-out infinite;
 }
 
 .size-96 {
   width: 384px;
   height: 384px;
+  background: radial-gradient(circle, rgba(191, 90, 242, 0.2) 0%, transparent 70%) !important;
+  filter: blur(50px);
+  animation: glowFloat2 8s ease-in-out infinite;
+}
+
+@keyframes glowFloat1 {
+  0%, 100% { transform: translate(0, 0); opacity: 0.8; }
+  50% { transform: translate(20px, -15px); opacity: 1; }
+}
+
+@keyframes glowFloat2 {
+  0%, 100% { transform: translate(0, 0); opacity: 0.7; }
+  50% { transform: translate(-15px, 20px); opacity: 1; }
 }
 
 .backdrop-blur-sm {
@@ -653,9 +711,12 @@ async function handleRegister() {
   height: 500px;
 }
 
-// 右侧登录表单样式
+// 右侧表单区域 - 更深背景
 .bg-background {
-  background-color: $bg-dark;
+  background-color: $bg-abyss;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(0, 240, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(191, 90, 242, 0.03) 0%, transparent 50%);
 }
 
 .p-8 {
@@ -782,8 +843,10 @@ async function handleRegister() {
   margin-bottom: 40px;
 }
 
+// 标题 - Orbitron 字体 + 霓虹发光
 .text-3xl {
   font-size: 1.875rem;
+  font-family: 'Orbitron', sans-serif;
 }
 
 .font-bold {
@@ -836,7 +899,7 @@ async function handleRegister() {
 
 .lg\:hidden {
   display: flex;
-  
+
   @media (min-width: 1024px) {
     display: none;
   }
@@ -844,7 +907,7 @@ async function handleRegister() {
 
 .lg\:flex {
   display: none;
-  
+
   @media (min-width: 1024px) {
     display: flex;
   }
@@ -866,22 +929,24 @@ async function handleRegister() {
   transform: translateY(-50%);
 }
 
-// 注册容器样式
+// 注册容器样式 - 霓虹边框发光效果
 .register-container {
   width: 100%;
   max-width: 440px;
   padding: 40px 36px;
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(22, 30, 46, 0.98));
+  background: linear-gradient(145deg, rgba(11, 15, 26, 0.95), rgba(6, 8, 15, 0.98));
   border-radius: 20px;
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  box-shadow: 
-    0 0 40px rgba(99, 102, 241, 0.1),
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  box-shadow:
+    0 0 30px rgba(0, 240, 255, 0.08),
+    0 0 60px rgba(191, 90, 242, 0.05),
+    0 25px 50px -12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(0, 240, 255, 0.06);
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
-  
+
+  // 顶部霓虹渐变高光线
   &::before {
     content: '';
     position: absolute;
@@ -889,18 +954,18 @@ async function handleRegister() {
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.4), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.6), rgba(191, 90, 242, 0.6), transparent);
   }
-  
+
+  // 底部霓虹渐变高光线
   &::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, transparent 60%);
-    pointer-events: none;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), rgba(191, 90, 242, 0.2), transparent);
   }
 }
 
@@ -911,15 +976,19 @@ async function handleRegister() {
   z-index: 1;
 }
 
+// 标题 - Orbitron 字体 + 霓虹发光
 .register-title {
   font-size: 32px;
   font-weight: 800;
-  background: linear-gradient(135deg, #fff, #a5b4fc);
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, $neon-cyan, #a5b4fc, $neon-purple);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 10px;
-  letter-spacing: -0.5px;
+  letter-spacing: 1px;
+  text-shadow: none;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
 }
 
 .register-subtitle {
@@ -929,22 +998,26 @@ async function handleRegister() {
   letter-spacing: 0.2px;
 }
 
+// 注册按钮 - 增强发光效果
 .register-btn {
   width: 100%;
   height: 52px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 2px;
   border-radius: 12px;
-  background: linear-gradient(135deg, $primary-color, $primary-dark);
+  background: linear-gradient(135deg, $neon-cyan, $primary-color);
   border: none;
-  box-shadow: 
-    0 4px 15px rgba(99, 102, 241, 0.4),
-    0 0 0 1px rgba(99, 102, 241, 0.1);
+  color: $bg-abyss;
+  box-shadow:
+    0 0 20px rgba(0, 240, 255, 0.3),
+    0 0 40px rgba(0, 240, 255, 0.1),
+    0 4px 15px rgba(0, 0, 0, 0.3);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  letter-spacing: 0.5px;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -952,23 +1025,38 @@ async function handleRegister() {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
     transition: left 0.5s ease;
   }
-  
+
+  // 顶部高光线
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  }
+
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 
-      0 8px 25px rgba(99, 102, 241, 0.5),
-      0 0 0 1px rgba(99, 102, 241, 0.2);
-    
+    box-shadow:
+      0 0 30px rgba(0, 240, 255, 0.5),
+      0 0 60px rgba(0, 240, 255, 0.2),
+      0 8px 25px rgba(0, 0, 0, 0.4);
+
     &::before {
       left: 100%;
     }
   }
-  
+
   &:active {
     transform: translateY(0);
+    box-shadow:
+      0 0 15px rgba(0, 240, 255, 0.4),
+      0 2px 10px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -982,13 +1070,18 @@ async function handleRegister() {
   font-size: 14px;
 }
 
+// 底部链接"去登录" - $neon-cyan 色
 .footer-link {
-  color: $primary-light;
+  color: $neon-cyan;
   font-size: 14px;
+  font-weight: 500;
   margin-left: $spacing-xs;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+  transition: all 0.3s ease;
 
   &:hover {
-    color: $primary-color;
+    color: lighten($neon-cyan, 15%);
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.6), 0 0 30px rgba(0, 240, 255, 0.3);
   }
 }
 
@@ -997,49 +1090,58 @@ async function handleRegister() {
   align-items: center;
   margin-top: 8px;
   font-size: 12px;
-  
+
   .icon-loading {
-    color: $primary-color;
+    color: $neon-cyan;
     margin-right: 6px;
+    animation: neonPulse 1s ease-in-out infinite;
   }
-  
+
   .icon-success {
-    color: #22c55e;
+    color: $neon-green;
     margin-right: 6px;
+    text-shadow: 0 0 6px rgba(57, 255, 20, 0.4);
   }
-  
+
   .icon-error {
-    color: #ef4444;
+    color: $neon-pink;
     margin-right: 6px;
+    text-shadow: 0 0 6px rgba(255, 45, 120, 0.4);
   }
-  
+
   .feedback-text {
     &.success {
-      color: #22c55e;
+      color: $neon-green;
     }
     &.error {
-      color: #ef4444;
+      color: $neon-pink;
     }
   }
 }
 
+@keyframes neonPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
 .password-strength {
   margin-top: 12px;
-  
+
   .strength-bar {
     height: 4px;
-    background-color: $border-color;
+    background-color: rgba(0, 240, 255, 0.08);
     border-radius: 2px;
     overflow: hidden;
     margin-bottom: 6px;
-    
+
     .strength-fill {
       height: 100%;
       transition: all 0.3s ease;
       border-radius: 2px;
+      box-shadow: 0 0 8px currentColor;
     }
   }
-  
+
   .strength-label {
     font-size: 12px;
     text-align: right;

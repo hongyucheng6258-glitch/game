@@ -182,8 +182,21 @@ onMounted(() => {
   gap: $spacing-lg;
 }
 
-// 用户信息卡片
+// 用户信息卡片 - 霓虹边框发光
 .profile-card {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid $border-glow;
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-glow, $shadow-neon-cyan;
+  transition: box-shadow $transition-normal, border-color $transition-normal;
+
+  &:hover {
+    border-color: rgba($neon-cyan, 0.35);
+    box-shadow: $shadow-glow-strong, 0 0 30px rgba($neon-cyan, 0.2);
+  }
+
   :deep(.el-card__body) {
     padding: $spacing-xl;
   }
@@ -193,6 +206,33 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: $spacing-lg;
+}
+
+// 头像霓虹光环效果
+.profile-content {
+  :deep(.el-avatar) {
+    border: 3px solid $neon-cyan;
+    box-shadow:
+      0 0 12px rgba($neon-cyan, 0.5),
+      0 0 24px rgba($neon-cyan, 0.25),
+      inset 0 0 8px rgba($neon-cyan, 0.15);
+    animation: avatar-pulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes avatar-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 12px rgba($neon-cyan, 0.5),
+      0 0 24px rgba($neon-cyan, 0.25),
+      inset 0 0 8px rgba($neon-cyan, 0.15);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba($neon-cyan, 0.7),
+      0 0 36px rgba($neon-cyan, 0.35),
+      inset 0 0 12px rgba($neon-cyan, 0.2);
+  }
 }
 
 .profile-info {
@@ -247,9 +287,11 @@ onMounted(() => {
   font-size: 24px;
   font-weight: 700;
   color: $primary-light;
+  font-family: 'Orbitron', monospace;
+  text-shadow: 0 0 12px rgba($primary-light, 0.5);
 }
 
-// 快捷入口
+// 快捷入口 - neon-border 卡片
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -262,16 +304,20 @@ onMounted(() => {
   align-items: center;
   gap: $spacing-sm;
   padding: $spacing-lg $spacing-md;
-  background: $bg-card;
+  background: $glass-bg;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid $border-color;
   border-radius: $border-radius-lg;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all $transition-normal;
 
   &:hover {
-    border-color: $primary-color;
+    border-color: $neon-cyan;
     transform: translateY(-2px);
-    box-shadow: $shadow-md;
+    box-shadow:
+      $shadow-neon-cyan,
+      0 0 20px rgba($neon-cyan, 0.15);
   }
 }
 
@@ -279,6 +325,12 @@ onMounted(() => {
   font-size: 14px;
   color: $text-secondary;
   font-weight: 500;
+  transition: color $transition-fast, text-shadow $transition-fast;
+
+  .quick-item:hover & {
+    color: $neon-cyan;
+    text-shadow: 0 0 8px rgba($neon-cyan, 0.4);
+  }
 }
 
 // 最近订单
@@ -312,7 +364,7 @@ onMounted(() => {
   }
 
   &:hover {
-    background: $bg-hover;
+    background: rgba($neon-cyan, 0.03);
     margin: 0 (-$spacing-md);
     padding-left: $spacing-md;
     padding-right: $spacing-md;
@@ -349,6 +401,8 @@ onMounted(() => {
   font-weight: 600;
   color: $danger-color;
   white-space: nowrap;
+  font-family: 'Orbitron', monospace;
+  text-shadow: 0 0 8px rgba($danger-color, 0.3);
 }
 
 // 响应式

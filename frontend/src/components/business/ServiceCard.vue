@@ -80,8 +80,8 @@ const showRankingBadge = computed(() => {
 
   &:hover {
     transform: translateY(-6px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), $shadow-glow;
-    border-color: rgba($primary-color, 0.2);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), $shadow-glow-strong;
+    border-color: rgba($neon-cyan, 0.25);
   }
 
   :deep(.el-card__body) {
@@ -101,12 +101,41 @@ const showRankingBadge = computed(() => {
   &::after {
     content: '';
     position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.08) 2px,
+      rgba(0, 0, 0, 0.08) 4px
+    );
+    pointer-events: none;
+    animation: scanline 4s linear infinite;
+    z-index: 1;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 60px;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
     pointer-events: none;
+    z-index: 2;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
   }
 }
 
@@ -118,7 +147,7 @@ const showRankingBadge = computed(() => {
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
-  z-index: 1;
+  z-index: 3;
 }
 
 .service-type-tag {
@@ -137,28 +166,32 @@ const showRankingBadge = computed(() => {
   border-radius: 4px;
   font-size: 12px;
   font-weight: 600;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
 }
 
 .activity-badge {
   display: flex;
   align-items: center;
   gap: 2px;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: $neon-pink;
   color: white;
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 600;
+  box-shadow: 0 0 10px rgba($neon-pink, 0.4);
 }
 
 .game-type {
   color: white;
   font-size: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(4px);
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid $glass-border;
   padding: 4px 10px;
   border-radius: 6px;
-  z-index: 1;
+  z-index: 3;
 }
 
 .service-info {
@@ -177,7 +210,7 @@ const showRankingBadge = computed(() => {
 }
 
 .service-card:hover .service-title {
-  color: $primary-light;
+  color: $neon-cyan;
 }
 
 .service-meta {
@@ -188,9 +221,10 @@ const showRankingBadge = computed(() => {
 }
 
 .price {
-  color: $warning-color;
+  color: $neon-cyan;
   font-size: 18px;
   font-weight: 700;
+  text-shadow: 0 0 8px rgba($neon-cyan, 0.5);
 
   .original-price-small {
     font-size: 12px;
@@ -198,12 +232,14 @@ const showRankingBadge = computed(() => {
     color: $text-muted;
     font-weight: 400;
     margin-right: 4px;
+    text-shadow: none;
   }
 
   .price-unit {
     font-size: 12px;
     font-weight: 400;
     color: $text-muted;
+    text-shadow: none;
   }
 }
 

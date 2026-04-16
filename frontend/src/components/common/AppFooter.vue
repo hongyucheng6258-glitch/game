@@ -31,10 +31,37 @@ import { Trophy } from '@element-plus/icons-vue'
 @use '@/assets/styles/variables' as *;
 
 .app-footer {
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.5), rgba(15, 23, 42, 0.8));
-  border-top: 1px solid rgba(148, 163, 184, 0.06);
+  background:
+    linear-gradient(180deg, rgba($bg-dark, 0.6), rgba($bg-abyss, 0.95)),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba($neon-cyan, 0.03) 39px,
+      rgba($neon-cyan, 0.03) 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      rgba($neon-cyan, 0.03) 39px,
+      rgba($neon-cyan, 0.03) 40px
+    );
+  border-top: none;
   padding: 32px 20px 20px;
   margin-top: auto;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $neon-cyan, $neon-purple, transparent);
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.3), 0 0 8px rgba($neon-purple, 0.2);
+  }
 }
 
 .footer-inner {
@@ -47,7 +74,7 @@ import { Trophy } from '@element-plus/icons-vue'
   justify-content: space-between;
   align-items: flex-start;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  border-bottom: 1px solid rgba($neon-cyan, 0.06);
   margin-bottom: 16px;
 }
 
@@ -64,12 +91,15 @@ import { Trophy } from '@element-plus/icons-vue'
 }
 
 .footer-brand-name {
+  font-family: 'Orbitron', sans-serif;
   font-size: 16px;
   font-weight: 600;
-  background: linear-gradient(135deg, #818cf8, #a78bfa);
+  background: linear-gradient(135deg, $neon-cyan, $neon-purple);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 4px rgba($neon-cyan, 0.3));
+  letter-spacing: 0.5px;
 }
 
 .footer-desc {
@@ -85,16 +115,46 @@ import { Trophy } from '@element-plus/icons-vue'
   a {
     color: $text-muted;
     font-size: 13px;
-    transition: color $transition-fast;
+    text-decoration: none;
+    transition: all $transition-normal;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: $neon-cyan;
+      box-shadow: 0 0 6px rgba($neon-cyan, 0.5);
+      transition: width $transition-normal;
+    }
 
     &:hover {
-      color: $primary-light;
+      color: $neon-cyan;
+      text-shadow: 0 0 8px rgba($neon-cyan, 0.4);
+
+      &::after {
+        width: 100%;
+      }
     }
   }
 }
 
 .footer-bottom {
   text-align: center;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba($neon-cyan, 0.2), rgba($neon-purple, 0.2), transparent);
+  }
 
   p {
     color: $text-muted;

@@ -202,15 +202,31 @@ onMounted(() => fetchSettings())
   gap: $spacing-lg;
 }
 
+// 页面标题 - Orbitron字体 + 霓虹渐变
 .page-title {
+  font-family: 'Orbitron', sans-serif;
   font-size: 28px;
   font-weight: 700;
   margin: 0;
-  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  background: linear-gradient(135deg, $neon-cyan 0%, $primary-light 50%, $neon-purple 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: $spacing-sm;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, transparent);
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.5);
+  }
 }
 
 .settings-grid {
@@ -234,28 +250,47 @@ onMounted(() => fetchSettings())
     transform: translateY(-50%);
     width: 3px;
     height: 16px;
-    background: linear-gradient(180deg, $primary-color, $primary-dark);
+    background: linear-gradient(180deg, $neon-cyan, $primary-color);
     border-radius: 2px;
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.4);
   }
 }
 
-// 卡片毛玻璃效果
+// 设置项分组卡片 - 霓虹边框
 :deep(.el-card) {
   background: $glass-bg !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
-  border: 1px solid rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid $glass-border !important;
   border-radius: $border-radius-lg !important;
   transition: all $transition-normal;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $neon-cyan, transparent);
+    opacity: 0;
+    transition: opacity $transition-normal;
+    z-index: 1;
+  }
 
   &:hover {
-    border-color: rgba($primary-color, 0.2) !important;
-    box-shadow: $shadow-glow;
+    border-color: $border-glow !important;
+    box-shadow: $shadow-neon-cyan, $shadow-glow;
     transform: translateY(-2px);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   .el-card__header {
-    border-bottom: 1px solid rgba(148, 163, 184, 0.06) !important;
+    border-bottom: 1px solid rgba($neon-cyan, 0.08) !important;
     padding: $spacing-md $spacing-lg;
   }
 
@@ -269,10 +304,11 @@ onMounted(() => fetchSettings())
   font-weight: 500;
 }
 
+// 输入框 - focus时cyan发光
 :deep(.el-input__wrapper),
 :deep(.el-textarea__inner) {
   background: rgba(15, 23, 42, 0.6) !important;
-  border-color: rgba(148, 163, 184, 0.06) !important;
+  border: 1px solid rgba(148, 163, 184, 0.08) !important;
   color: $text-primary;
   box-shadow: none !important;
   border-radius: $border-radius;
@@ -280,8 +316,8 @@ onMounted(() => fetchSettings())
 
   &:focus,
   &:focus-within {
-    border-color: rgba($primary-color, 0.4) !important;
-    box-shadow: 0 0 0 2px rgba($primary-color, 0.1) !important;
+    border-color: rgba($neon-cyan, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba($neon-cyan, 0.1), 0 0 12px rgba($neon-cyan, 0.15) !important;
   }
 }
 
@@ -291,37 +327,56 @@ onMounted(() => fetchSettings())
   }
 }
 
-// 按钮渐变效果
+// 保存按钮 - 霓虹发光
 :deep(.el-button--primary) {
   background: linear-gradient(135deg, $primary-color, $primary-dark) !important;
   border: none !important;
   box-shadow: 0 2px 8px rgba($primary-color, 0.3);
   transition: all $transition-normal;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, $neon-cyan, $primary-color, $neon-purple);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity $transition-normal;
+    filter: blur(4px);
+  }
 
   &:hover {
     background: linear-gradient(135deg, $primary-light, $primary-color) !important;
-    box-shadow: 0 4px 16px rgba($primary-color, 0.4);
+    box-shadow: 0 0 20px rgba($primary-color, 0.5), 0 0 40px rgba($neon-cyan, 0.2);
     transform: translateY(-1px);
+
+    &::after {
+      opacity: 0.6;
+    }
   }
 }
 
-// Switch 美化
+// Switch - 霓虹风格
 :deep(.el-switch) {
   &.is-checked .el-switch__core {
-    background-color: $primary-color !important;
-    border-color: $primary-color !important;
+    background-color: $neon-cyan !important;
+    border-color: $neon-cyan !important;
+    box-shadow: 0 0 8px rgba($neon-cyan, 0.4);
   }
 }
 
-// Radio 美化
+// Radio - 霓虹风格
 :deep(.el-radio) {
   .el-radio__input.is-checked .el-radio__inner {
-    background-color: $primary-color !important;
-    border-color: $primary-color !important;
+    background-color: $neon-cyan !important;
+    border-color: $neon-cyan !important;
+    box-shadow: 0 0 6px rgba($neon-cyan, 0.4);
   }
 
   .el-radio__input.is-checked + .el-radio__label {
-    color: $primary-light !important;
+    color: $neon-cyan !important;
   }
 }
 

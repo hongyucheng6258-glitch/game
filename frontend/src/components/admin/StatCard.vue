@@ -46,11 +46,61 @@ const displayValue = computed(() => {
   background: $bg-card;
   border: 1px solid $border-color;
   border-radius: $border-radius-lg;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
+  position: relative;
+  overflow: hidden;
+
+  // 霓虹边框效果
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba($neon-cyan, 0.3), rgba($primary-color, 0.1), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity $transition-normal;
+    pointer-events: none;
+  }
+
+  // 顶部霓虹光线
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba($neon-cyan, 0.4), transparent);
+    opacity: 0;
+    transition: opacity $transition-normal;
+    pointer-events: none;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
+    transform: translateY(-4px);
+    box-shadow: $shadow-glow, 0 0 30px rgba($neon-cyan, 0.1);
+    border-color: rgba($neon-cyan, 0.25);
+
+    &::before {
+      opacity: 1;
+    }
+
+    &::after {
+      opacity: 1;
+    }
+
+    .stat-icon {
+      box-shadow: 0 0 20px color-mix(in srgb, var(--accent-color) 30%, transparent);
+    }
+
+    .stat-value {
+      text-shadow: 0 0 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
+    }
   }
 }
 
@@ -61,9 +111,21 @@ const displayValue = computed(() => {
   align-items: center;
   justify-content: center;
   border-radius: $border-radius-lg;
-  background: color-mix(in srgb, var(--accent-color) 15%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color) 20%, transparent), color-mix(in srgb, var(--accent-color) 5%, transparent));
   color: var(--accent-color);
   flex-shrink: 0;
+  transition: box-shadow $transition-normal;
+  position: relative;
+
+  // 图标区域内部微光
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08), transparent 70%);
+    pointer-events: none;
+  }
 }
 
 .stat-content {
@@ -76,6 +138,7 @@ const displayValue = computed(() => {
 .stat-title {
   font-size: 14px;
   color: $text-secondary;
+  letter-spacing: 0.5px;
 }
 
 .stat-value {
@@ -85,5 +148,8 @@ const displayValue = computed(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: 'Orbitron', 'Rajdhani', monospace;
+  transition: text-shadow $transition-normal;
+  text-shadow: 0 0 8px rgba($neon-cyan, 0.15);
 }
 </style>

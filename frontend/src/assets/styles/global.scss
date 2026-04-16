@@ -1,5 +1,8 @@
 @use './variables' as *;
 
+// --- 字体 ---
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -8,11 +11,12 @@
 
 html, body {
   height: 100%;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: $bg-dark;
+  font-family: 'Noto Sans SC', 'Rajdhani', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: $bg-abyss;
   color: $text-primary;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 #app {
@@ -20,64 +24,70 @@ html, body {
 }
 
 a {
-  color: $primary-light;
+  color: $neon-cyan;
   text-decoration: none;
-  transition: color $transition-fast;
+  transition: all $transition-normal;
   &:hover {
-    color: $primary-color;
+    color: lighten($neon-cyan, 15%);
+    text-shadow: 0 0 8px rgba($neon-cyan, 0.5);
   }
 }
 
+// --- 自定义滚动条 ---
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: $bg-dark;
+  background: $bg-abyss;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $bg-hover;
+  background: linear-gradient(180deg, $primary-color, $neon-purple);
   border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: $text-muted;
+  &:hover {
+    background: linear-gradient(180deg, $primary-light, lighten($neon-purple, 10%));
+    box-shadow: 0 0 8px $primary-glow;
+  }
 }
 
 ::selection {
-  background: rgba($primary-color, 0.3);
+  background: rgba($neon-cyan, 0.25);
   color: $text-primary;
 }
+
+// --- Element Plus 深色主题覆盖 ---
 
 .el-menu {
   border-right: none !important;
 }
 
 .el-card {
-  background-color: $bg-card;
+  background: $gradient-card;
   border-color: $border-color;
   color: $text-primary;
-  border-radius: $border-radius-lg;
+  border-radius: $border-radius-xl;
   transition: all $transition-normal;
+  backdrop-filter: blur(8px);
 }
 
 .el-table {
   --el-table-bg-color: #{$bg-card};
   --el-table-tr-bg-color: #{$bg-card};
-  --el-table-header-bg-color: #{$bg-hover};
-  --el-table-row-hover-bg-color: #{$bg-hover};
+  --el-table-header-bg-color: #{$bg-elevated};
+  --el-table-row-hover-bg-color: #{$bg-card-hover};
   --el-table-text-color: #{$text-primary};
-  --el-table-header-text-color: #{$text-secondary};
+  --el-table-header-text-color: #{$text-accent};
   --el-table-border-color: #{$border-color};
 }
 
 .el-dialog {
   --el-dialog-bg-color: #{$bg-card};
   --el-dialog-title-font-size: 18px;
-  border-radius: $border-radius-xl;
-  border: 1px solid $glass-border;
+  border-radius: $border-radius-2xl;
+  border: 1px solid $border-color;
+  box-shadow: $shadow-lg, $shadow-glow;
 }
 
 .el-input__wrapper,
@@ -86,43 +96,61 @@ a {
   background-color: $bg-input !important;
   box-shadow: 0 0 0 1px $border-color inset !important;
   color: $text-primary !important;
-  border-radius: $border-radius !important;
+  border-radius: $border-radius-lg !important;
   transition: all $transition-normal;
 }
 
 .el-input__wrapper:hover,
 .el-textarea__inner:hover,
 .el-select__wrapper:hover {
-  box-shadow: 0 0 0 1px rgba($primary-color, 0.4) inset !important;
+  box-shadow: 0 0 0 1px $border-color-hover inset !important;
 }
 
 .el-input__wrapper.is-focus,
 .el-textarea__inner:focus,
 .el-select__wrapper.is-focus {
-  box-shadow: 0 0 0 1px $primary-color inset, 0 0 0 3px rgba($primary-color, 0.1) !important;
+  box-shadow: 0 0 0 1px $primary-color inset, 0 0 0 3px rgba($primary-color, 0.15) !important;
 }
 
 .el-form-item__label {
-  color: $text-secondary !important;
+  color: $text-accent !important;
+  font-weight: 500;
 }
 
 .el-pagination {
   --el-pagination-bg-color: transparent;
   --el-pagination-text-color: #{$text-secondary};
-  --el-pagination-button-bg-color: #{$bg-hover};
-  --el-pagination-hover-color: #{$primary-light};
+  --el-pagination-button-bg-color: #{$bg-elevated};
+  --el-pagination-hover-color: #{$neon-cyan};
 }
 
+// --- 主按钮：霓虹发光效果 ---
 .el-button--primary {
-  background: linear-gradient(135deg, $primary-color, $primary-dark);
-  border-color: $primary-color;
+  background: $gradient-primary;
+  border-color: transparent;
   transition: all $transition-normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
 
   &:hover {
-    background: linear-gradient(135deg, $primary-light, $primary-color);
-    border-color: $primary-light;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px $primary-glow, 0 0 30px rgba($primary-color, 0.15);
+    border-color: transparent;
+
+    &::before {
+      transform: translateX(100%);
+    }
   }
 
   &:active {
@@ -132,27 +160,33 @@ a {
 
 .el-tag {
   border-radius: 6px;
+  font-weight: 500;
 }
 
 .el-tabs__item {
   transition: color $transition-fast;
+  font-weight: 500;
 }
 
 .el-tabs__active-bar {
-  background: linear-gradient(90deg, $primary-color, $primary-light);
+  background: $gradient-neon;
   border-radius: 2px;
+  box-shadow: 0 0 8px rgba($neon-cyan, 0.4);
 }
 
 .el-dropdown-menu {
   background-color: $bg-card;
   border-color: $border-color;
+  backdrop-filter: blur(16px);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
 }
 
 .el-dropdown-menu__item {
   color: $text-primary;
   &:hover {
-    background-color: $bg-hover;
-    color: $primary-light;
+    background-color: $bg-card-hover;
+    color: $neon-cyan;
   }
 }
 
@@ -161,15 +195,17 @@ a {
   --el-messagebox-content-color: #{$text-secondary};
   background-color: $bg-card;
   border-color: $border-color;
+  border-radius: $border-radius-xl;
 }
 
 .el-overlay {
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  background: rgba($bg-abyss, 0.6);
 }
 
 .el-loading-mask {
-  background-color: rgba($bg-dark, 0.7);
-  backdrop-filter: blur(4px);
+  background-color: rgba($bg-abyss, 0.75);
+  backdrop-filter: blur(6px);
 }
 
 .el-empty__description p {
@@ -181,7 +217,7 @@ a {
 }
 
 .el-descriptions__label {
-  color: $text-secondary !important;
+  color: $text-accent !important;
 }
 
 .el-descriptions__content {
@@ -193,13 +229,14 @@ a {
 }
 
 .el-alert {
-  border-radius: $border-radius;
+  border-radius: $border-radius-lg;
 }
 
 .el-rate {
-  --el-rate-fill-color: #{$warning-color};
+  --el-rate-fill-color: #{$neon-yellow};
 }
 
+// --- 动画 ---
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity $transition-normal;
@@ -222,6 +259,8 @@ a {
   transform: translateY(-20px);
 }
 
+// --- 赛博朋克工具类 ---
+
 .glass-effect {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
@@ -230,7 +269,14 @@ a {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, $primary-light, #a78bfa);
+  background: $gradient-neon;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-fire {
+  background: $gradient-fire;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -240,11 +286,79 @@ a {
   box-shadow: $shadow-glow;
 }
 
+.glow-text {
+  text-shadow: 0 0 10px $primary-glow;
+}
+
+.neon-border {
+  border: 1px solid $border-color;
+  transition: all $transition-normal;
+  &:hover {
+    border-color: $border-color-hover;
+    box-shadow: 0 0 15px rgba($primary-color, 0.1);
+  }
+}
+
 .card-hover {
   transition: all $transition-normal;
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     box-shadow: $shadow-lg, $shadow-glow;
-    border-color: rgba($primary-color, 0.3);
+    border-color: $border-color-hover;
+  }
+}
+
+// --- 扫描线动画 ---
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+// --- 霓虹脉冲 ---
+@keyframes neon-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+// --- 呼吸发光 ---
+@keyframes glow-breathe {
+  0%, 100% { box-shadow: 0 0 10px $primary-glow; }
+  50% { box-shadow: 0 0 25px $primary-glow, 0 0 50px rgba($primary-color, 0.1); }
+}
+
+// --- 打字机光标 ---
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+// --- 渐入上浮 ---
+@keyframes float-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-float-up {
+  animation: float-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+// --- 赛博网格背景 ---
+.cyber-grid-bg {
+  background-image:
+    linear-gradient(rgba($primary-color, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba($primary-color, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+// --- 噪点纹理叠加 ---
+.noise-overlay {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
   }
 }

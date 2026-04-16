@@ -167,27 +167,41 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
-  margin-bottom: $spacing-lg;
-  background: linear-gradient(135deg, $text-primary, $primary-light);
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.25));
+  margin-bottom: $spacing-lg;
 }
 
 // Tab
 :deep(.el-tabs__item) {
   color: $text-secondary;
+  transition: color $transition-normal, text-shadow $transition-normal;
 
   &.is-active {
-    color: $primary-light;
+    color: $neon-cyan;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+  }
+
+  &:hover {
+    color: $neon-cyan;
+    text-shadow: 0 0 6px rgba(0, 240, 255, 0.2);
   }
 }
 
 :deep(.el-tabs__active-bar) {
-  background-color: $primary-color;
+  background: linear-gradient(90deg, $neon-cyan, $primary-color);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+:deep(.el-tabs__nav-wrap::after) {
+  background-color: rgba(148, 163, 184, 0.06);
 }
 
 // 订单列表
@@ -196,10 +210,14 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
+
+  :deep(.el-empty__image svg) {
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.2));
+  }
 }
 
 .order-card {
-  transition: transform $transition-normal, box-shadow $transition-normal;
+  transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
 
   :deep(.el-card__body) {
     padding: $spacing-md;
@@ -211,11 +229,16 @@ onMounted(() => {
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid $glass-border;
     border-radius: $border-radius-lg;
+    transition: border-color $transition-normal, box-shadow $transition-normal;
   }
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: $shadow-glow;
+
+    :deep(.el-card) {
+      border-color: $neon-cyan;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15), 0 0 40px rgba(0, 240, 255, 0.05);
+    }
   }
 }
 
@@ -226,6 +249,45 @@ onMounted(() => {
   padding-bottom: $spacing-sm;
   border-bottom: 1px solid rgba(148, 163, 184, 0.06);
   margin-bottom: $spacing-sm;
+
+  :deep(.el-tag) {
+    backdrop-filter: blur(4px);
+    transition: all $transition-normal;
+
+    &.el-tag--primary {
+      background: rgba(0, 240, 255, 0.1);
+      color: $neon-cyan;
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow: 0 0 8px rgba(0, 240, 255, 0.15);
+    }
+
+    &.el-tag--success {
+      background: rgba(57, 255, 20, 0.1);
+      color: $neon-green;
+      border-color: rgba(57, 255, 20, 0.3);
+      box-shadow: 0 0 8px rgba(57, 255, 20, 0.15);
+    }
+
+    &.el-tag--warning {
+      background: rgba(255, 230, 0, 0.1);
+      color: $neon-yellow;
+      border-color: rgba(255, 230, 0, 0.3);
+      box-shadow: 0 0 8px rgba(255, 230, 0, 0.15);
+    }
+
+    &.el-tag--danger {
+      background: rgba(255, 45, 120, 0.1);
+      color: $neon-pink;
+      border-color: rgba(255, 45, 120, 0.3);
+      box-shadow: 0 0 8px rgba(255, 45, 120, 0.15);
+    }
+
+    &.el-tag--info {
+      background: rgba(148, 163, 184, 0.08);
+      color: $text-secondary;
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+  }
 }
 
 .order-no {
@@ -245,11 +307,12 @@ onMounted(() => {
   transition: background $transition-fast;
 
   &:hover {
-    background: rgba(148, 163, 184, 0.04);
+    background: rgba(0, 240, 255, 0.03);
   }
 
   &:hover .order-title {
-    color: $primary-light;
+    color: $neon-cyan;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
   }
 }
 
@@ -264,7 +327,7 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
-  transition: color $transition-fast;
+  transition: color $transition-fast, text-shadow $transition-fast;
 }
 
 .order-provider,
@@ -274,12 +337,12 @@ onMounted(() => {
 }
 
 .order-amount {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  color: $danger-color;
+  color: $neon-cyan;
   white-space: nowrap;
   margin-left: $spacing-md;
-  text-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
+  text-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
 }
 
 .order-footer {
@@ -288,6 +351,30 @@ onMounted(() => {
   gap: $spacing-sm;
   padding-top: $spacing-sm;
   border-top: 1px solid rgba(148, 163, 184, 0.06);
+
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $primary-color, $neon-purple);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    box-shadow: 0 2px 10px rgba(0, 240, 255, 0.12);
+    transition: all $transition-normal;
+
+    &:hover {
+      background: linear-gradient(135deg, $neon-cyan, $primary-color);
+      box-shadow: 0 4px 16px rgba(0, 240, 255, 0.3);
+      border-color: $neon-cyan;
+      transform: translateY(-1px);
+    }
+  }
+
+  :deep(.el-button--default) {
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    transition: all $transition-normal;
+
+    &:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      color: $neon-cyan;
+    }
+  }
 }
 
 .pagination-wrapper {

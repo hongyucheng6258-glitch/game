@@ -247,6 +247,30 @@ function scrollToBottom() {
   display: flex;
   flex-direction: column;
   gap: $spacing-sm;
+
+  // 霓虹渐变滚动条
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, $neon-cyan, $primary-color, $neon-purple);
+    border-radius: 3px;
+    box-shadow: 0 0 6px rgba(0, 240, 255, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  }
+
+  // Firefox 滚动条
+  scrollbar-width: thin;
+  scrollbar-color: $primary-color rgba(0, 0, 0, 0.2);
 }
 
 .input-area {
@@ -255,11 +279,32 @@ function scrollToBottom() {
   gap: $spacing-sm;
   padding: $spacing-md;
   border-top: 1px solid $border-color;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: $spacing-md;
+    right: $spacing-md;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.15), transparent);
+  }
 }
 
 .input-tools {
   display: flex;
   gap: $spacing-sm;
+
+  :deep(.el-button) {
+    color: $neon-cyan;
+    transition: text-shadow $transition-fast, color $transition-fast;
+
+    &:hover {
+      color: $neon-cyan;
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+    }
+  }
 }
 
 .input-main {
@@ -271,9 +316,27 @@ function scrollToBottom() {
     background: $bg-input;
     border-color: $border-color;
     color: $text-primary;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
 
     &:focus {
-      border-color: $primary-color;
+      border-color: $neon-cyan;
+      box-shadow: 0 0 8px rgba(0, 240, 255, 0.15), 0 0 16px rgba(0, 240, 255, 0.05);
+    }
+  }
+
+  // 发送按钮霓虹发光效果
+  :deep(.el-button--primary) {
+    background: linear-gradient(135deg, $neon-cyan, $primary-color);
+    border: none;
+    transition: box-shadow $transition-normal, transform $transition-fast;
+
+    &:hover {
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4), 0 0 24px rgba(0, 240, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 }

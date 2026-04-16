@@ -24,4 +24,12 @@ public class AdminStatisticsController {
     public Result<DashboardStatsResponse> getDashboardStats() {
         return Result.success(statisticsService.getPlatformStats());
     }
+
+    /**
+     * 平台综合统计数据
+     */
+    @GetMapping
+    public Result<DashboardStatsResponse> getStatistics() {
+        return Result.success(statisticsService.getPlatformStats());
+    }
 }

@@ -20,4 +20,6 @@ public interface SystemAnnouncementService {
     Page<SystemAnnouncement> getAll(Pageable pageable);
 
     SystemAnnouncement getById(Long id);
+
+    void toggleTop(Long adminId, Long id, boolean top);
 }

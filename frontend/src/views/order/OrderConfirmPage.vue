@@ -462,28 +462,33 @@ onMounted(() => {
     border: 1px solid $glass-border;
     border-radius: $border-radius-lg;
     box-shadow: $shadow-glow;
-    transition: box-shadow $transition-normal;
+    transition: border-color $transition-normal, box-shadow $transition-normal;
 
     &:hover {
-      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
+      border-color: $neon-cyan;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15), 0 0 40px rgba(0, 240, 255, 0.06);
     }
   }
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $text-primary;
-  background: linear-gradient(135deg, $text-primary, $primary-light);
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(135deg, $neon-cyan, $primary-light, $neon-purple);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.25));
+  margin-bottom: $spacing-sm;
 }
 
 .card-header-title {
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
+  letter-spacing: 0.5px;
 }
 
 .card-header-row {
@@ -515,6 +520,40 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: $spacing-sm;
+
+  :deep(.el-tag) {
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    backdrop-filter: blur(4px);
+    transition: all $transition-normal;
+
+    &.el-tag--primary {
+      background: rgba(0, 240, 255, 0.1);
+      color: $neon-cyan;
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow: 0 0 8px rgba(0, 240, 255, 0.15);
+    }
+
+    &.el-tag--success {
+      background: rgba(57, 255, 20, 0.1);
+      color: $neon-green;
+      border-color: rgba(57, 255, 20, 0.3);
+      box-shadow: 0 0 8px rgba(57, 255, 20, 0.15);
+    }
+
+    &.el-tag--warning {
+      background: rgba(255, 230, 0, 0.1);
+      color: $neon-yellow;
+      border-color: rgba(255, 230, 0, 0.3);
+      box-shadow: 0 0 8px rgba(255, 230, 0, 0.15);
+    }
+
+    &.el-tag--danger {
+      background: rgba(255, 45, 120, 0.1);
+      color: $neon-pink;
+      border-color: rgba(255, 45, 120, 0.3);
+      box-shadow: 0 0 8px rgba(255, 45, 120, 0.15);
+    }
+  }
 }
 
 .duration-text {
@@ -523,32 +562,38 @@ onMounted(() => {
 }
 
 .service-price {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: $danger-color;
+  color: $neon-cyan;
   white-space: nowrap;
   display: flex;
   align-items: center;
   gap: $spacing-sm;
-  text-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 40px rgba(0, 240, 255, 0.15);
 
   .original-price-small {
     font-size: 14px;
     text-decoration: line-through;
     color: $text-muted;
     font-weight: 400;
+    text-shadow: none;
   }
 
   .negotiated-price {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
-    color: $danger-color;
+    color: $neon-cyan;
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
   }
 }
 
 // 游戏账号
 .account-list {
   min-height: 60px;
+
+  :deep(.el-empty__image svg) {
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.2));
+  }
 }
 
 .account-radio-group {
@@ -563,7 +608,7 @@ onMounted(() => {
   border: 1px solid rgba(148, 163, 184, 0.06);
   border-radius: $border-radius;
   cursor: pointer;
-  transition: all $transition-fast;
+  transition: all $transition-normal;
   display: flex;
   align-items: center;
   gap: $spacing-md;
@@ -571,9 +616,14 @@ onMounted(() => {
 
   &:hover,
   &.active {
-    border-color: $primary-color;
-    background: rgba($primary-color, 0.05);
-    box-shadow: 0 0 12px rgba(99, 102, 241, 0.1);
+    border-color: $neon-cyan;
+    background: rgba(0, 240, 255, 0.04);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.12), inset 0 0 20px rgba(0, 240, 255, 0.03);
+  }
+
+  &.active {
+    border-color: $neon-cyan;
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.2), inset 0 0 24px rgba(0, 240, 255, 0.04);
   }
 }
 
@@ -596,7 +646,7 @@ onMounted(() => {
 }
 
 .account-game {
-  color: $primary-light;
+  color: $neon-cyan;
   font-weight: 500;
   font-size: 14px;
 }
@@ -617,6 +667,16 @@ onMounted(() => {
   display: flex;
   gap: $spacing-sm;
   flex-shrink: 0;
+
+  :deep(.el-button) {
+    transition: all $transition-normal;
+
+    &.el-button--primary {
+      &:hover {
+        text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+      }
+    }
+  }
 }
 
 // 金额
@@ -645,8 +705,9 @@ onMounted(() => {
   }
 
   &.discount {
-    color: $success-color;
+    color: $neon-green;
     font-weight: 600;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
   }
 }
 
@@ -659,10 +720,11 @@ onMounted(() => {
 }
 
 .amount-total {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
-  color: $danger-color;
-  text-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+  color: $neon-cyan;
+  font-family: 'Orbitron', sans-serif;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5), 0 0 40px rgba(0, 240, 255, 0.2);
 }
 
 // 提交
@@ -674,17 +736,19 @@ onMounted(() => {
   width: 100%;
   height: 48px;
   font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 2px;
   border-radius: $border-radius-lg;
-  background: linear-gradient(135deg, $primary-color, $primary-dark);
-  border: none;
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+  background: linear-gradient(135deg, $primary-color, $neon-purple);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.2), 0 0 30px rgba(99, 102, 241, 0.15);
   transition: all $transition-normal;
-  letter-spacing: 1px;
 
   &:hover {
-    background: linear-gradient(135deg, $primary-light, $primary-color);
-    box-shadow: 0 6px 30px rgba(99, 102, 241, 0.45);
+    background: linear-gradient(135deg, $neon-cyan, $primary-color);
+    box-shadow: 0 6px 30px rgba(0, 240, 255, 0.35), 0 0 50px rgba(0, 240, 255, 0.1);
     transform: translateY(-2px);
+    border-color: $neon-cyan;
   }
 
   &:active {

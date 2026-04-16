@@ -153,13 +153,29 @@ onMounted(() => {
 .page-title {
   font-size: 28px;
   font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
   color: $text-primary;
   margin: 0;
-  background: linear-gradient(135deg, $text-primary 0%, $primary-light 100%);
+  background: linear-gradient(135deg, $neon-cyan 0%, $primary-light 50%, $neon-purple 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: $spacing-md;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, $primary-light, $neon-purple);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.5), 0 0 24px rgba(191, 90, 242, 0.3);
+    border-radius: 2px;
+  }
 }
 
 .stats-grid {
@@ -171,13 +187,41 @@ onMounted(() => {
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $border-glow;
     border-radius: $border-radius-lg;
-    transition: transform $transition-normal, box-shadow $transition-normal;
+    transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, $neon-cyan, $primary-light, $neon-purple);
+      opacity: 0;
+      transition: opacity $transition-normal;
+    }
 
     &:hover {
       transform: translateY(-3px);
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.12), 0 8px 24px rgba(0, 0, 0, 0.2);
+      border-color: rgba(0, 240, 255, 0.35);
+      box-shadow:
+        0 0 20px rgba(0, 240, 255, 0.15),
+        0 0 40px rgba(99, 102, 241, 0.1),
+        0 8px 24px rgba(0, 0, 0, 0.3);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    :deep(.stat-value) {
+      font-family: 'Orbitron', sans-serif;
+      color: $neon-cyan;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
     }
   }
 }
@@ -186,6 +230,21 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 600;
   color: $text-primary;
+  position: relative;
+  padding-left: $spacing-sm;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 16px;
+    background: linear-gradient(180deg, $neon-cyan, $neon-purple);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  }
 }
 
 .card-header-row {
@@ -200,13 +259,17 @@ onMounted(() => {
     background: $glass-bg;
     backdrop-filter: blur($glass-blur);
     -webkit-backdrop-filter: blur($glass-blur);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $border-glow;
     border-radius: $border-radius-lg;
     box-shadow: $shadow-glow;
-    transition: transform $transition-normal, box-shadow $transition-normal;
+    transition: transform $transition-normal, box-shadow $transition-normal, border-color $transition-normal;
 
     &:hover {
-      box-shadow: 0 0 30px rgba(99, 102, 241, 0.2), 0 8px 32px rgba(0, 0, 0, 0.3);
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow:
+        0 0 30px rgba(0, 240, 255, 0.12),
+        0 0 60px rgba(99, 102, 241, 0.08),
+        0 8px 32px rgba(0, 0, 0, 0.3);
     }
   }
 }
@@ -217,25 +280,34 @@ onMounted(() => {
   flex-wrap: wrap;
 
   :deep(.el-button--primary) {
-    background: linear-gradient(135deg, $primary-color, $primary-light);
-    border: none;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, $primary-color, $neon-cyan);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 240, 255, 0.2);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all $transition-normal;
 
     &:hover {
-      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
-      transform: translateY(-1px);
+      box-shadow:
+        0 0 16px rgba(0, 240, 255, 0.4),
+        0 0 32px rgba(0, 240, 255, 0.15);
+      transform: translateY(-2px);
+      border-color: rgba(0, 240, 255, 0.6);
     }
   }
 
   :deep(.el-button--default) {
     background: rgba(51, 65, 85, 0.5);
-    border: 1px solid rgba(148, 163, 184, 0.06);
+    border: 1px solid $border-glow;
     color: $text-secondary;
+    transition: all $transition-normal;
 
     &:hover {
-      background: rgba(51, 65, 85, 0.8);
-      color: $primary-light;
-      border-color: rgba(99, 102, 241, 0.3);
+      background: rgba(0, 240, 255, 0.08);
+      color: $neon-cyan;
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.15);
+      transform: translateY(-1px);
     }
   }
 }
@@ -249,7 +321,7 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: $spacing-md 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.06);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.06);
   cursor: pointer;
   transition: all $transition-fast;
   border-radius: $border-radius;
@@ -259,13 +331,15 @@ onMounted(() => {
   }
 
   &:hover {
-    background: rgba(51, 65, 85, 0.4);
+    background: rgba(0, 240, 255, 0.04);
     margin: 0 (-$spacing-md);
     padding-left: $spacing-md;
     padding-right: $spacing-md;
+    box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.03);
 
     .recent-title {
-      color: $primary-light;
+      color: $neon-cyan;
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
     }
   }
 }
@@ -281,12 +355,13 @@ onMounted(() => {
   font-size: 14px;
   color: $text-primary;
   font-weight: 500;
-  transition: color $transition-fast;
+  transition: all $transition-fast;
 }
 
 .recent-time {
   font-size: 12px;
   color: $text-muted;
+  font-family: 'Courier New', monospace;
 }
 
 .recent-right {
@@ -297,10 +372,11 @@ onMounted(() => {
 
 .recent-amount {
   font-size: 16px;
-  font-weight: 600;
-  color: $danger-color;
+  font-weight: 700;
+  color: $neon-cyan;
   white-space: nowrap;
-  text-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+  font-family: 'Orbitron', sans-serif;
 }
 
 @media (max-width: 1024px) {
