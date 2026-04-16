@@ -161,6 +161,21 @@ public class OrderController {
         return Result.success(orderService.getProviderOrderStats(userId));
     }
 
+    @GetMapping("/provider")
+    public Result<PageResult<Order>> getProviderOrders(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Long userId = getCurrentUserId();
+        Page<Order> orders = orderService.getProviderOrders(userId, page, size);
+        PageResult<Order> result = new PageResult<>(
+            orders.getTotalElements(),
+            orders.getTotalPages(),
+            orders.getNumber() + 1,
+            orders.getContent()
+        );
+        return Result.success(result);
+    }
+
     @PutMapping("/{orderNo}/pay")
     public Result<Order> payOrderByPut(@PathVariable String orderNo, @RequestParam(defaultValue = "balance") String paymentMethod) {
         return payOrder(orderNo, paymentMethod);

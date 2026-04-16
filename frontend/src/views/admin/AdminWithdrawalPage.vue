@@ -61,6 +61,19 @@
         <el-table-column prop="createdAt" label="申请时间" width="170">
           <template #default="{ row }">{{ formatDate(row.createdAt) }}</template>
         </el-table-column>
+        <el-table-column label="操作" width="200" fixed="right">
+          <template #default="{ row }">
+            <template v-if="row.status === 0">
+              <el-button type="success" size="small" @click="handleAudit(row, 1)">
+                <el-icon><Check /></el-icon> 通过
+              </el-button>
+              <el-button type="danger" size="small" @click="handleAudit(row, 2)">
+                <el-icon><Close /></el-icon> 拒绝
+              </el-button>
+            </template>
+            <span v-else style="color: #64748b; font-size: 13px">已处理</span>
+          </template>
+        </el-table-column>
       </el-table>
 
       <div class="pagination-wrapper">
@@ -81,10 +94,11 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { getAdminWithdrawals } from '@/api/admin'
+import { getAdminWithdrawals, auditWithdrawal } from '@/api/admin'
 import type { WithdrawalApplication } from '@/types/payment'
 import { formatDate } from '@/utils/format'
-import { Refresh } from '@element-plus/icons-vue'
+import { Refresh, Check, Close } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const loading = ref(false)
 const withdrawals = ref<WithdrawalApplication[]>([])
@@ -119,6 +133,24 @@ async function fetchWithdrawals() {
 }
 
 onMounted(() => fetchWithdrawals())
+
+async function handleAudit(row: WithdrawalApplication, status: number) {
+  const action = status === 1 ? '通过' : '拒绝'
+  try {
+    await ElMessageBox.confirm(
+      `确认${action}该提现申请？金额：¥${row.amount?.toFixed(2)}`,
+      `${action}提现`,
+      { confirmButtonText: `确认${action}`, cancelButtonText: '取消', type: 'warning' }
+    )
+    await auditWithdrawal(row.id, { status, remark: status === 1 ? '审核通过' : '审核拒绝' })
+    ElMessage.success(`提现申请已${action}`)
+    fetchWithdrawals()
+  } catch (e: any) {
+    if (e !== 'cancel') {
+      ElMessage.error(e?.message || `${action}失败`)
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

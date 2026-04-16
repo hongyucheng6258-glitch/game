@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/statistics/platform").permitAll()
                 .requestMatchers("/api/v1/rankings/**").permitAll()
                 .requestMatchers("/api/v1/reviews/service/{serviceId}").permitAll()
+                .requestMatchers("/api/v1/reviews/service-stats/{serviceId}").permitAll()
                 .requestMatchers("/api/v1/reviews/stats/{providerId}").permitAll()
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**", "/v3/api-docs").permitAll()
                 .requestMatchers("/ws/**").permitAll()

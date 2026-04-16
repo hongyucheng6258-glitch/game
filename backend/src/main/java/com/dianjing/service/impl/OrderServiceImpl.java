@@ -19,6 +19,7 @@ import com.dianjing.util.OrderNoGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -490,5 +491,10 @@ public class OrderServiceImpl implements OrderService {
         stats.put("completed", orderMapper.countByProviderIdAndStatus(providerId, Constants.ORDER_COMPLETED));
         stats.put("cancelled", orderMapper.countByProviderIdAndStatus(providerId, Constants.ORDER_CANCELLED));
         return stats;
+    }
+
+    @Override
+    public Page<Order> getProviderOrders(Long providerId, int page, int size) {
+        return orderMapper.findByProviderIdOrderByIdDesc(providerId, PageRequest.of(page - 1, size));
     }
 }

@@ -1,5 +1,6 @@
 package com.dianjing.controller;
 
+import com.dianjing.common.PageResult;
 import com.dianjing.common.Result;
 import com.dianjing.entity.Service;
 import com.dianjing.mapper.ServiceMapper;
@@ -38,11 +39,17 @@ public class ProviderController {
     }
 
     @GetMapping("/services")
-    public Result<Page<Service>> getMyServices(
+    public Result<PageResult<Service>> getMyServices(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         Long userId = getCurrentUserId();
         Page<Service> services = serviceMapper.findByProviderIdOrderByIdDesc(userId, PageRequest.of(page - 1, size));
-        return Result.success(services);
+        PageResult<Service> result = new PageResult<>(
+            services.getTotalElements(),
+            services.getTotalPages(),
+            services.getNumber() + 1,
+            services.getContent()
+        );
+        return Result.success(result);
     }
 }

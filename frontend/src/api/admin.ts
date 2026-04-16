@@ -28,7 +28,7 @@ export function getAdminPaymentStats() { return get('/admin/payments/statistics'
 
 // Admin Withdrawals
 export function getAdminWithdrawals(params?: any) { return get('/admin/withdrawals', params) }
-export function auditWithdrawal(id: number, data: any) { return put(`/admin/withdrawals/${id}/audit`, data) }
+export function auditWithdrawal(id: number, data: any) { return post(`/admin/withdrawals/${id}/audit`, data) }
 
 // Admin Reviews
 export function getAdminReviews(params?: any) { return get('/admin/reviews', params) }
