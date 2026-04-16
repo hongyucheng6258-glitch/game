@@ -221,6 +221,18 @@ public class OrderController {
         return Result.success();
     }
 
+    @PostMapping("/{orderNo}/refund")
+    public Result<Void> applyRefund(@PathVariable String orderNo) {
+        Long userId = getCurrentUserId();
+        orderService.applyRefund(userId, orderNo);
+        return Result.success();
+    }
+
+    @PutMapping("/{orderNo}/refund")
+    public Result<Void> applyRefundByPut(@PathVariable String orderNo) {
+        return applyRefund(orderNo);
+    }
+
     @GetMapping
     public Result<com.dianjing.common.PageResult<Order>> listOrders(
             @RequestParam(defaultValue = "1") int page,

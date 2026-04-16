@@ -37,9 +37,13 @@
         <el-table-column prop="createdAt" label="下单时间" width="170">
           <template #default="{ row }">{{ formatDate(row.createdAt) }}</template>
         </el-table-column>
-        <el-table-column label="操作" width="100" fixed="right">
+        <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
             <el-button size="small" type="primary" @click="handleView(row)">详情</el-button>
+            <template v-if="row.status === 6">
+              <el-button size="small" type="success" @click="handleApproveRefund(row)">同意退款</el-button>
+              <el-button size="small" type="danger" @click="handleRejectRefund(row)">拒绝退款</el-button>
+            </template>
           </template>
         </el-table-column>
       </el-table>
@@ -82,7 +86,8 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { Search } from '@element-plus/icons-vue'
-import { getAdminOrders, getAdminOrder } from '@/api/admin'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { getAdminOrders, getAdminOrder, approveRefund, rejectRefund } from '@/api/admin'
 import type { Order } from '@/types/order'
 import { ORDER_STATUS_LABELS } from '@/utils/constants'
 import { formatDate } from '@/utils/format'
@@ -121,6 +126,36 @@ async function handleView(order: Order) {
   } catch {
     currentOrder.value = order
     detailVisible.value = true
+  }
+}
+
+async function handleApproveRefund(order: Order) {
+  try {
+    await ElMessageBox.confirm(`确定同意订单 ${order.orderNo} 的退款申请吗？退款金额 ¥${order.totalAmount} 将退还至用户余额。`, '同意退款', {
+      confirmButtonText: '确定同意',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    await approveRefund(order.id)
+    ElMessage.success('退款已处理，金额已退还至用户余额')
+    fetchOrders()
+  } catch {
+    // cancelled or error
+  }
+}
+
+async function handleRejectRefund(order: Order) {
+  try {
+    await ElMessageBox.confirm(`确定拒绝订单 ${order.orderNo} 的退款申请吗？订单将恢复为待服务状态。`, '拒绝退款', {
+      confirmButtonText: '确定拒绝',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    await rejectRefund(order.id)
+    ElMessage.success('退款申请已拒绝')
+    fetchOrders()
+  } catch {
+    // cancelled or error
   }
 }
 
@@ -264,7 +299,7 @@ onMounted(() => fetchOrders())
   --el-dialog-bg-color: #{$bg-card} !important;
   --el-dialog-border-color: rgba($neon-cyan, 0.15) !important;
   --el-dialog-title-color: #{$text-primary} !important;
-  background-color: $glass-bg !important;
+  background-color: #{$bg-card} !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
   border: 1px solid rgba($neon-cyan, 0.15) !important;
@@ -287,7 +322,7 @@ onMounted(() => fetchOrders())
 
 :deep(.el-dialog__header) {
   border-bottom: 1px solid rgba($neon-cyan, 0.08) !important;
-  background-color: transparent !important;
+  background-color: #{$bg-card} !important;
   padding: $spacing-lg $spacing-xl;
   margin-right: 0;
 
@@ -303,14 +338,14 @@ onMounted(() => fetchOrders())
 }
 
 :deep(.el-dialog__body) {
-  background-color: transparent !important;
+  background-color: #{$bg-card} !important;
   color: $text-primary !important;
   padding: $spacing-lg $spacing-xl;
 }
 
 :deep(.el-dialog__footer) {
   border-top: 1px solid rgba($neon-cyan, 0.08) !important;
-  background-color: transparent !important;
+  background-color: #{$bg-card} !important;
   padding: $spacing-md $spacing-xl;
 }
 

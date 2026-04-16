@@ -197,8 +197,7 @@ const rechargeOptions = [10, 50, 100, 200, 500, 1000]
 const paymentMethod = ref('alipay')
 const paymentMethods = [
   { label: '支付宝', value: 'alipay' },
-  { label: '微信', value: 'wechat' },
-  { label: '余额', value: 'balance' }
+  { label: '微信', value: 'wechat' }
 ]
 
 // 提现
@@ -273,10 +272,8 @@ function getRecordTypeLabel(type: number): string {
 async function fetchBalance() {
   try {
     const res = await get<number>('/users/balance')
-    console.log('fetchBalance response:', res)
     balance.value = res.data
   } catch (error) {
-    console.error('fetchBalance error:', error)
     balance.value = userStore.userInfo?.balance || 0
   }
 }
@@ -304,7 +301,7 @@ async function handleRecharge() {
 
   recharging.value = true
   try {
-    await post('/payment-records/recharge', {
+    await post('/payments/recharge', {
       amount: rechargeAmount.value,
       paymentMethod: paymentMethod.value
     })
@@ -338,7 +335,6 @@ async function handleWithdraw() {
       fetchRecentRecords()
       userStore.fetchUserInfo()
     } catch (error) {
-      console.error('handleWithdraw error:', error)
       // handled by interceptor
     } finally {
       withdrawing.value = false

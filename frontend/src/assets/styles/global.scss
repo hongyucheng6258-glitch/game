@@ -214,14 +214,19 @@ a {
 
 .el-descriptions {
   --el-descriptions-table-border: #{$border-color};
+  --el-descriptions-item-bordered-label-background: #{$bg-card-hover};
+  --el-descriptions-item-bordered-content-background: #{$bg-card};
+  background-color: $bg-card;
 }
 
 .el-descriptions__label {
   color: $text-accent !important;
+  background-color: $bg-card-hover !important;
 }
 
 .el-descriptions__content {
   color: $text-primary !important;
+  background-color: $bg-card !important;
 }
 
 .el-divider {

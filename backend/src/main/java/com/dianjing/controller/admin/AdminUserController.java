@@ -1,5 +1,6 @@
 package com.dianjing.controller.admin;
 
+import com.dianjing.common.BusinessException;
 import com.dianjing.common.PageResult;
 import com.dianjing.common.Result;
 import com.dianjing.dto.request.UserUpdateRequest;
@@ -95,8 +96,18 @@ public class AdminUserController {
      */
     @PutMapping("/{id}/balance")
     public Result<Void> adjustBalance(@PathVariable Long id, @RequestBody java.util.Map<String, Object> body) {
-        BigDecimal amount = new BigDecimal(body.get("amount").toString());
+        Object amountObj = body.get("amount");
+        if (amountObj == null) {
+            throw new BusinessException(400, "调整金额不能为空");
+        }
+        BigDecimal amount = new BigDecimal(amountObj.toString());
+        if (amount.compareTo(BigDecimal.ZERO) == 0) {
+            throw new BusinessException(400, "调整金额不能为0");
+        }
         String remark = (String) body.get("remark");
+        if (remark == null || remark.trim().isEmpty()) {
+            throw new BusinessException(400, "调整备注不能为空");
+        }
         userService.adminAdjustBalance(id, amount, remark);
         return Result.success();
     }

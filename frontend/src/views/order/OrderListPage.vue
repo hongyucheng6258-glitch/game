@@ -11,6 +11,8 @@
       <el-tab-pane label="待评价" name="3" />
       <el-tab-pane label="已完成" name="4" />
       <el-tab-pane label="已取消" name="5" />
+      <el-tab-pane label="退款中" name="6" />
+      <el-tab-pane label="已退款" name="7" />
     </el-tabs>
 
     <!-- 订单列表 -->
@@ -46,6 +48,13 @@
               <el-button type="primary" size="small" @click.stop="handlePay(order.orderNo)">
                 立即支付
               </el-button>
+            </template>
+            <template v-else-if="order.status === 1">
+              <el-button size="small" @click.stop="handleCancel(order.orderNo)">取消</el-button>
+              <el-button type="danger" size="small" @click.stop="handleApplyRefund(order.orderNo)">退款</el-button>
+            </template>
+            <template v-else-if="order.status === 2">
+              <el-button type="danger" size="small" @click.stop="handleApplyRefund(order.orderNo)">退款</el-button>
             </template>
             <template v-else-if="order.status === 3">
               <el-button type="primary" size="small" @click.stop="handleReview(order)">
@@ -89,6 +98,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { get, put } from '@/api/request'
+import { applyRefund } from '@/api/order'
 import type { Order } from '@/types/order'
 import type { PageData } from '@/types/common'
 import { ORDER_STATUS_LABELS, ORDER_STATUS_TYPES } from '@/utils/constants'
@@ -148,6 +158,21 @@ async function handleCancel(orderNo: string) {
 
 async function handlePay(orderNo: string) {
   router.push(`/order/${orderNo}`)
+}
+
+async function handleApplyRefund(orderNo: string) {
+  try {
+    await ElMessageBox.confirm('确定要申请退款吗？提交后需等待平台审核。', '申请退款', {
+      confirmButtonText: '确定申请',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    await applyRefund(orderNo)
+    ElMessage.success('退款申请已提交，请等待平台审核')
+    fetchOrders()
+  } catch {
+    // cancelled or error
+  }
 }
 
 function handleReview(order: Order) {

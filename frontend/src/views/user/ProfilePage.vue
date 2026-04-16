@@ -721,10 +721,24 @@ async function handleBindEmailSubmit() {
 
 async function loadStats() {
   try {
-    // 统计数据可以通过后端接口获取，这里先模拟
-    stats.orderCount = 0
-    stats.serviceCount = 0
-    stats.reviewCount = 0
+    const [orderRes, reviewRes] = await Promise.all([
+      get('/orders?page=1&size=1'),
+      get('/reviews/my?page=1&size=1'),
+    ])
+    stats.orderCount = orderRes.data?.total || 0
+    stats.reviewCount = reviewRes.data?.total || 0
+
+    const role = userInfo.value?.role
+    if (role === 1) {
+      try {
+        const serviceRes = await get('/provider/services?page=1&size=1')
+        stats.serviceCount = serviceRes.data?.total || 0
+      } catch {
+        stats.serviceCount = 0
+      }
+    } else {
+      stats.serviceCount = 0
+    }
   } catch {
     // ignore
   }

@@ -117,7 +117,7 @@ public class WithdrawalServiceImpl implements WithdrawalService {
         application.setBankAccount(request.getBankAccount());
         application.setBankName(request.getBankName());
         application.setAccountName(request.getAccountName());
-        application.setStatus(Constants.WITHDRAWAL_STATUS_COMPLETED);
+        application.setStatus(Constants.WITHDRAWAL_STATUS_PENDING);
         withdrawalApplicationMapper.save(application);
         
         // 创建提现支付记录（按实际到账金额），包含手续费信息

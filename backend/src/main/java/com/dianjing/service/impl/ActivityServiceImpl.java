@@ -184,6 +184,9 @@ public class ActivityServiceImpl implements com.dianjing.service.ActivityService
         }
 
         List<Activity> serviceActivities = activityMapper.findActiveServiceActivities(now);
+        // 收集所有匹配的活动，选择折扣最低（优惠最大）的
+        Activity bestServiceActivity = null;
+        BigDecimal bestActivityPrice = null;
         for (Activity activity : serviceActivities) {
             List<ActivityServiceItem> relations = activityServiceItemMapper.findByActivityId(activity.getId());
             for (ActivityServiceItem as : relations) {
@@ -195,14 +198,21 @@ public class ActivityServiceImpl implements com.dianjing.service.ActivityService
                         activityPrice = servicePrice.multiply(activity.getDiscountRate())
                                 .setScale(2, java.math.RoundingMode.HALF_UP);
                     }
-                    result.put("activityId", activity.getId());
-                    result.put("activityTitle", activity.getTitle());
-                    result.put("activityPrice", activityPrice);
-                    result.put("activityDiscountRate", activity.getDiscountRate());
-                    result.put("activityType", activity.getType());
-                    return result;
+                    if (bestActivityPrice == null || activityPrice.compareTo(bestActivityPrice) < 0) {
+                        bestActivityPrice = activityPrice;
+                        bestServiceActivity = activity;
+                    }
+                    break;
                 }
             }
+        }
+        if (bestServiceActivity != null) {
+            result.put("activityId", bestServiceActivity.getId());
+            result.put("activityTitle", bestServiceActivity.getTitle());
+            result.put("activityPrice", bestActivityPrice);
+            result.put("activityDiscountRate", bestServiceActivity.getDiscountRate());
+            result.put("activityType", bestServiceActivity.getType());
+            return result;
         }
 
         return result;

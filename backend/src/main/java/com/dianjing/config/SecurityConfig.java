@@ -34,13 +34,14 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // 放行路径
-                .requestMatchers("/api/v1/users/register", "/api/v1/users/login", "/api/v1/users/send-sms", "/api/v1/users/phone-login", "/api/v1/users/reset-password").permitAll()
+                .requestMatchers("/api/v1/users/register", "/api/v1/users/login", "/api/v1/users/send-sms", "/api/v1/users/phone-login", "/api/v1/users/reset-password", "/api/v1/users/check-username").permitAll()
                 .requestMatchers("/api/v1/settings").permitAll()
                 .requestMatchers("/api/v1/public-settings").permitAll()
                 .requestMatchers("/api/v1/services").permitAll()
                 .requestMatchers("/api/v1/services/{id}").permitAll()
                 .requestMatchers("/api/v1/services/recommend").permitAll()
                 .requestMatchers("/api/v1/service-tags").permitAll()
+                .requestMatchers("/api/v1/tags").permitAll()
                 .requestMatchers("/api/v1/level/list").permitAll()
                 .requestMatchers("/api/v1/public/settings").permitAll()
                 .requestMatchers("/api/v1/announcements").permitAll()

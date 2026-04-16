@@ -108,90 +108,34 @@ public class OrderTimeoutScheduledTask {
         order.setStatus(Constants.ORDER_CANCELLED);
         orderMapper.save(order);
 
-        User user = userMapper.findById(order.getUserId()).orElse(null);
-        User provider = userMapper.findById(order.getProviderId()).orElse(null);
-        User platform = userMapper.findById(1L).orElse(null); // 平台用户ID是1
-        
-        if (user != null && provider != null && platform != null) {
-            // 1. 从服务者扣钱（如果服务者余额足够）
-            BigDecimal providerBalance = provider.getBalance() != null ? provider.getBalance() : BigDecimal.ZERO;
-            BigDecimal deductAmount = order.getTotalAmount().min(providerBalance);
-            
-            if (deductAmount.compareTo(BigDecimal.ZERO) > 0) {
-                provider.setBalance(providerBalance.subtract(deductAmount));
-                userMapper.save(provider);
-                
-                // 给服务者创建扣款记录（负数，支出）
-                PaymentRecord providerDeductRecord = new PaymentRecord();
-                providerDeductRecord.setUserId(order.getProviderId());
-                providerDeductRecord.setOrderId(order.getId());
-                providerDeductRecord.setAmount(deductAmount.negate());
-                providerDeductRecord.setType(Constants.PAYMENT_TYPE_REFUND);
-                providerDeductRecord.setPaymentMethod("system");
-                providerDeductRecord.setStatus(Constants.PAYMENT_STATUS_SUCCESS);
-                providerDeductRecord.setTransactionNo(UUID.randomUUID().toString().replace("-", ""));
-                paymentRecordMapper.save(providerDeductRecord);
-                
-                // 2. 平台收到钱（正数，收入）
-                BigDecimal platformBalance = platform.getBalance() != null ? platform.getBalance() : BigDecimal.ZERO;
-                platform.setBalance(platformBalance.add(deductAmount));
-                userMapper.save(platform);
-                
-                // 给平台创建收入记录（正数，收入）
-                PaymentRecord platformIncomeRecord = new PaymentRecord();
-                platformIncomeRecord.setUserId(1L);
-                platformIncomeRecord.setOrderId(order.getId());
-                platformIncomeRecord.setAmount(deductAmount);
-                platformIncomeRecord.setType(Constants.PAYMENT_TYPE_INCOME);
-                platformIncomeRecord.setPaymentMethod("system");
-                platformIncomeRecord.setStatus(Constants.PAYMENT_STATUS_SUCCESS);
-                platformIncomeRecord.setTransactionNo(UUID.randomUUID().toString().replace("-", ""));
-                paymentRecordMapper.save(platformIncomeRecord);
+        // 只有余额支付才退还用户余额
+        if ("balance".equals(order.getPaymentMethod())) {
+            User user = userMapper.findById(order.getUserId()).orElse(null);
+            if (user != null) {
+                user.setBalance(user.getBalance().add(order.getTotalAmount()));
+                userMapper.save(user);
+
+                // 清除用户缓存
+                userCacheService.evictUser(order.getUserId());
+                userCacheService.evictUserBalance(order.getUserId());
             }
-
-            // 3. 平台给用户退款（正数，收入）
-            user.setBalance(user.getBalance().add(order.getTotalAmount()));
-            userMapper.save(user);
-
-            // 给用户创建退款记录（正数，收入）
-            PaymentRecord refundRecord = new PaymentRecord();
-            refundRecord.setUserId(order.getUserId());
-            refundRecord.setOrderId(order.getId());
-            refundRecord.setAmount(order.getTotalAmount());
-            refundRecord.setType(Constants.PAYMENT_TYPE_REFUND);
-            refundRecord.setPaymentMethod("system");
-            refundRecord.setStatus(Constants.PAYMENT_STATUS_SUCCESS);
-            refundRecord.setTransactionNo(UUID.randomUUID().toString().replace("-", ""));
-            paymentRecordMapper.save(refundRecord);
-            
-            // 4. 平台创建退款支出记录（负数，支出）
-            BigDecimal updatedPlatformBalance = platform.getBalance() != null ? platform.getBalance() : BigDecimal.ZERO;
-            platform.setBalance(updatedPlatformBalance.subtract(order.getTotalAmount()));
-            userMapper.save(platform);
-            
-            PaymentRecord platformRefundRecord = new PaymentRecord();
-            platformRefundRecord.setUserId(1L);
-            platformRefundRecord.setOrderId(order.getId());
-            platformRefundRecord.setAmount(order.getTotalAmount().negate());
-            platformRefundRecord.setType(Constants.PAYMENT_TYPE_REFUND);
-            platformRefundRecord.setPaymentMethod("system");
-            platformRefundRecord.setStatus(Constants.PAYMENT_STATUS_SUCCESS);
-            platformRefundRecord.setTransactionNo(UUID.randomUUID().toString().replace("-", ""));
-            paymentRecordMapper.save(platformRefundRecord);
-
-            // 清除缓存
-            userCacheService.evictUser(order.getUserId());
-            userCacheService.evictUserBalance(order.getUserId());
-            userCacheService.evictUser(order.getProviderId());
-            userCacheService.evictUserBalance(order.getProviderId());
-            userCacheService.evictUser(1L);
-            userCacheService.evictUserBalance(1L);
         }
+
+        // 创建用户退款记录
+        PaymentRecord refundRecord = new PaymentRecord();
+        refundRecord.setUserId(order.getUserId());
+        refundRecord.setOrderId(order.getId());
+        refundRecord.setAmount(order.getTotalAmount());
+        refundRecord.setType(Constants.PAYMENT_TYPE_REFUND);
+        refundRecord.setPaymentMethod(order.getPaymentMethod() != null ? order.getPaymentMethod() : "system");
+        refundRecord.setStatus(Constants.PAYMENT_STATUS_SUCCESS);
+        refundRecord.setTransactionNo(UUID.randomUUID().toString().replace("-", ""));
+        paymentRecordMapper.save(refundRecord);
 
         messageService.sendSystemMessage(order.getUserId(),
                 "您的订单 " + order.getOrderNo() + " 因" + reason + "已自动取消，款项已退还。", order.getId(), "order");
         messageService.sendSystemMessage(order.getProviderId(),
-                "订单 " + order.getOrderNo() + " 因" + reason + "已自动取消，已扣除相应款项。", order.getId(), "order");
+                "订单 " + order.getOrderNo() + " 因" + reason + "已自动取消。", order.getId(), "order");
     }
 
     private void autoCompleteService(Order order) {

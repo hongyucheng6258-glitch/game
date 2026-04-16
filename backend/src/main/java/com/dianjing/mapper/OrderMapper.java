@@ -22,6 +22,9 @@ public interface OrderMapper extends JpaRepository<Order, Long> {
     @Query("SELECT COUNT(o) FROM Order o WHERE o.providerId = :providerId AND o.status = :status")
     long countByProviderIdAndStatus(@Param("providerId") Long providerId, @Param("status") Integer status);
 
+    @Query("SELECT COUNT(o) FROM Order o WHERE o.userId = :userId AND o.status = :status")
+    long countByUserIdAndStatus(@Param("userId") Long userId, @Param("status") Integer status);
+
     @Query("SELECT COUNT(o) FROM Order o WHERE o.serviceId = :serviceId AND o.status = :status")
     long countByServiceIdAndStatus(@Param("serviceId") Long serviceId, @Param("status") Integer status);
 

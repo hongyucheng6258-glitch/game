@@ -14,8 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.data.domain.PageImpl;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
@@ -71,9 +73,15 @@ public class ComplaintServiceImpl implements ComplaintService {
         // 获取用户作为投诉方或被投诉方的所有投诉
         Page<Complaint> complainantPage = complaintMapper.findByComplainantIdOrderByIdDesc(userId, pageable);
         Page<Complaint> respondentPage = complaintMapper.findByRespondentIdOrderByIdDesc(userId, pageable);
-        
-        // 为了简化，先返回作为投诉方的投诉
-        return complainantPage;
+
+        // 合并两个查询结果
+        List<Complaint> allComplaints = new ArrayList<>(complainantPage.getContent());
+        allComplaints.addAll(respondentPage.getContent());
+        // 按ID倒序排序
+        allComplaints.sort((a, b) -> b.getId().compareTo(a.getId()));
+
+        return new PageImpl<>(allComplaints, pageable,
+            complainantPage.getTotalElements() + respondentPage.getTotalElements());
     }
 
     @Override

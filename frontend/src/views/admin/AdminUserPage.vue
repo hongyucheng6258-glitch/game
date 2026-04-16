@@ -261,7 +261,7 @@ const validateConfirmPassword = (rule: any, value: any, callback: any) => {
 const resetPasswordRules: FormRules = {
   newPassword: [
     { required: true, message: '请输入新密码', trigger: 'blur' },
-    { min: 6, message: '密码长度至少6位', trigger: 'blur' }
+    { min: 6, message: '密码长度至少6位，需包含字母、数字、特殊字符中的至少两种', trigger: 'blur' }
   ],
   confirmPassword: [
     { required: true, validator: validateConfirmPassword, trigger: 'blur' }
@@ -595,7 +595,7 @@ onMounted(() => fetchUsers())
   --el-dialog-bg-color: #{$bg-card} !important;
   --el-dialog-border-color: rgba($neon-cyan, 0.15) !important;
   --el-dialog-title-color: #{$text-primary} !important;
-  background-color: $glass-bg !important;
+  background-color: #{$bg-card} !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
   border: 1px solid rgba($neon-cyan, 0.15) !important;
@@ -618,7 +618,7 @@ onMounted(() => fetchUsers())
 
 :deep(.el-dialog__header) {
   border-bottom: 1px solid rgba($neon-cyan, 0.08) !important;
-  background-color: transparent !important;
+  background-color: #{$bg-card} !important;
   padding: $spacing-lg $spacing-xl;
   margin-right: 0;
 
@@ -634,14 +634,14 @@ onMounted(() => fetchUsers())
 }
 
 :deep(.el-dialog__body) {
-  background-color: transparent !important;
+  background-color: #{$bg-card} !important;
   color: $text-primary !important;
   padding: $spacing-lg $spacing-xl;
 }
 
 :deep(.el-dialog__footer) {
   border-top: 1px solid rgba($neon-cyan, 0.08) !important;
-  background-color: transparent !important;
+  background-color: #{$bg-card} !important;
   padding: $spacing-md $spacing-xl;
 }
 

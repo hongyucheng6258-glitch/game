@@ -20,6 +20,8 @@ public interface StatisticsService {
 
     List<Map<String, Object>> getPopularRanking(int limit);
 
+    List<Map<String, Object>> getRevenueRanking(int limit);
+
     List<Map<String, Object>> getOrderTrend(int days);
 
     List<Map<String, Object>> getRevenueTrend(int days);

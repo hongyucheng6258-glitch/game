@@ -98,7 +98,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('@/views/home/HomePage.vue'),
+    component: () => import('@/views/NotFoundPage.vue'),
   },
 ]
 
@@ -122,6 +122,17 @@ router.beforeEach((to, _from, next) => {
     if (userInfo) {
       const user = JSON.parse(userInfo)
       if (user.role !== 2) {
+        next({ name: 'Home' })
+        return
+      }
+    }
+    next()
+  } else if (to.meta.requiresProvider && token) {
+    // Check provider role from localStorage
+    const userInfo = localStorage.getItem('userInfo')
+    if (userInfo) {
+      const user = JSON.parse(userInfo)
+      if (user.role !== 1 && user.role !== 2) {
         next({ name: 'Home' })
         return
       }

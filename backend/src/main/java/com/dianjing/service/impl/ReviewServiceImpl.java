@@ -212,7 +212,10 @@ public class ReviewServiceImpl implements ReviewService {
     
     @Override
     public void delete(Long id) {
+        Review review = reviewMapper.findById(id).orElseThrow(() -> new BusinessException(404, "评价不存在"));
         reviewMapper.deleteById(id);
+        // 重新计算服务评分
+        updateServiceRating(review.getServiceId());
     }
 
     private void updateServiceRating(Long serviceId) {

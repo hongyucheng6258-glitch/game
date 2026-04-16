@@ -479,7 +479,7 @@ onMounted(() => {
   --el-dialog-bg-color: #0f172a !important;
   --el-dialog-border-color: $glass-border !important;
   --el-dialog-title-color: #f1f5f9 !important;
-  background-color: $glass-bg !important;
+  background-color: #{$bg-card} !important;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
   border: 1px solid $glass-border !important;
@@ -501,20 +501,20 @@ onMounted(() => {
 
 :deep(.el-dialog__header) {
   border-bottom: 1px solid rgba($neon-cyan, 0.1) !important;
-  background-color: transparent !important;
+  background-color: #{$bg-card} !important;
   padding: $spacing-lg $spacing-xl;
   margin-right: 0;
 }
 
 :deep(.el-dialog__body) {
-  background-color: transparent !important;
+  background-color: #{$bg-card} !important;
   color: $text-primary !important;
   padding: $spacing-lg $spacing-xl;
 }
 
 :deep(.el-dialog__footer) {
   border-top: 1px solid rgba($neon-cyan, 0.1) !important;
-  background-color: transparent !important;
+  background-color: #{$bg-card} !important;
   padding: $spacing-md $spacing-xl;
 }
 

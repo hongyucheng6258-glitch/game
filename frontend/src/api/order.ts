@@ -37,3 +37,7 @@ export function payOrder(data: { orderNo: string; paymentMethod: string }) {
 export function checkOrdered(messageId: number) {
   return get<boolean>(`/orders/check-ordered/${messageId}`)
 }
+
+export function applyRefund(orderNo: string) {
+  return put(`/orders/${orderNo}/refund`)
+}

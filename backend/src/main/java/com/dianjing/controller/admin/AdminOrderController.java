@@ -4,9 +4,11 @@ import com.dianjing.common.PageResult;
 import com.dianjing.common.Result;
 import com.dianjing.entity.Order;
 import com.dianjing.service.OrderService;
+import com.dianjing.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,9 +17,16 @@ import org.springframework.web.bind.annotation.*;
 public class AdminOrderController {
 
     private final OrderService orderService;
+    private final UserService userService;
 
-    public AdminOrderController(OrderService orderService) {
+    public AdminOrderController(OrderService orderService, UserService userService) {
         this.orderService = orderService;
+        this.userService = userService;
+    }
+
+    private Long getCurrentAdminId() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userService.getUserByUsername(username).getId();
     }
 
     /**
@@ -40,5 +49,25 @@ public class AdminOrderController {
     @GetMapping("/{orderNo}")
     public Result<Order> getDetail(@PathVariable String orderNo) {
         return Result.success(orderService.getByOrderNo(orderNo));
+    }
+
+    /**
+     * 同意退款
+     */
+    @PostMapping("/{id}/refund/approve")
+    public Result<Void> approveRefund(@PathVariable Long id) {
+        Long adminId = getCurrentAdminId();
+        orderService.approveRefund(adminId, id);
+        return Result.success();
+    }
+
+    /**
+     * 拒绝退款
+     */
+    @PostMapping("/{id}/refund/reject")
+    public Result<Void> rejectRefund(@PathVariable Long id) {
+        Long adminId = getCurrentAdminId();
+        orderService.rejectRefund(adminId, id);
+        return Result.success();
     }
 }

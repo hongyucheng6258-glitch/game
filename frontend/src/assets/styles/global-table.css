@@ -55,17 +55,20 @@ body .el-table__header-cell {
   border-color: #334155 !important;
 }
 
-/* 全局弹窗样式 */
+/* 全局弹窗样式 - 确保覆盖所有 teleported dialog */
 body .el-dialog {
   --el-dialog-bg-color: #0f172a !important;
   --el-dialog-border-color: #334155 !important;
   --el-dialog-title-color: #f1f5f9 !important;
   background-color: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: #f1f5f9 !important;
 }
 
 body .el-dialog__header {
   border-bottom: 1px solid #334155 !important;
   background-color: #0f172a !important;
+  color: #f1f5f9 !important;
 }
 
 body .el-dialog__body {
@@ -76,15 +79,47 @@ body .el-dialog__body {
 body .el-dialog__footer {
   border-top: 1px solid #334155 !important;
   background-color: #0f172a !important;
+  color: #f1f5f9 !important;
 }
 
-/* 全局描述列表样式 */
+/* dialog 内表单标签颜色 */
+body .el-dialog .el-form-item__label {
+  color: #94a3b8 !important;
+}
+
+/* dialog 内输入框颜色 */
+body .el-dialog .el-input__wrapper {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  box-shadow: none !important;
+}
+
+body .el-dialog .el-input__inner {
+  color: #f1f5f9 !important;
+}
+
+/* dialog 内文本域颜色 */
+body .el-dialog .el-textarea__inner {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+/* dialog 内 select 下拉框颜色 */
+body .el-dialog .el-select .el-input__wrapper {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+/* 全局描述列表样式 - 彻底覆盖所有可能的白色背景 */
 body .el-descriptions {
   --el-descriptions-table-border: #334155 !important;
   --el-descriptions-item-bordered-label-background: #1e293b !important;
   --el-descriptions-item-bordered-content-background: #0f172a !important;
   --el-descriptions-item-content-color: #f1f5f9 !important;
   --el-descriptions-item-label-color: #94a3b8 !important;
+  --el-fill-color-lighter: #1e293b !important;
+  background-color: #0f172a !important;
 }
 
 body .el-descriptions__label {
@@ -99,4 +134,60 @@ body .el-descriptions__content {
 
 body .el-descriptions__cell {
   border-color: #334155 !important;
+  background-color: transparent !important;
+}
+
+body .el-descriptions__body {
+  background-color: #0f172a !important;
+}
+
+body .el-descriptions.is-bordered .el-descriptions__cell {
+  background-color: transparent !important;
+}
+
+body .el-descriptions.is-bordered .el-descriptions__label {
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+}
+
+body .el-descriptions.is-bordered .el-descriptions__content {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* dialog 内的 descriptions 强制覆盖 */
+body .el-dialog .el-descriptions,
+body .el-dialog .el-descriptions__label,
+body .el-dialog .el-descriptions__content,
+body .el-dialog .el-descriptions__cell,
+body .el-dialog .el-descriptions__body,
+body .el-dialog .el-descriptions.is-bordered .el-descriptions__label,
+body .el-dialog .el-descriptions.is-bordered .el-descriptions__content {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+  border-color: #334155 !important;
+}
+
+body .el-dialog .el-descriptions__label,
+body .el-dialog .el-descriptions.is-bordered .el-descriptions__label {
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+}
+
+/* dialog 内 tag 标签颜色修复 */
+body .el-dialog .el-tag {
+  border-color: #334155 !important;
+}
+
+/* dialog 内按钮颜色修复 */
+body .el-dialog .el-button--default {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+body .el-dialog .el-button--default:hover {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
 }

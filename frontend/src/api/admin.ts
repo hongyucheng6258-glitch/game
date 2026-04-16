@@ -19,6 +19,8 @@ export function rejectService(id: number) { return put(`/admin/services/${id}/re
 // Admin Orders
 export function getAdminOrders(params?: any) { return get('/admin/orders', params) }
 export function getAdminOrder(orderNo: string) { return get(`/admin/orders/${orderNo}`) }
+export function approveRefund(id: number) { return post(`/admin/orders/${id}/refund/approve`) }
+export function rejectRefund(id: number) { return post(`/admin/orders/${id}/refund/reject`) }
 
 // Admin Payments
 export function getAdminPayments(params?: any) { return get('/admin/payments', params) }

@@ -12,6 +12,7 @@ import java.util.List;
 public interface ServiceMapper extends JpaRepository<Service, Long>, JpaSpecificationExecutor<Service> {
     List<Service> findByProviderIdOrderByIdDesc(Long providerId);
     List<Service> findByProviderId(Long providerId);
+    Page<Service> findByProviderIdOrderByIdDesc(Long providerId, Pageable pageable);
     Page<Service> findByStatus(Integer status, Pageable pageable);
     long countByProviderId(Long providerId);
     long countByProviderIdAndStatus(Long providerId, Integer status);

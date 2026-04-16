@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import ElementPlus from 'element-plus'
+import { ElMessage } from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import App from './App.vue'
@@ -18,5 +19,11 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus, { locale: undefined })
+
+// Global error handler
+app.config.errorHandler = (err) => {
+  console.error('Vue Error:', err)
+  ElMessage.error('页面发生错误，请刷新重试')
+}
 
 app.mount('#app')

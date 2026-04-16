@@ -34,4 +34,10 @@ public interface OrderService {
     Map<String, Object> getUserOrderStats(Long userId);
 
     Map<String, Object> getProviderOrderStats(Long providerId);
+
+    void applyRefund(Long userId, String orderNo);
+
+    void approveRefund(Long adminId, Long orderId);
+
+    void rejectRefund(Long adminId, Long orderId);
 }

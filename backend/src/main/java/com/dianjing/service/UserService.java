@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public interface UserService {
 
@@ -51,4 +52,6 @@ public interface UserService {
     void resetPassword(String phone, String code, String newPassword);
 
     boolean existsByUsername(String username);
+
+    Map<String, Object> getUserOrderStats(Long userId);
 }

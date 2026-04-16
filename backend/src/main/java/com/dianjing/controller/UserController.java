@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -60,6 +62,14 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUserByUsername(username);
         return Result.success(userService.getBalance(user.getId()));
+    }
+
+    @GetMapping("/stats")
+    public Result<Map<String, Object>> getUserOrderStats() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long userId = userService.getUserByUsername(username).getId();
+        Map<String, Object> stats = userService.getUserOrderStats(userId);
+        return Result.success(stats);
     }
 
     @GetMapping("/profile")

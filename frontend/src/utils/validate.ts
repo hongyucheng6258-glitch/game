@@ -7,7 +7,12 @@ export function isValidEmail(email: string): boolean {
 }
 
 export function isValidPassword(password: string): boolean {
-  return password.length >= 6 && password.length <= 100
+  if (!password || password.length < 6 || password.length > 100) return false
+  let typeCount = 0
+  if (/[a-zA-Z]/.test(password)) typeCount++
+  if (/[0-9]/.test(password)) typeCount++
+  if (/[^a-zA-Z0-9]/.test(password)) typeCount++
+  return typeCount >= 2
 }
 
 export function isValidIdCard(idCard: string): boolean {

@@ -61,16 +61,8 @@ public class ServiceServiceImpl implements ServiceService {
 
     private void verifyRealNameAuthentication(Long providerId) {
         User provider = userService.getUserById(providerId);
-        System.out.println("=== 实名认证验证 ===");
-        System.out.println("用户ID: " + providerId);
-        System.out.println("用户名: " + provider.getUsername());
-        System.out.println("真实姓名: " + provider.getRealName());
-        System.out.println("身份证号: " + provider.getIdCard());
-        System.out.println("真实姓名是否为空: " + (provider.getRealName() == null || provider.getRealName().isEmpty()));
-        System.out.println("身份证号是否为空: " + (provider.getIdCard() == null || provider.getIdCard().isEmpty()));
-        System.out.println("====================");
-        
-        if (provider.getRealName() == null || provider.getRealName().isEmpty() || 
+
+        if (provider.getRealName() == null || provider.getRealName().isEmpty() ||
             provider.getIdCard() == null || provider.getIdCard().isEmpty()) {
             throw new BusinessException(400, "请先完成实名认证后再发布服务");
         }

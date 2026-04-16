@@ -2,7 +2,9 @@ package com.dianjing.controller;
 
 import com.dianjing.common.PageResult;
 import com.dianjing.common.Result;
+import com.dianjing.dto.response.ConversationResponse;
 import com.dianjing.entity.Message;
+import com.dianjing.service.ChatService;
 import com.dianjing.service.MessageService;
 import com.dianjing.service.UserService;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,10 +22,12 @@ public class MessageController {
 
     private final MessageService messageService;
     private final UserService userService;
+    private final ChatService chatService;
 
-    public MessageController(MessageService messageService, UserService userService) {
+    public MessageController(MessageService messageService, UserService userService, ChatService chatService) {
         this.messageService = messageService;
         this.userService = userService;
+        this.chatService = chatService;
     }
 
     private Long getCurrentUserId() {
@@ -76,6 +81,15 @@ public class MessageController {
         counts.put("total", messageService.getUnreadCount(userId));
         counts.put("system", messageService.getUnreadSystemCount(userId));
         return Result.success(counts);
+    }
+
+    /**
+     * 会话列表
+     */
+    @GetMapping("/conversations")
+    public Result<List<ConversationResponse>> listConversations() {
+        Long userId = getCurrentUserId();
+        return Result.success(chatService.getUserConversations(userId));
     }
 
     /**

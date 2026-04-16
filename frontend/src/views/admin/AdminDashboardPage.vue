@@ -278,7 +278,8 @@ async function fetchStats() {
       stats.todayRevenue = res.data.todayRevenue || 0
       stats.totalServices = res.data.totalServices || 0
       stats.pendingWithdrawals = res.data.pendingWithdrawals || 0
-      stats.todayUsers = 0 // 后端暂未提供，后续可以添加
+      // 后端 DashboardStatsResponse 暂未提供 todayUsers 字段，后续添加后可改为 res.data.todayUsers
+      stats.todayUsers = 0
     }
   } catch {
     // ignore

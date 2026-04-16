@@ -245,7 +245,7 @@ onMounted(() => {
 }
 
 :deep(.el-dialog) {
-  background: $glass-bg;
+  background: #{$bg-card};
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
   border: 1px solid $glass-border;
@@ -254,6 +254,7 @@ onMounted(() => {
 
   .el-dialog__header {
     border-bottom: 1px solid $glass-border;
+    background-color: #{$bg-card};
     padding: $spacing-lg;
   }
 
@@ -263,6 +264,8 @@ onMounted(() => {
   }
 
   .el-dialog__body {
+    background-color: #{$bg-card};
+    color: $text-primary;
     padding: $spacing-lg;
   }
 }

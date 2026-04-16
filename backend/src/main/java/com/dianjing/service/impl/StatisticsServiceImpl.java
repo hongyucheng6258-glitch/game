@@ -9,6 +9,7 @@ import com.dianjing.mapper.PaymentRecordMapper;
 import com.dianjing.mapper.ServiceMapper;
 import com.dianjing.mapper.UserMapper;
 import com.dianjing.mapper.ReviewMapper;
+import com.dianjing.mapper.WithdrawalApplicationMapper;
 import com.dianjing.service.StatisticsCacheService;
 import com.dianjing.service.StatisticsService;
 import org.springframework.stereotype.Service;
@@ -32,16 +33,19 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final ServiceMapper serviceMapper;
     private final PaymentRecordMapper paymentRecordMapper;
     private final ReviewMapper reviewMapper;
+    private final WithdrawalApplicationMapper withdrawalApplicationMapper;
     private final StatisticsCacheService statisticsCacheService;
 
     public StatisticsServiceImpl(UserMapper userMapper, OrderMapper orderMapper,
                                  ServiceMapper serviceMapper, PaymentRecordMapper paymentRecordMapper,
-                                 ReviewMapper reviewMapper, StatisticsCacheService statisticsCacheService) {
+                                 ReviewMapper reviewMapper, WithdrawalApplicationMapper withdrawalApplicationMapper,
+                                 StatisticsCacheService statisticsCacheService) {
         this.userMapper = userMapper;
         this.orderMapper = orderMapper;
         this.serviceMapper = serviceMapper;
         this.paymentRecordMapper = paymentRecordMapper;
         this.reviewMapper = reviewMapper;
+        this.withdrawalApplicationMapper = withdrawalApplicationMapper;
         this.statisticsCacheService = statisticsCacheService;
     }
 
@@ -76,7 +80,10 @@ public class StatisticsServiceImpl implements StatisticsService {
         stats.setTodayRevenue(todayRevenue);
 
         // 待处理提现
-        long pendingWithdrawals = 0; // 需要WithdrawalApplicationMapper
+        long pendingWithdrawals = withdrawalApplicationMapper.findByStatusOrderByIdDesc(
+                Constants.WITHDRAWAL_STATUS_PENDING,
+                org.springframework.data.domain.PageRequest.of(0, Integer.MAX_VALUE)
+        ).getTotalElements();
         stats.setPendingWithdrawals(pendingWithdrawals);
 
         statisticsCacheService.cachePlatformStats(stats);
@@ -111,7 +118,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                     PageRequest.of(0, Integer.MAX_VALUE)).getContent();
             BigDecimal totalAmount = providerOrders.stream()
                     .filter(o -> o.getStatus() == Constants.ORDER_COMPLETED)
-                    .map(Order::getTotalAmount)
+                    .map(order -> order.getTotalAmount().multiply(BigDecimal.valueOf(1 - Constants.PLATFORM_FEE_RATE)))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
             providerStats.put("totalRevenue", totalAmount);
 
@@ -315,6 +322,42 @@ public class StatisticsServiceImpl implements StatisticsService {
         ranking.sort((a, b) -> Integer.compare((Integer) b.get("popularity"), (Integer) a.get("popularity")));
 
         statisticsCacheService.cachePopularRanking(ranking);
+        return ranking.stream().limit(limit).toList();
+    }
+
+    @Override
+    public List<Map<String, Object>> getRevenueRanking(int limit) {
+        List<User> providers = userMapper.findAll().stream()
+                .filter(u -> u.getRole() == Constants.ROLE_PROVIDER)
+                .toList();
+
+        List<Map<String, Object>> ranking = new ArrayList<>();
+        for (User provider : providers) {
+            List<Order> providerOrders = orderMapper.findByProviderIdOrderByIdDesc(provider.getId(),
+                    PageRequest.of(0, Integer.MAX_VALUE)).getContent();
+            BigDecimal totalRevenue = providerOrders.stream()
+                    .filter(o -> o.getStatus() == Constants.ORDER_COMPLETED)
+                    .map(order -> order.getTotalAmount().multiply(BigDecimal.valueOf(1 - Constants.PLATFORM_FEE_RATE)))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            if (totalRevenue.compareTo(BigDecimal.ZERO) > 0) {
+                Map<String, Object> providerStats = new HashMap<>();
+                providerStats.put("id", provider.getId());
+                providerStats.put("providerName", provider.getUsername());
+                providerStats.put("providerAvatar", provider.getAvatar());
+                providerStats.put("totalRevenue", totalRevenue);
+
+                List<com.dianjing.entity.Service> services = serviceMapper.findByProviderId(provider.getId());
+                if (!services.isEmpty()) {
+                    providerStats.put("gameType", services.get(0).getGameType());
+                }
+
+                ranking.add(providerStats);
+            }
+        }
+
+        ranking.sort((a, b) -> ((BigDecimal) b.get("totalRevenue")).compareTo((BigDecimal) a.get("totalRevenue")));
+
         return ranking.stream().limit(limit).toList();
     }
 

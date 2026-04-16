@@ -143,11 +143,13 @@
               <!-- 待服务 -->
               <template v-else-if="order.status === 1">
                 <el-button @click="handleCancel">取消订单</el-button>
+                <el-button type="danger" @click="handleApplyRefund">申请退款</el-button>
               </template>
 
               <!-- 服务中 -->
               <template v-else-if="order.status === 2">
                 <el-button disabled>等待服务者完成</el-button>
+                <el-button type="danger" @click="handleApplyRefund">申请退款</el-button>
               </template>
 
               <!-- 待评价 -->
@@ -166,6 +168,16 @@
               <!-- 已取消 -->
               <template v-else-if="order.status === 5">
                 <el-button @click="$router.push('/service')">重新下单</el-button>
+              </template>
+
+              <!-- 退款中 -->
+              <template v-else-if="order.status === 6">
+                <el-button disabled>退款审核中，请等待平台处理</el-button>
+              </template>
+
+              <!-- 已退款 -->
+              <template v-else-if="order.status === 7">
+                <el-button @click="$router.push('/order/list')">返回订单列表</el-button>
               </template>
             </template>
 
@@ -198,6 +210,16 @@
               <!-- 已取消 -->
               <template v-else-if="order.status === 5">
                 <el-button @click="$router.push('/provider/orders')">返回接单列表</el-button>
+              </template>
+
+              <!-- 退款中 -->
+              <template v-else-if="order.status === 6">
+                <el-button disabled>用户已申请退款，等待平台审核</el-button>
+              </template>
+
+              <!-- 已退款 -->
+              <template v-else-if="order.status === 7">
+                <el-button @click="$router.push('/provider/orders')">返回订单列表</el-button>
               </template>
 
               <!-- 其他状态 -->
@@ -280,6 +302,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { ChatDotRound, Check } from '@element-plus/icons-vue'
 import { get, put, post } from '@/api/request'
+import { applyRefund } from '@/api/order'
 import { useUserStore } from '@/stores/user'
 import type { Order } from '@/types/order'
 import { ORDER_STATUS, ORDER_STATUS_LABELS, ORDER_STATUS_TYPES, PAYMENT_METHODS } from '@/utils/constants'
@@ -463,6 +486,22 @@ function handleCreateComplaint() {
       name: 'ComplaintCreate',
       query: { orderId: order.value.id, orderNo: order.value.orderNo }
     })
+  }
+}
+
+async function handleApplyRefund() {
+  if (!order.value) return
+  try {
+    await ElMessageBox.confirm('确定要申请退款吗？提交后需等待平台审核。', '申请退款', {
+      confirmButtonText: '确定申请',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    await applyRefund(order.value.orderNo)
+    ElMessage.success('退款申请已提交，请等待平台审核')
+    fetchOrder()
+  } catch {
+    // cancelled or error
   }
 }
 

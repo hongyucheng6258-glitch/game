@@ -1,8 +1,12 @@
 package com.dianjing.controller;
 
 import com.dianjing.common.Result;
+import com.dianjing.entity.Service;
+import com.dianjing.mapper.ServiceMapper;
 import com.dianjing.service.StatisticsService;
 import com.dianjing.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +18,12 @@ public class ProviderController {
 
     private final StatisticsService statisticsService;
     private final UserService userService;
+    private final ServiceMapper serviceMapper;
 
-    public ProviderController(StatisticsService statisticsService, UserService userService) {
+    public ProviderController(StatisticsService statisticsService, UserService userService, ServiceMapper serviceMapper) {
         this.statisticsService = statisticsService;
         this.userService = userService;
+        this.serviceMapper = serviceMapper;
     }
 
     private Long getCurrentUserId() {
@@ -29,5 +35,14 @@ public class ProviderController {
     public Result<Map<String, Object>> getProviderStatistics() {
         Long userId = getCurrentUserId();
         return Result.success(statisticsService.getProviderStatistics(userId));
+    }
+
+    @GetMapping("/services")
+    public Result<Page<Service>> getMyServices(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Long userId = getCurrentUserId();
+        Page<Service> services = serviceMapper.findByProviderIdOrderByIdDesc(userId, PageRequest.of(page - 1, size));
+        return Result.success(services);
     }
 }

@@ -263,7 +263,7 @@
           <el-input
             v-model="formData.password"
             type="password"
-            placeholder="请输入密码（至少6位）"
+            placeholder="请输入密码（至少6位，需包含字母、数字、特殊字符中的至少两种）"
             prefix-icon="Lock"
             show-password
             @focus="handleInputFocus"
@@ -411,7 +411,7 @@ const formRules: FormRules = {
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 100, message: '密码长度为 6-100 个字符', trigger: 'blur' },
+    { min: 6, max: 100, message: '密码长度为 6-100 个字符，需包含字母、数字、特殊字符中的至少两种', trigger: 'blur' },
   ],
   confirmPassword: [
     { required: true, message: '请再次输入密码', trigger: 'blur' },

@@ -32,6 +32,7 @@ public class RankingController {
             case "rating" -> Result.success(statisticsService.getRatingRanking(limit));
             case "sales" -> Result.success(statisticsService.getSalesRanking(limit));
             case "popular" -> Result.success(statisticsService.getPopularRanking(limit));
+            case "revenue" -> Result.success(statisticsService.getRevenueRanking(limit));
             default -> Result.success(List.of());
         };
     }

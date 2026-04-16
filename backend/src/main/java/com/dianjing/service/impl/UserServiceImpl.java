@@ -4,6 +4,7 @@ import com.dianjing.common.BusinessException;
 import com.dianjing.common.Constants;
 import com.dianjing.dto.request.*;
 import com.dianjing.entity.User;
+import com.dianjing.mapper.OrderMapper;
 import com.dianjing.mapper.UserMapper;
 import com.dianjing.security.JwtTokenProvider;
 import com.dianjing.service.LoginAttemptService;
@@ -19,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
+    private final OrderMapper orderMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final com.dianjing.service.SystemSettingService systemSettingService;
@@ -36,10 +40,11 @@ public class UserServiceImpl implements UserService {
     @Value("${file.upload-dir:uploads/}")
     private String uploadDir;
 
-    public UserServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider,
+    public UserServiceImpl(UserMapper userMapper, OrderMapper orderMapper, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider,
                            com.dianjing.service.SystemSettingService systemSettingService, UserCacheService userCacheService,
                            LoginAttemptService loginAttemptService, RedisUtil redisUtil) {
         this.userMapper = userMapper;
+        this.orderMapper = orderMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
         this.systemSettingService = systemSettingService;
@@ -86,6 +91,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByUsername(String username) {
         return userMapper.existsByUsername(username);
+    }
+
+    @Override
+    public Map<String, Object> getUserOrderStats(Long userId) {
+        Map<String, Object> stats = new HashMap<>();
+        long totalOrders = orderMapper.countByUserId(userId);
+        long pendingPayment = orderMapper.countByUserIdAndStatus(userId, Constants.ORDER_PENDING_PAYMENT);
+        long pendingService = orderMapper.countByUserIdAndStatus(userId, Constants.ORDER_PENDING_SERVICE);
+        long inService = orderMapper.countByUserIdAndStatus(userId, Constants.ORDER_IN_SERVICE);
+        long pendingReview = orderMapper.countByUserIdAndStatus(userId, Constants.ORDER_PENDING_REVIEW);
+        long completed = orderMapper.countByUserIdAndStatus(userId, Constants.ORDER_COMPLETED);
+        long cancelled = orderMapper.countByUserIdAndStatus(userId, Constants.ORDER_CANCELLED);
+
+        stats.put("totalOrders", totalOrders);
+        stats.put("pendingPayment", pendingPayment);
+        stats.put("pendingService", pendingService);
+        stats.put("inService", inService);
+        stats.put("pendingReview", pendingReview);
+        stats.put("completed", completed);
+        stats.put("cancelled", cancelled);
+        return stats;
     }
 
     @Override
@@ -196,11 +222,26 @@ public class UserServiceImpl implements UserService {
     public User updateUserInfo(Long userId, UserUpdateRequest request) {
         User user = getUserById(userId);
         String oldUsername = user.getUsername();
-        
-        if (request.getUsername() != null) user.setUsername(request.getUsername());
+
+        if (request.getUsername() != null && !request.getUsername().equals(user.getUsername())) {
+            if (userMapper.existsByUsername(request.getUsername())) {
+                throw new BusinessException(400, "用户名已被占用");
+            }
+            user.setUsername(request.getUsername());
+        }
+        if (request.getPhone() != null && !request.getPhone().equals(user.getPhone())) {
+            if (!request.getPhone().isEmpty() && userMapper.existsByPhone(request.getPhone())) {
+                throw new BusinessException(400, "手机号已被占用");
+            }
+            user.setPhone(request.getPhone());
+        }
+        if (request.getEmail() != null && !request.getEmail().equals(user.getEmail())) {
+            if (!request.getEmail().isEmpty() && userMapper.existsByEmail(request.getEmail())) {
+                throw new BusinessException(400, "邮箱已被占用");
+            }
+            user.setEmail(request.getEmail());
+        }
         if (request.getAvatar() != null) user.setAvatar(request.getAvatar());
-        if (request.getPhone() != null) user.setPhone(request.getPhone());
-        if (request.getEmail() != null) user.setEmail(request.getEmail());
         if (request.getRealName() != null) user.setRealName(request.getRealName());
         if (request.getIdCard() != null) user.setIdCard(request.getIdCard());
         
@@ -360,6 +401,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void adminResetPassword(Long userId, String newPassword) {
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            throw new BusinessException(400, "新密码不能为空");
+        }
         User user = getUserById(userId);
         user.setPassword(passwordEncoder.encode(newPassword));
         userMapper.save(user);
@@ -372,7 +416,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void adminAdjustBalance(Long userId, BigDecimal amount, String remark) {
         User user = getUserById(userId);
-        user.setBalance(user.getBalance().add(amount));
+        BigDecimal newBalance = user.getBalance().add(amount);
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new BusinessException(400, "调整后余额不能为负数");
+        }
+        user.setBalance(newBalance);
         userMapper.save(user);
         
         // 清除缓存
