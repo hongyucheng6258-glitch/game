@@ -67,5 +67,5 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { token, userInfo, isLoggedIn, isAdmin, isProvider, login, sendSmsCode, phoneLogin, resetPassword, register, logout, fetchUserInfo }
+  return { token, userInfo, isLoggedIn, isAdmin, isProvider, login, sendSmsCode, phoneLogin, resetPassword, register, checkUsername, logout, fetchUserInfo }
 })

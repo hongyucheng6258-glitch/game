@@ -13,7 +13,8 @@ const userStore = useUserStore()
 const systemStore = useSystemStore()
 
 onMounted(() => {
-  systemStore.fetchSettings()
+  // 暂时注释掉，避免后端服务不可用时页面卡住
+  // systemStore.fetchSettings()
   if (userStore.isLoggedIn) {
     messageStore.fetchUnreadCount()
   }
@@ -21,7 +22,7 @@ onMounted(() => {
 
 // 监听用户登录状态变化
 userStore.$subscribe((mutation, state) => {
-  if (state.isLoggedIn) {
+  if (userStore.isLoggedIn) {
     messageStore.fetchUnreadCount()
   }
 })

@@ -29,7 +29,7 @@
       <div class="section-header">
         <div class="section-header-left">
           <h2 class="section-title">
-            <el-icon class="section-icon"><Controller /></el-icon>
+            <el-icon class="section-icon"><VideoPlay /></el-icon>
             热门游戏
           </h2>
           <p class="section-subtitle">选择你喜欢的游戏，找到最合适的队友</p>
@@ -112,7 +112,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ArrowRight, Promotion, Timer, Controller, Star } from '@element-plus/icons-vue'
+import { ArrowRight, Promotion, Timer, Star, VideoPlay } from '@element-plus/icons-vue'
 import { get } from '@/api/request'
 import type { Service } from '@/types/service'
 import type { PageData } from '@/types/common'
