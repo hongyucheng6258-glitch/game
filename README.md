@@ -99,6 +99,24 @@ game/
 
 ## 📝 更新日志
 
+### v1.2.1 (2026-04-16)
+
+#### 🐛 Bug 修复
+- 修复提现审核 API 方法不匹配（PUT→POST），导致审核操作 405 错误
+- 修复提现记录管理页面缺少审核操作按钮（通过/拒绝）
+
+#### ✨ 新增接口
+- 新增 `GET /orders/provider` 服务商订单列表端点
+- 新增 `GET /users/stats` 用户订单统计端点
+- 新增 `GET /complaints` 投诉列表端点
+- 新增 `GET /messages/conversations` 会话列表端点
+- 新增 `GET /rankings/revenue` 收入排行榜端点
+- 放行 `/reviews/service-stats/{serviceId}` 公开接口
+- 放行 `/tags` 公开接口
+
+#### 🧪 测试
+- 增强版自动化测试脚本，覆盖 92 个测试用例（18 个模块），全部通过
+
 ### v1.2.0 (2026-04-16)
 
 #### 🐛 资金逻辑修复（严重）
