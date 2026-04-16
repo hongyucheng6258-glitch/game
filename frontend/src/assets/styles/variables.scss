@@ -1,40 +1,74 @@
-$primary-color: #6366f1;
-$primary-light: #818cf8;
-$primary-dark: #4f46e5;
+// 电竞主题颜色方案
+$primary-color: #00ff9f;
+$primary-light: #40ffbf;
+$primary-dark: #00cc7f;
+$secondary-color: #6366f1;
+$secondary-light: #818cf8;
+$secondary-dark: #4f46e5;
 $success-color: #22c55e;
 $warning-color: #f59e0b;
 $danger-color: #ef4444;
 $info-color: #3b82f6;
 
-$bg-dark: #0f172a;
-$bg-card: #1e293b;
-$bg-hover: #334155;
-$bg-input: #1e293b;
+// 背景颜色
+$bg-dark: #0a0a0a;
+$bg-card: #131313;
+$bg-hover: #1f1f1f;
+$bg-input: #1a1a1a;
+$bg-gradient: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
 
-$text-primary: #f1f5f9;
-$text-secondary: #94a3b8;
-$text-muted: #64748b;
+// 文本颜色
+$text-primary: #ffffff;
+$text-secondary: #b3b3b3;
+$text-muted: #666666;
+$text-glow: rgba(0, 255, 159, 0.8);
 
-$border-color: #334155;
-$border-radius: 8px;
-$border-radius-lg: 12px;
-$border-radius-xl: 16px;
+// 边框颜色
+$border-color: #2a2a2a;
+$border-glow: rgba(0, 255, 159, 0.3);
 
+// 圆角
+$border-radius: 12px;
+$border-radius-lg: 16px;
+$border-radius-xl: 20px;
+$border-radius-full: 9999px;
+
+// 间距
 $spacing-xs: 4px;
 $spacing-sm: 8px;
 $spacing-md: 16px;
 $spacing-lg: 24px;
 $spacing-xl: 32px;
+$spacing-2xl: 48px;
 
-$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
-$shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+// 阴影
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.6);
+$shadow-glow: 0 0 25px rgba(0, 255, 159, 0.3);
+$shadow-glow-lg: 0 0 40px rgba(0, 255, 159, 0.4);
+$shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 
+// 过渡
 $transition-fast: 0.15s ease;
 $transition-normal: 0.3s ease;
 $transition-slow: 0.5s ease;
+$transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-$glass-bg: rgba(30, 41, 59, 0.8);
-$glass-border: rgba(148, 163, 184, 0.1);
-$glass-blur: 12px;
+// 玻璃效果
+$glass-bg: rgba(19, 19, 19, 0.85);
+$glass-border: rgba(0, 255, 159, 0.15);
+$glass-blur: 16px;
+
+// 动画
+$animation-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+$animation-glow: glow 2s ease-in-out infinite alternate;
+
+// 字体
+$font-family-primary: 'Rajdhani', 'Inter', sans-serif;
+$font-family-heading: 'Orbitron', sans-serif;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+$font-weight-black: 900;

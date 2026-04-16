@@ -1,14 +1,15 @@
 <template>
-  <div class="home-page">
+  <div class="home-page effect-grid">
     <section class="banner-section">
-      <el-carousel height="400px" :interval="5000" arrow="hover">
+      <el-carousel height="480px" :interval="5000" arrow="hover">
         <el-carousel-item v-for="(banner, index) in banners" :key="index">
           <div class="banner-item" :style="{ background: banner.gradient }">
             <div class="banner-overlay"></div>
+            <div class="banner-grid"></div>
             <div class="banner-content">
-              <h2 class="banner-title">{{ banner.title }}</h2>
+              <h1 class="banner-title">{{ banner.title }}</h1>
               <p class="banner-desc">{{ banner.desc }}</p>
-              <el-button type="primary" size="large" round class="banner-btn" @click="$router.push('/service')">
+              <el-button type="primary" size="large" class="banner-btn btn-glow" @click="$router.push('/service')">
                 立即体验
                 <el-icon class="btn-icon"><ArrowRight /></el-icon>
               </el-button>
@@ -17,6 +18,7 @@
               <div class="deco-circle deco-1"></div>
               <div class="deco-circle deco-2"></div>
               <div class="deco-circle deco-3"></div>
+              <div class="deco-grid"></div>
             </div>
           </div>
         </el-carousel-item>
@@ -26,7 +28,10 @@
     <section class="game-section">
       <div class="section-header">
         <div class="section-header-left">
-          <h2 class="section-title">热门游戏</h2>
+          <h2 class="section-title">
+            <el-icon class="section-icon"><Controller /></el-icon>
+            热门游戏
+          </h2>
           <p class="section-subtitle">选择你喜欢的游戏，找到最合适的队友</p>
         </div>
       </div>
@@ -34,7 +39,7 @@
         <div
           v-for="game in gameList"
           :key="game.name"
-          class="game-card"
+          class="game-card effect-glow-border"
           @click="goToGameService(game.name)"
         >
           <div class="game-icon" :style="{ background: game.color }">
@@ -56,14 +61,15 @@
         </div>
       </div>
       <div class="activity-grid">
-        <div v-for="activity in activities" :key="activity.id" class="activity-card">
+        <div v-for="activity in activities" :key="activity.id" class="activity-card card-hover">
           <div class="activity-banner" :style="{ background: activityGradient(activity.id) }">
             <div class="activity-badge-wrap">
-              <el-tag type="danger" size="small" effect="dark">{{ activity.type === 0 ? '全场折扣' : activity.type === 1 ? '服务折扣' : '限时特价' }}</el-tag>
+              <el-tag type="danger" size="small" effect="dark" class="activity-type-tag">{{ activity.type === 0 ? '全场折扣' : activity.type === 1 ? '服务折扣' : '限时特价' }}</el-tag>
             </div>
             <div class="activity-banner-content">
-              <span class="activity-discount-num">{{ activity.type === 2 ? '特价' : Math.round(activity.discountRate * 100) + '折' }}</span>
+              <span class="activity-discount-num gradient-text">{{ activity.type === 2 ? '特价' : Math.round(activity.discountRate * 100) + '折' }}</span>
             </div>
+            <div class="activity-banner-grid"></div>
           </div>
           <div class="activity-body">
             <h3 class="activity-title">{{ activity.title }}</h3>
@@ -80,10 +86,13 @@
     <section class="service-section">
       <div class="section-header">
         <div class="section-header-left">
-          <h2 class="section-title">推荐服务</h2>
+          <h2 class="section-title">
+            <el-icon class="section-icon"><Star /></el-icon>
+            推荐服务
+          </h2>
           <p class="section-subtitle">精选优质陪玩代打服务</p>
         </div>
-        <el-button text type="primary" class="view-more-btn" @click="$router.push('/service')">
+        <el-button text type="primary" class="view-more-btn btn-ghost" @click="$router.push('/service')">
           查看更多 <el-icon><ArrowRight /></el-icon>
         </el-button>
       </div>
@@ -103,7 +112,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ArrowRight, Promotion, Timer } from '@element-plus/icons-vue'
+import { ArrowRight, Promotion, Timer, Controller, Star } from '@element-plus/icons-vue'
 import { get } from '@/api/request'
 import type { Service } from '@/types/service'
 import type { PageData } from '@/types/common'
@@ -120,17 +129,17 @@ const banners = [
   {
     title: '专业电竞陪玩',
     desc: '百万玩家在线，找到你的最佳队友，一起上分',
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    gradient: 'linear-gradient(135deg, #00ff9f 0%, #6366f1 100%)',
   },
   {
     title: '高效代打服务',
     desc: '专业代打团队，快速上分，安全可靠',
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    gradient: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
   },
   {
     title: '新用户专享优惠',
     desc: '注册即送新人礼包，首单立享折扣',
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    gradient: 'linear-gradient(135deg, #f43f5e 0%, #ec4899 100%)',
   },
 ]
 
@@ -207,15 +216,19 @@ onMounted(() => {
 
 .home-page {
   min-height: 100vh;
+  position: relative;
 }
 
 .banner-section {
   margin: -24px -20px 0;
+  position: relative;
+  z-index: 1;
   :deep(.el-carousel__item) {
     border-radius: 0 0 $border-radius-xl $border-radius-xl;
     overflow: hidden;
   }
   :deep(.el-carousel__indicators) {
+    bottom: 32px;
     .el-carousel__indicator {
       .el-carousel__button {
         width: 24px;
@@ -223,11 +236,24 @@ onMounted(() => {
         border-radius: 2px;
         background: rgba(255, 255, 255, 0.3);
         opacity: 1;
+        transition: all $transition-normal;
       }
       &.is-active .el-carousel__button {
-        width: 36px;
-        background: white;
+        width: 48px;
+        background: $primary-color;
+        box-shadow: 0 0 10px rgba($primary-color, 0.8);
       }
+    }
+  }
+  :deep(.el-carousel__arrow) {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    &:hover {
+      background: rgba($primary-color, 0.8);
+      box-shadow: 0 0 20px rgba($primary-color, 0.8);
     }
   }
 }
@@ -244,56 +270,82 @@ onMounted(() => {
 .banner-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 30% 50%, rgba(255, 255, 255, 0.05), transparent 70%);
+  background: radial-gradient(ellipse at 30% 50%, rgba(255, 255, 255, 0.1), transparent 70%);
   pointer-events: none;
+  z-index: 1;
+}
+
+.banner-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .banner-content {
   text-align: center;
-  color: #fff;
+  color: $text-primary;
   position: relative;
-  z-index: 2;
+  z-index: 3;
+  max-width: 800px;
+  padding: 0 20px;
 }
 
 .banner-title {
-  font-size: 42px;
-  font-weight: 800;
-  margin-bottom: $spacing-md;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  letter-spacing: -0.5px;
+  font-size: 56px;
+  font-weight: $font-weight-black;
+  margin-bottom: $spacing-lg;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  letter-spacing: -1px;
+  font-family: $font-family-heading;
+  background: linear-gradient(135deg, $text-primary, rgba($text-primary, 0.8));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeIn 1s ease-out;
 }
 
 .banner-desc {
-  font-size: 18px;
-  margin-bottom: $spacing-xl;
+  font-size: 20px;
+  margin-bottom: $spacing-2xl;
   opacity: 0.9;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  font-family: $font-family-primary;
+  animation: slideInUp 1s ease-out 0.2s both;
 }
 
 .banner-btn {
-  height: 48px;
-  padding: 0 32px;
-  font-size: 16px;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  transition: all $transition-normal;
+  height: 56px;
+  padding: 0 40px;
+  font-size: 18px;
+  font-weight: $font-weight-bold;
+  background: linear-gradient(135deg, $primary-color, $primary-dark);
+  border: 1px solid $primary-color;
+  transition: all $transition-bounce;
+  font-family: $font-family-primary;
+  animation: slideInUp 1s ease-out 0.4s both;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, $primary-light, $primary-color);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba($primary-color, 0.4), $shadow-glow-lg;
   }
 }
 
 .btn-icon {
-  margin-left: 4px;
+  margin-left: 8px;
   transition: transform $transition-fast;
 }
 
 .banner-btn:hover .btn-icon {
-  transform: translateX(4px);
+  transform: translateX(8px) rotate(90deg);
 }
 
 .banner-decoration {
@@ -301,45 +353,71 @@ onMounted(() => {
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+  z-index: 2;
 }
 
 .deco-circle {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba($primary-color, 0.2);
+  animation: pulse 4s ease-in-out infinite;
 }
 
 .deco-1 {
-  width: 300px;
-  height: 300px;
-  right: -50px;
-  top: -50px;
+  width: 400px;
+  height: 400px;
+  right: -100px;
+  top: -100px;
+  animation-delay: 0s;
 }
 
 .deco-2 {
-  width: 200px;
-  height: 200px;
-  left: -30px;
-  bottom: -30px;
+  width: 250px;
+  height: 250px;
+  left: -50px;
+  bottom: -50px;
+  animation-delay: 1s;
 }
 
 .deco-3 {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   right: 20%;
   bottom: 10%;
+  animation-delay: 2s;
+}
+
+.deco-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba($primary-color, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba($primary-color, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
 }
 
 .game-section,
 .service-section {
-  padding: $spacing-xl 0;
+  padding: $spacing-2xl 0;
+  position: relative;
+  z-index: 1;
+}
+
+.activity-section {
+  padding: $spacing-2xl 0;
+  position: relative;
+  z-index: 1;
 }
 
 .section-header {
   display: flex;
   align-items: center;
   gap: $spacing-md;
-  margin-bottom: $spacing-lg;
+  margin-bottom: $spacing-xl;
   flex-wrap: wrap;
   justify-content: space-between;
 }
@@ -351,183 +429,269 @@ onMounted(() => {
 }
 
 .section-title {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: $font-weight-bold;
   color: $text-primary;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  font-family: $font-family-heading;
+  background: linear-gradient(135deg, $text-primary, $text-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .section-icon {
-  color: $danger-color;
+  color: $primary-color;
+  font-size: 24px;
+  box-shadow: 0 0 15px rgba($primary-color, 0.5);
+  animation: glow 2s ease-in-out infinite alternate;
 }
 
 .section-subtitle {
   color: $text-secondary;
-  font-size: 14px;
+  font-size: 16px;
+  font-family: $font-family-primary;
+  margin-top: 4px;
 }
 
 .view-more-btn {
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   font-size: 14px;
+  font-family: $font-family-primary;
+  transition: all $transition-normal;
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: $spacing-md;
-}
-
-.activity-section {
-  padding: $spacing-xl 0;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: $spacing-lg;
 }
 
 .activity-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: $spacing-md;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $spacing-lg;
 }
 
 .activity-card {
   background: $bg-card;
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  border: 1px solid $border-color;
   border-radius: $border-radius-lg;
   overflow: hidden;
-  transition: all $transition-normal;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: $shadow-lg, $shadow-glow;
-    border-color: rgba($primary-color, 0.2);
-  }
+  transition: all $transition-bounce;
+  position: relative;
 }
 
 .activity-banner {
-  height: 130px;
+  height: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
+  overflow: hidden;
+}
+
+.activity-banner-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .activity-badge-wrap {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+}
+
+.activity-type-tag {
+  font-family: $font-family-primary;
+  font-weight: $font-weight-bold;
+  border-radius: $border-radius;
+  padding: 4px 12px;
+  font-size: 12px;
+  box-shadow: 0 0 10px rgba($danger-color, 0.5);
 }
 
 .activity-banner-content {
   text-align: center;
+  z-index: 2;
 }
 
 .activity-discount-num {
-  font-size: 40px;
-  font-weight: 800;
-  color: white;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-size: 48px;
+  font-weight: $font-weight-black;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  font-family: $font-family-heading;
 }
 
 .activity-body {
-  padding: $spacing-md;
+  padding: $spacing-lg;
 }
 
 .activity-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: $font-weight-bold;
   color: $text-primary;
-  margin-bottom: $spacing-xs;
+  margin-bottom: $spacing-sm;
+  font-family: $font-family-primary;
 }
 
 .activity-desc {
-  font-size: 13px;
+  font-size: 14px;
   color: $text-secondary;
-  margin-bottom: $spacing-sm;
+  margin-bottom: $spacing-md;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: $font-family-primary;
 }
 
 .activity-time {
-  font-size: 12px;
+  font-size: 13px;
   color: $danger-color;
-  font-weight: 500;
+  font-weight: $font-weight-medium;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  font-family: $font-family-primary;
 }
 
 .game-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $spacing-sm;
-  padding: $spacing-lg $spacing-md;
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(148, 163, 184, 0.06);
+  gap: $spacing-md;
+  padding: $spacing-xl $spacing-lg;
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  border: 1px solid $glass-border;
   border-radius: $border-radius-lg;
   cursor: pointer;
-  transition: all $transition-normal;
-
+  transition: all $transition-bounce;
+  position: relative;
+  overflow: hidden;
   &:hover {
-    border-color: rgba($primary-color, 0.3);
-    transform: translateY(-4px);
-    box-shadow: $shadow-md, $shadow-glow;
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: $shadow-lg, $shadow-glow;
   }
 }
 
 .game-icon {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform $transition-normal;
-}
-
-.game-card:hover .game-icon {
-  transform: scale(1.1);
+  transition: all $transition-normal;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  &:hover {
+    transform: scale(1.2) rotate(10deg);
+  }
 }
 
 .game-emoji {
-  font-size: 28px;
+  font-size: 32px;
 }
 
 .game-name {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: $font-weight-bold;
   color: $text-primary;
+  font-family: $font-family-primary;
+  text-align: center;
 }
 
 .service-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: $spacing-md;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $spacing-lg;
   min-height: 200px;
 }
 
 .service-card-wrapper {
   min-height: 0;
+  animation: slideInUp 0.6s ease-out;
+  &:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  &:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  &:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  &:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  &:nth-child(6) {
+    animation-delay: 0.5s;
+  }
 }
 
+// 响应式设计
 @media (max-width: 768px) {
+  .banner-section {
+    margin: -24px -16px 0;
+  }
+  
+  .banner-item {
+    height: 360px;
+  }
+  
   .banner-title {
-    font-size: 28px;
+    font-size: 36px;
   }
 
   .banner-desc {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .game-grid {
     grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-md;
+  }
+
+  .game-card {
+    padding: $spacing-lg $spacing-md;
+  }
+
+  .game-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .game-emoji {
+    font-size: 28px;
+  }
+
+  .game-name {
+    font-size: 14px;
   }
 
   .service-grid {
     grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+
+  .activity-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
   }
 
   .section-header {
@@ -538,6 +702,10 @@ onMounted(() => {
   .section-header-left {
     flex-direction: column;
     gap: $spacing-xs;
+  }
+
+  .section-title {
+    font-size: 24px;
   }
 }
 </style>

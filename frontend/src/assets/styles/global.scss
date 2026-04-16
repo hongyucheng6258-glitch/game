@@ -1,5 +1,8 @@
 @use './variables' as *;
 
+// 导入Google字体
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -8,42 +11,146 @@
 
 html, body {
   height: 100%;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: $bg-dark;
+  font-family: $font-family-primary;
+  background: $bg-gradient;
   color: $text-primary;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 #app {
   height: 100%;
+  position: relative;
+}
+
+// 全局动画
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px rgba($primary-color, 0.3);
+  }
+  to {
+    box-shadow: 0 0 30px rgba($primary-color, 0.6);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// 文本样式
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family-heading;
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-md;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 10px rgba($primary-color, 0.3);
+}
+
+h2 {
+  font-size: 2rem;
+  color: $text-primary;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, $primary-color, transparent);
+    border-radius: 2px;
+  }
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: $text-primary;
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: $spacing-md;
+  color: $text-secondary;
 }
 
 a {
   color: $primary-light;
   text-decoration: none;
-  transition: color $transition-fast;
+  transition: all $transition-fast;
+  position: relative;
   &:hover {
     color: $primary-color;
+    &::after {
+      width: 100%;
+    }
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: $primary-color;
+    transition: width $transition-fast;
+    border-radius: 1px;
   }
 }
 
+// 滚动条样式
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background: $bg-dark;
+  border-radius: $border-radius-full;
 }
 
 ::-webkit-scrollbar-thumb {
   background: $bg-hover;
-  border-radius: 3px;
+  border-radius: $border-radius-full;
+  border: 2px solid $bg-dark;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: $text-muted;
+  background: $primary-color;
+  box-shadow: 0 0 10px rgba($primary-color, 0.5);
 }
 
 ::selection {
@@ -51,8 +158,23 @@ a {
   color: $text-primary;
 }
 
+// Element Plus 样式覆盖
 .el-menu {
   border-right: none !important;
+  background: $bg-card !important;
+  & .el-menu-item {
+    color: $text-secondary !important;
+    font-family: $font-family-primary;
+    &:hover {
+      color: $primary-color !important;
+      background: $bg-hover !important;
+    }
+    &.is-active {
+      color: $primary-color !important;
+      background: rgba($primary-color, 0.1) !important;
+      border-right: 3px solid $primary-color !important;
+    }
+  }
 }
 
 .el-card {
@@ -61,6 +183,11 @@ a {
   color: $text-primary;
   border-radius: $border-radius-lg;
   transition: all $transition-normal;
+  box-shadow: $shadow-md;
+  &:hover {
+    box-shadow: $shadow-lg, $shadow-glow;
+    transform: translateY(-2px);
+  }
 }
 
 .el-table {
@@ -71,6 +198,7 @@ a {
   --el-table-text-color: #{$text-primary};
   --el-table-header-text-color: #{$text-secondary};
   --el-table-border-color: #{$border-color};
+  font-family: $font-family-primary;
 }
 
 .el-dialog {
@@ -78,32 +206,40 @@ a {
   --el-dialog-title-font-size: 18px;
   border-radius: $border-radius-xl;
   border: 1px solid $glass-border;
+  box-shadow: $shadow-lg, $shadow-glow;
+  font-family: $font-family-primary;
+  & .el-dialog__title {
+    font-family: $font-family-heading;
+    color: $text-primary;
+  }
 }
 
 .el-input__wrapper,
 .el-textarea__inner,
 .el-select__wrapper {
   background-color: $bg-input !important;
-  box-shadow: 0 0 0 1px $border-color inset !important;
+  box-shadow: $shadow-inner, 0 0 0 1px $border-color inset !important;
   color: $text-primary !important;
   border-radius: $border-radius !important;
   transition: all $transition-normal;
+  font-family: $font-family-primary;
 }
 
 .el-input__wrapper:hover,
 .el-textarea__inner:hover,
 .el-select__wrapper:hover {
-  box-shadow: 0 0 0 1px rgba($primary-color, 0.4) inset !important;
+  box-shadow: $shadow-inner, 0 0 0 1px rgba($primary-color, 0.4) inset !important;
 }
 
 .el-input__wrapper.is-focus,
 .el-textarea__inner:focus,
 .el-select__wrapper.is-focus {
-  box-shadow: 0 0 0 1px $primary-color inset, 0 0 0 3px rgba($primary-color, 0.1) !important;
+  box-shadow: $shadow-inner, 0 0 0 1px $primary-color inset, 0 0 0 3px rgba($primary-color, 0.1) !important;
 }
 
 .el-form-item__label {
   color: $text-secondary !important;
+  font-family: $font-family-primary;
 }
 
 .el-pagination {
@@ -111,48 +247,95 @@ a {
   --el-pagination-text-color: #{$text-secondary};
   --el-pagination-button-bg-color: #{$bg-hover};
   --el-pagination-hover-color: #{$primary-light};
+  font-family: $font-family-primary;
 }
 
-.el-button--primary {
-  background: linear-gradient(135deg, $primary-color, $primary-dark);
-  border-color: $primary-color;
+.el-button {
+  font-family: $font-family-primary;
+  border-radius: $border-radius;
   transition: all $transition-normal;
-
   &:hover {
-    background: linear-gradient(135deg, $primary-light, $primary-color);
-    border-color: $primary-light;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba($primary-color, 0.4);
   }
-
   &:active {
     transform: translateY(0);
   }
 }
 
+.el-button--primary {
+  background: linear-gradient(135deg, $primary-color, $primary-dark);
+  border-color: $primary-color;
+  &:hover {
+    background: linear-gradient(135deg, $primary-light, $primary-color);
+    border-color: $primary-light;
+    box-shadow: 0 4px 12px rgba($primary-color, 0.4), $shadow-glow;
+  }
+}
+
+.el-button--success {
+  background: linear-gradient(135deg, $success-color, darken($success-color, 10%));
+  border-color: $success-color;
+  &:hover {
+    box-shadow: 0 4px 12px rgba($success-color, 0.4);
+  }
+}
+
+.el-button--warning {
+  background: linear-gradient(135deg, $warning-color, darken($warning-color, 10%));
+  border-color: $warning-color;
+  &:hover {
+    box-shadow: 0 4px 12px rgba($warning-color, 0.4);
+  }
+}
+
+.el-button--danger {
+  background: linear-gradient(135deg, $danger-color, darken($danger-color, 10%));
+  border-color: $danger-color;
+  &:hover {
+    box-shadow: 0 4px 12px rgba($danger-color, 0.4);
+  }
+}
+
 .el-tag {
-  border-radius: 6px;
+  border-radius: $border-radius;
+  font-family: $font-family-primary;
+  &.el-tag--primary {
+    background: rgba($primary-color, 0.2);
+    border-color: $primary-color;
+    color: $primary-color;
+  }
 }
 
-.el-tabs__item {
-  transition: color $transition-fast;
-}
-
-.el-tabs__active-bar {
-  background: linear-gradient(90deg, $primary-color, $primary-light);
-  border-radius: 2px;
+.el-tabs {
+  font-family: $font-family-primary;
+  &__item {
+    transition: all $transition-normal;
+    color: $text-secondary;
+    &:hover {
+      color: $primary-light;
+    }
+    &.is-active {
+      color: $primary-color;
+    }
+  }
+  &__active-bar {
+    background: linear-gradient(90deg, $primary-color, $secondary-color);
+    border-radius: 2px;
+    height: 3px;
+  }
 }
 
 .el-dropdown-menu {
   background-color: $bg-card;
   border-color: $border-color;
-}
-
-.el-dropdown-menu__item {
-  color: $text-primary;
-  &:hover {
-    background-color: $bg-hover;
-    color: $primary-light;
+  box-shadow: $shadow-lg;
+  font-family: $font-family-primary;
+  &__item {
+    color: $text-primary;
+    &:hover {
+      background-color: $bg-hover;
+      color: $primary-light;
+    }
   }
 }
 
@@ -161,31 +344,36 @@ a {
   --el-messagebox-content-color: #{$text-secondary};
   background-color: $bg-card;
   border-color: $border-color;
+  box-shadow: $shadow-lg, $shadow-glow;
+  font-family: $font-family-primary;
 }
 
 .el-overlay {
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur($glass-blur);
 }
 
 .el-loading-mask {
-  background-color: rgba($bg-dark, 0.7);
-  backdrop-filter: blur(4px);
+  background-color: rgba($bg-dark, 0.8);
+  backdrop-filter: blur($glass-blur);
+  & .el-loading-spinner .path {
+    stroke: $primary-color;
+  }
 }
 
 .el-empty__description p {
   color: $text-muted;
+  font-family: $font-family-primary;
 }
 
 .el-descriptions {
   --el-descriptions-table-border: #{$border-color};
-}
-
-.el-descriptions__label {
-  color: $text-secondary !important;
-}
-
-.el-descriptions__content {
-  color: $text-primary !important;
+  font-family: $font-family-primary;
+  &__label {
+    color: $text-secondary !important;
+  }
+  &__content {
+    color: $text-primary !important;
+  }
 }
 
 .el-divider {
@@ -194,12 +382,14 @@ a {
 
 .el-alert {
   border-radius: $border-radius;
+  font-family: $font-family-primary;
 }
 
 .el-rate {
   --el-rate-fill-color: #{$warning-color};
 }
 
+// 过渡动画
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity $transition-normal;
@@ -211,40 +401,131 @@ a {
 
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: all $transition-normal;
+  transition: all $transition-bounce;
 }
 .slide-up-enter-from {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(30px);
 }
 .slide-up-leave-to {
   opacity: 0;
-  transform: translateY(-20px);
+  transform: translateY(-30px);
 }
 
+// 自定义类
 .glass-effect {
   background: $glass-bg;
   backdrop-filter: blur($glass-blur);
   -webkit-backdrop-filter: blur($glass-blur);
   border: 1px solid $glass-border;
+  box-shadow: $shadow-md;
+  transition: all $transition-normal;
+  &:hover {
+    box-shadow: $shadow-lg, $shadow-glow;
+    border-color: rgba($primary-color, 0.3);
+  }
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, $primary-light, #a78bfa);
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 0 0 10px rgba($primary-color, 0.3);
 }
 
 .glow-effect {
   box-shadow: $shadow-glow;
+  animation: $animation-glow;
 }
 
 .card-hover {
-  transition: all $transition-normal;
+  transition: all $transition-bounce;
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     box-shadow: $shadow-lg, $shadow-glow;
     border-color: rgba($primary-color, 0.3);
+  }
+}
+
+.pulse-effect {
+  animation: $animation-pulse;
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  h3 {
+    font-size: 1.25rem;
+  }
+}
+
+// 电竞主题特效
+.effect-grid {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      linear-gradient(rgba($primary-color, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($primary-color, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.effect-glow-border {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, $primary-color, $secondary-color, $primary-color);
+    border-radius: $border-radius-lg;
+    z-index: -1;
+    animation: glow 3s ease-in-out infinite alternate;
+  }
+}
+
+// 按钮特效
+.btn-ghost {
+  background: transparent;
+  border: 1px solid $primary-color;
+  color: $primary-color;
+  transition: all $transition-normal;
+  &:hover {
+    background: rgba($primary-color, 0.1);
+    box-shadow: $shadow-glow;
+  }
+}
+
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba($primary-color, 0.2), transparent);
+    transition: left $transition-normal;
+  }
+  &:hover::before {
+    left: 100%;
   }
 }
