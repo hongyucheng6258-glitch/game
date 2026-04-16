@@ -96,6 +96,12 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/test',
+    name: 'Test',
+    component: () => import('@/views/test/TestPage.vue'),
+    meta: { title: '测试页面' },
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/views/home/HomePage.vue'),
