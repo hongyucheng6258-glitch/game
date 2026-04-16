@@ -79,3 +79,6 @@ build/
 *.db
 *.sqlite
 *.sqlite3
+
+# Trae IDE
+.trae/
